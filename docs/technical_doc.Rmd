@@ -1,0 +1,7 @@
+---
+title: "technical_doc"
+output: pdf_document
+date: "2026-08-05"
+---
+
+### O
