@@ -1,0 +1,6 @@
+# 5-fold cross-validation YOLO export
+# Use fold<N>/dataset.yaml to train on a specific fold, e.g.:
+#   yolo train data=fold1/dataset.yaml ...
+nc: 1
+names:
+  0: crab
