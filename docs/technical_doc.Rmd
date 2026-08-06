@@ -1,12 +1,24 @@
 ---
-title: "technical_doc"
+title: "Crabs on camera: technical report"
 output: pdf_document
+citeproc: true
 date: "2026-08-05"
+author: "Gina Brøten"
+bibliography: literature/library.bib
+csl: literature/ices-journal-of-marine-science.csl
 ---
 
 ### Background
 
-The basis of this project is rooted in the work done in the masters thesis.
+The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was improving the monitoring of the data-limited Brown crab (*Cancer pagurus*) stock in Norway with machine learning and underwater video surveys. 
+
+In Norwegian waters the brown crabs distribution spans across 10 degrees of latitude
+
+using the underutilized resource of underwater video from surveys and coastal monitoring programs from the Insitute of Marine Research
+
+Where the general idea was that coastal monitoring programs and mulitple surveys at the Institue of Marine Research applied video surveys to monitor coastal habitats. 
+
+Brown crabs
 
 The data collected and used to train this model
 
