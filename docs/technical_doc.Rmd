@@ -4,4 +4,32 @@ output: pdf_document
 date: "2026-08-05"
 ---
 
-### O
+### Background
+
+The basis of this project is rooted in the work done in the masters thesis.
+
+The data collected and used to train this model
+
+
+### Prerequisites
+
+Need to have Python installed. `raw_to_yolo.ipynb` will check for missing packages and install them automatically (see "Chunk 0").
+
+Ideally a server if you want to train your own model.
+
+To keep the repo lightweight, `.ipynb` outputs are stripped on commit via `nbstripout`. One-time setup after cloning:
+
+```
+pip install nbstripout
+nbstripout --install
+```
+
+### Data
+
+The repo only ships a small example/test dataset (`data/annotations/test_annotations`) so the scripts can be run and verified without downloading everything.
+
+The full training dataset (~8,000 images) used in the original masters project is hosted externally: **[LINK TO ADD]**. Download it and point `CONFIG["ANNOTATIONS_FILE"]` / `CONFIG["IMAGES_DIR"]` in `raw_to_yolo.ipynb` at the local copy to reproduce the full training run.
+
+### From raw annotations to YOLO-ready data
+
+To 
