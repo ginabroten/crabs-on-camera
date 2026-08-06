@@ -1,6 +1,0 @@
-path: /scratch/disk4/crab_model_gina/crabs-on-camera/data/kfold/fold4
-train: images/train
-val: images/val
-nc: 1
-names:
-- crab

@@ -17,5 +17,6 @@
 
 # Script outputs (YOLO exports, trained weights, etc.)
 yolo_split/
+data/kfold/
 runs/
 *.pt
