@@ -9,16 +9,11 @@
 # Jupyter
 .ipynb_checkpoints/
 
-# Raw image data (large; not tracked in git)
-# The small example/test dataset under data/annotations/test_annotations
-# is kept for demoing the pipeline, but the actual image files are excluded.
-# The full ~8,000 image training set is hosted externally (see docs/technical_doc.Rmd).
-data/**/images/
-*.jpg
-*.jpeg
-*.png
-*.tif
-*.tiff
+# The small example/test dataset under data/annotations/test_annotations IS
+# tracked in git on purpose, so the repo is runnable/reproducible out of the box.
+# The full ~8,000 image training set is hosted externally (see docs/technical_doc.Rmd)
+# and should NOT be added here — if you add other/larger datasets under data/,
+# gitignore them explicitly rather than committing them.
 
 # Script outputs (YOLO exports, trained weights, etc.)
 yolo_split/
