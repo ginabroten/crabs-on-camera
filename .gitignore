@@ -20,3 +20,5 @@ yolo_split/
 data/kfold/
 runs/
 *.pt
+docs/technical_doc.Rmd
+docs/docs.Rproj
