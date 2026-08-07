@@ -1,56 +1,55 @@
 ---
-title: "Crabs on camera: technical report"
+title: "Crabs on camera: code documentation"
 output: pdf_document
 citeproc: true
 date: "2026-08-05"
 author: "Gina Brøten"
 bibliography: literature/library.bib
 csl: literature/ices-journal-of-marine-science.csl
+nocite: '@sekachev_opencvcvat_2020'
 ---
 
 # Background
 
 ## Project and repository aims
-The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was improving the monitoring of the data-limited Brown crab (*Cancer pagurus*) stock in Norway with machine learning and underwater video surveys. 
 
-The aim of creating this repositry is not to push innvoation or show excellence in coding but rather the opposite and make machine learning algorithms more approachable for marine scientists in fisheris application.
+The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was to improve monitoring of the data-limited Brown crab (*Cancer pagurus*) stock in Norway using machine learning and underwater video surveys.
 
+The aim of this repository is not to push the boundaries of machine learning or showcase advanced coding, rather to make these methods more approachable for marine scientists working in fisheries applications.
 
-
-The brown crab stock in Norway (despite its large distribution there is little genetic variation for it to be assumed to be more than one stock) lacks a formal stock assessment due to a multitude of reasons, one of them being a data-deficity primarily from the 
-In Norwegian waters the brown crabs distribution spans across 10 degrees of latitude (kilde, bakke et al), and traditional methods 
-
-using the underutilized resource of underwater video from surveys and coastal monitoring programs from the Insitute of Marine Research
-
-Where the general idea was that coastal monitoring programs and mulitple surveys at the Institue of Marine Research applied video surveys to monitor coastal habitats. 
-
-Brown crabs
-
-The data collected and used to train this model
+The brown crab supports a valuable small-scale inshore fishery of ecological, economic and social importance to coastal communities. Despite this, data limitations persist and constrain stock assessments. Traditional methods for collecting fisheries independent data are manual, and prone to bias [@hiddink_estimating_2024]. The Institute of Marine Research (IMR) already runs coastal monitoring programs and surveys that collect underwater video footage across many sites along the coast. This footage is a large, currently underutilized resource for stock monitoring,but a bottleneck persists due to the manual annotation process [@durden_comparison_2016]. This project explores whether a machine learning model can automate that review step, using video data collected through IMR's existing coastal monitoring programs and surveys to train a crab detector.
 
 ## About the repository
 
-This repository uses the same codes, functions & packages used in the masters thesis to obtain the results.
+This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
 
-To start trying on your own, you can easily clone this repository on your own computer, or preferably on a server with a high GPU.
+To try it yourself, clone this repository — either on your own computer for the small example dataset, or on a server with GPU access if you plan to train on a larger dataset.
 
+For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten [-@broten_crabs_2026]. AI tools (large language models) were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
 # Before running the scripts
 
 ## Prerequisites
 
-Need to have Python installed. `raw_to_yolo.ipynb` will check for missing packages and install them automatically (see "Chunk 0").
+Python must be installed. `raw_to_yolo.ipynb` checks for missing packages and installs them automatically (see Chunk 0).
 
-Ideally a server if you want to train your own model.
+A server with GPU access is recommended if you plan to train on a large dataset, the small example dataset shipped with this repo can be run locally without one.
 
-If you want to create your own crab-detector, then you'll need an annotated training dataset. Where the annotations are stored in a folder called annotations, with two folders, images/default (here all the images live) and 
+If you want to train a detector on your own data, you'll need an annotated dataset structured the same way as the example dataset: an `annotations` folder containing the CVAT/COCO export (`instances_default.json`), and an `images/default` folder containing the matching image files.
 
 ### Data
 
 The repo only ships a small example/test dataset (`data/annotations/test_annotations`) so the scripts can be run and verified without downloading everything.
 
-The full training dataset (~8,000 images) used in the original masters project is hosted externally: **[LINK TO ADD]**. Download it and point `CONFIG["ANNOTATIONS_FILE"]` / `CONFIG["IMAGES_DIR"]` in `raw_to_yolo.ipynb` at the local copy to reproduce the full training run.
+The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from five Baited Remote Underwater Video (BRUV) stations, and covers 5 stations over 541 images. 
 
-### From raw annotations to YOLO-ready data
+The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler. 
+Ex. NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_frame_9, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse Survey, the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9. 
 
-On the stratified sampling in the kfolds - if you data is balances, and  youre not worried about station leakage - then this part can be dropped.
+
+# From raw annotations to YOLO-ready data
+
+### Chunk 0-2
+The first chunks dowloads and loads the nessecary packages
+
+# References
