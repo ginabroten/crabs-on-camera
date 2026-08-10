@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Crabs on camera: project documentation</title>
-  <meta name="description" content="References | Crabs on camera: project documentation" />
+  <title>Chapter 3 From raw annotations to YOLO-ready data | Crabs on camera: project documentation</title>
+  <meta name="description" content="Chapter 3 From raw annotations to YOLO-ready data | Crabs on camera: project documentation" />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Crabs on camera: project documentation" />
+  <meta property="og:title" content="Chapter 3 From raw annotations to YOLO-ready data | Crabs on camera: project documentation" />
   <meta property="og:type" content="book" />
   
   
   <meta name="github-repo" content="ginabroten/crabs-on-camera" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Crabs on camera: project documentation" />
+  <meta name="twitter:title" content="Chapter 3 From raw annotations to YOLO-ready data | Crabs on camera: project documentation" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="from-raw-annotations-to-yolo-ready-data.html"/>
-
+<link rel="prev" href="before-running-the-scripts.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -139,19 +139,36 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="from-raw-annotations-to-yolo-ready-data" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> From raw annotations to YOLO-ready data<a href="from-raw-annotations-to-yolo-ready-data.html#from-raw-annotations-to-yolo-ready-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Important mention, if you are applying another dataset than the test-dataset please be mindful of but not limited to
+- File paths
+- Stratified sampling for k-folds</p>
+<p>The goal of this script is to go from a JSON file and images, to a five fold stratified data set where the RLE-masks are converted to bounding boxes, where each image has its corresponding .txt document containing the (possible) annotation(s) and is ready for object detection training. The converted data set is spilt into folds, for maximizing the use of a limited dataset, the data is split following a random stratified sampling process.</p>
+<div id="chunk-0-3" class="section level3 hasAnchor" number="3.0.1">
+<h3><span class="header-section-number">3.0.1</span> 1. Chunk 0 – 3<a href="from-raw-annotations-to-yolo-ready-data.html#chunk-0-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The first chunks downloads and loads the necessary packages, and then finds and loads the correct working directory containing the annotated images and the annotations. The code chunks should run without any error (utdype?)</p>
+<p>If you are using another data set <code>CONFIG</code> in Chunk 2 must be changed to the correct directory and file paths.</p>
+</div>
+<div id="chunk-4" class="section level3 hasAnchor" number="3.0.2">
+<h3><span class="header-section-number">3.0.2</span> 2. Chunk 4<a href="from-raw-annotations-to-yolo-ready-data.html#chunk-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Training object detection models with RLE-masks requires more run-time, and is ideal for object segmentation purposes. For a project like this where the sole goal is to identify (and quantify) crab in the images opting for the simplest version is preferable.</p>
+<p>A bounding box is a rectangular boundary defined by four coordinates, whereas RLE-mask is a compressed binary pixel outlining the exact shape of an object. For object detection, bounding boxes are preferred, and to reduce run time since they are more lightweight.</p>
+<p>RLE annotation is faster as its powered by Segment Anything Model in CVAT, making the already tedious annotation process a bit smoother.</p>
+<p>In this chunk, the RLE-masks get converted into tightly wrapped bounding boxes, and the coordinates for the bonding boxes are normalized to between the extected values from YOLO (0 – 1)</p>
+<p>All other species annotated thats not Decapod &amp; crab, keeps only one. Duplicated bounding boxes also get removed.</p>
+</div>
+<div id="chunk-5" class="section level3 hasAnchor" number="3.0.3">
+<h3><span class="header-section-number">3.0.3</span> 3. Chunk 5<a href="from-raw-annotations-to-yolo-ready-data.html#chunk-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Links the images to the annotations, if you are using another dataset it is important that the names of the images and their corresponding .txt doucument with the annotations have the same name. Unmactched output means that there might be a typo, renamed files or missing files in the folders.</p>
+<p>NB, training on negative examples, empty frames has shown to imporve performance, so they are kept in the data set with a empty corresponding .txt document.</p>
+</div>
+<div id="chunk-6-7" class="section level3 hasAnchor" number="3.0.4">
+<h3><span class="header-section-number">3.0.4</span> 4. Chunk 6 – 7<a href="from-raw-annotations-to-yolo-ready-data.html#chunk-6-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>These chunks serve as a qualiy and safety checks, showing the first annotated image in the dataset</p>
+<p>Here, all the crabs in the image should have a red box tightly wrapping the crab</p>
+<p>Likevise for the RLE, th</p>
 
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
-Brøten, Gina. 2026. <span>“Crabs on Camera: <span>Improving</span> the Monitoring of the Brown Crab (<em><span>Cancer</span> Pagurus</em>) with Machine Learning and <span>Baited</span> <span>Remote</span> <span>Underwater</span> <span>Video</span> (<span>BRUV</span>).”</span> Master’s thesis, University of Bergen. <a href="https://hdl.handle.net/11250/5537346">https://hdl.handle.net/11250/5537346</a>.
-</div>
-<div class="csl-entry">
-Jocher, Glenn, Jing Qiu, and Ayush Chaurasia. 2023. <em>Ultralytics <span>YOLO</span></em>. <a href="https://github.com/ultralytics/ultralytics">https://github.com/ultralytics/ultralytics</a>.
-</div>
-<div class="csl-entry">
-Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <em>You <span>Only</span> <span>Look</span> <span>Once</span>: <span>Unified</span>, <span>Real</span>-<span>Time</span> <span>Object</span> <span>Detection</span></em>. arXiv. <a href="https://doi.org/10.48550/arXiv.1506.02640">https://doi.org/10.48550/arXiv.1506.02640</a>.
-</div>
 </div>
 </div>
             </section>
@@ -159,8 +176,8 @@ Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <em>You <
           </div>
         </div>
       </div>
-<a href="from-raw-annotations-to-yolo-ready-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="before-running-the-scripts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -191,7 +208,7 @@ gitbook.start({
     "size": 2
   },
   "edit": {
-    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-references.Rmd",
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-raw_to_yolo.Rmd",
     "text": "Edit"
   },
   "history": {

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Crabs on camera: project documentation</title>
-  <meta name="description" content="References | Crabs on camera: project documentation" />
+  <title>Chapter 2 Before running the scripts | Crabs on camera: project documentation</title>
+  <meta name="description" content="Chapter 2 Before running the scripts | Crabs on camera: project documentation" />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Crabs on camera: project documentation" />
+  <meta property="og:title" content="Chapter 2 Before running the scripts | Crabs on camera: project documentation" />
   <meta property="og:type" content="book" />
   
   
   <meta name="github-repo" content="ginabroten/crabs-on-camera" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Crabs on camera: project documentation" />
+  <meta name="twitter:title" content="Chapter 2 Before running the scripts | Crabs on camera: project documentation" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="from-raw-annotations-to-yolo-ready-data.html"/>
-
+<link rel="prev" href="index.html"/>
+<link rel="next" href="from-raw-annotations-to-yolo-ready-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -139,19 +139,38 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="before-running-the-scripts" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Before running the scripts<a href="before-running-the-scripts.html#before-running-the-scripts" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="prerequisites" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Prerequisites<a href="before-running-the-scripts.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All packages required for data transformation and object detection training are open-source and freely available.</p>
+<p>To identify and quantify crabs in the videos, this project uses the object detection framework “You Only Look Once” (YOLO), specifically version 8 <span class="citation">(<a href="#ref-jocher_ultralytics_2023">Jocher et al. 2023</a>)</span>, which builds on the original YOLO architecture introduced by Redmon et al. <span class="citation">(<a href="#ref-redmon_you_2016">2016</a>)</span>. Several object detection frameworks, including newer YOLO versions, could have been used instead. YOLOv8 was chosen because it is well documented and its common issues are well known, which makes it easier to troubleshoot for beginners in machine learning.</p>
+<p>Python must be installed. <code>raw_to_yolo.ipynb</code> checks for missing packages and installs them automatically (see Chunk 0).</p>
+<p>A server with GPU access is recommended if you plan to train on a large dataset — the small example dataset shipped with this repo can be run locally without one.</p>
+<p>If you want to train a detector on your own data, you’ll need an annotated dataset structured the same way as the example dataset: an <code>annotations</code> folder containing the CVAT/COCO export (<code>instances_default.json</code>), and an <code>images/default</code> folder containing the matching image files.</p>
+<div id="data" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Data<a href="before-running-the-scripts.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The repo only ships a small example/test dataset (<code>data/annotations/test_annotations</code>) so the scripts can be run and verified without downloading everything.</p>
+<p>The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from five Baited Remote Underwater Video (BRUV) stations over 541 images. For more stats about the annotation composition, run <code>annotation_stats</code>.
+Annotations are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups).</p>
+<p>The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler.</p>
+<p>Ex. NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_frame_9, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse Survey, the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9.</p>
+<p>So if youre applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions. If you are annotating your own dataset, a JSON file for the strcture applied in this annotation process can be found in (<code>script/annotation_format</code>).</p>
+<p>For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten <span class="citation">(<a href="#ref-broten_crabs_2026">2026</a>)</span>.</p>
 
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
+<div id="ref-broten_crabs_2026" class="csl-entry">
 Brøten, Gina. 2026. <span>“Crabs on Camera: <span>Improving</span> the Monitoring of the Brown Crab (<em><span>Cancer</span> Pagurus</em>) with Machine Learning and <span>Baited</span> <span>Remote</span> <span>Underwater</span> <span>Video</span> (<span>BRUV</span>).”</span> Master’s thesis, University of Bergen. <a href="https://hdl.handle.net/11250/5537346">https://hdl.handle.net/11250/5537346</a>.
 </div>
-<div class="csl-entry">
+<div id="ref-jocher_ultralytics_2023" class="csl-entry">
 Jocher, Glenn, Jing Qiu, and Ayush Chaurasia. 2023. <em>Ultralytics <span>YOLO</span></em>. <a href="https://github.com/ultralytics/ultralytics">https://github.com/ultralytics/ultralytics</a>.
 </div>
-<div class="csl-entry">
+<div id="ref-redmon_you_2016" class="csl-entry">
 Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <em>You <span>Only</span> <span>Look</span> <span>Once</span>: <span>Unified</span>, <span>Real</span>-<span>Time</span> <span>Object</span> <span>Detection</span></em>. arXiv. <a href="https://doi.org/10.48550/arXiv.1506.02640">https://doi.org/10.48550/arXiv.1506.02640</a>.
-</div>
 </div>
 </div>
             </section>
@@ -159,8 +178,8 @@ Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <em>You <
           </div>
         </div>
       </div>
-<a href="from-raw-annotations-to-yolo-ready-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="from-raw-annotations-to-yolo-ready-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -191,7 +210,7 @@ gitbook.start({
     "size": 2
   },
   "edit": {
-    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-references.Rmd",
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
     "text": "Edit"
   },
   "history": {

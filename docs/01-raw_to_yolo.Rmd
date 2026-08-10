@@ -1,0 +1,42 @@
+# From raw annotations to YOLO-ready data
+
+Important mention, if you are applying another dataset than the test-dataset please be mindful of but not limited to
+- File paths
+- Stratified sampling for k-folds
+
+The goal of this script is to go from a JSON file and images, to a five fold stratified data set where the RLE-masks are converted to bounding boxes, where each image has its corresponding .txt document containing the (possible) annotation(s) and is ready for object detection training. The converted data set is spilt into folds, for maximizing the use of a limited dataset, the data is split following a random stratified sampling process. 
+
+### 1. Chunk 0 -- 3
+
+The first chunks downloads and loads the necessary packages, and then finds and loads the correct working directory containing the annotated images and the annotations. The code chunks should run without any error (utdype?)
+
+If you are using another data set `CONFIG` in Chunk 2 must be changed to the correct directory and file paths. 
+
+###  2. Chunk 4
+
+Training object detection models with RLE-masks requires more run-time, and is ideal for object segmentation purposes. For a project like this where the sole goal is to identify (and quantify) crab in the images opting for the simplest version is preferable. 
+
+A bounding box is a rectangular boundary defined by four coordinates, whereas RLE-mask is a compressed binary pixel outlining the exact shape of an object. For object detection, bounding boxes are preferred, and to reduce run time since they are more lightweight. 
+
+RLE annotation is faster as its powered by Segment Anything Model in CVAT, making the already tedious annotation process a bit smoother. 
+
+In this chunk, the RLE-masks get converted into tightly wrapped bounding boxes, and the coordinates for the bonding boxes are normalized to between the extected values from YOLO (0 -- 1)
+
+All other species annotated thats not Decapod & crab, keeps only one. Duplicated bounding boxes also get removed.
+
+
+
+
+### 3. Chunk 5
+
+Links the images to the annotations, if you are using another dataset it is important that the names of the images and their corresponding .txt doucument with the annotations have the same name. Unmactched output means that there might be a typo, renamed files or missing files in the folders. 
+
+NB, training on negative examples, empty frames has shown to imporve performance, so they are kept in the data set with a empty corresponding .txt document.
+
+### 4. Chunk 6 -- 7 
+
+These chunks serve as a qualiy and safety checks, showing the first annotated image in the dataset
+
+Here, all the crabs in the image should have a red box tightly wrapping the crab
+
+Likevise for the RLE, th

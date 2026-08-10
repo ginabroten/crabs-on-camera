@@ -36,46 +36,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
@@ -112,32 +72,15 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={A Minimal Book Example},
-  pdfauthor={John Doe},
+  pdftitle={Crabs on camera: project documentation},
+  pdfauthor={Gina Brøten},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{A Minimal Book Example}
-\author{John Doe}
+\title{Crabs on camera: project documentation}
+\author{Gina Brøten}
 \date{2026-08-10}
 
-\usepackage{amsthm}
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
-\newtheorem{conjecture}{Conjecture}[chapter]
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[chapter]
-\theoremstyle{definition}
-\newtheorem{example}{Example}[chapter]
-\theoremstyle{definition}
-\newtheorem{exercise}{Exercise}[chapter]
-\theoremstyle{definition}
-\newtheorem{hypothesis}{Hypothesis}[chapter]
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
-\newtheorem*{solution}{Solution}
 \begin{document}
 \maketitle
 
@@ -145,234 +88,103 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\chapter{About}\label{about}
+\chapter{Background}\label{background}
 
-This is a \emph{sample} book written in \textbf{Markdown}. You can use anything that Pandoc's Markdown supports; for example, a math equation \(a^2 + b^2 = c^2\).
+\section{Project and repository aims}\label{project-and-repository-aims}
 
-\section{Usage}\label{usage}
+The basis of this project is rooted in the work done in the masters thesis by Brøten \citeyearpar{broten_crabs_2026}. The aim of the project was to improve monitoring of the data-limited brown crab (\emph{Cancer pagurus}) stock in Norway using machine learning and underwater video surveys.
 
-Each \textbf{bookdown} chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter \emph{must} start with a first-level heading: \texttt{\#\ A\ good\ chapter}, and can contain one (and only one) first-level heading.
+The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.
 
-Use second-level and higher headings within chapters like: \texttt{\#\#\ A\ short\ section} or \texttt{\#\#\#\ An\ even\ shorter\ section}.
+\section{About the repository}\label{about-the-repository}
 
-The \texttt{index.Rmd} file is required, and is also your first book chapter. It will be the homepage when you render the book.
+This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
 
-\section{Render book}\label{render-book}
+What does this repository contain:
 
-You can render the HTML version of this example book without changing anything:
+To try it yourself, clone this repository, either on your own computer for the small example dataset, or on a server with GPU access if you plan to train on a larger dataset.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Find the \textbf{Build} pane in the RStudio IDE, and
-\item
-  Click on \textbf{Build Book}, then select your output format, or select ``All formats'' if you'd like to use multiple formats from the same book source files.
-\end{enumerate}
+AI tools (large language models) were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
-Or build the book from the R console:
+\section{Glossary}\label{glossary}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{bookdown}\SpecialCharTok{::}\FunctionTok{render\_book}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+Object detection
+Bounding box
+Mask
+Annotation
+Label
+Class
+Stratified sampling
+YOLO
 
-To render this example to PDF as a \texttt{bookdown::pdf\_book}, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.org/tinytex/}.
+\chapter{Before running the scripts}\label{before-running-the-scripts}
 
-\section{Preview book}\label{preview-book}
+\section{Prerequisites}\label{prerequisites}
 
-As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in ``Preview book'', or from the R console:
+All packages required for data transformation and object detection training are open-source and freely available.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{bookdown}\SpecialCharTok{::}\FunctionTok{serve\_book}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+To identify and quantify crabs in the videos, this project uses the object detection framework ``You Only Look Once'' (YOLO), specifically version 8 \citep{jocher_ultralytics_2023}, which builds on the original YOLO architecture introduced by Redmon et al. \citeyearpar{redmon_you_2016}. Several object detection frameworks, including newer YOLO versions, could have been used instead. YOLOv8 was chosen because it is well documented and its common issues are well known, which makes it easier to troubleshoot for beginners in machine learning.
 
-\chapter{Hello bookdown}\label{hello-bookdown}
+Python must be installed. \texttt{raw\_to\_yolo.ipynb} checks for missing packages and installs them automatically (see Chunk 0).
 
-All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (\texttt{\#}) per .Rmd file.
+A server with GPU access is recommended if you plan to train on a large dataset --- the small example dataset shipped with this repo can be run locally without one.
 
-\section{A section}\label{a-section}
+If you want to train a detector on your own data, you'll need an annotated dataset structured the same way as the example dataset: an \texttt{annotations} folder containing the CVAT/COCO export (\texttt{instances\_default.json}), and an \texttt{images/default} folder containing the matching image files.
 
-All chapter sections start with a second-level (\texttt{\#\#}) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+\subsection{Data}\label{data}
 
-\subsection*{An unnumbered section}\label{an-unnumbered-section}
-\addcontentsline{toc}{subsection}{An unnumbered section}
+The repo only ships a small example/test dataset (\texttt{data/annotations/test\_annotations}) so the scripts can be run and verified without downloading everything.
 
-Chapters and sections are numbered by default. To un-number a heading, add a \texttt{\{.unnumbered\}} or the shorter \texttt{\{-\}} at the end of the heading, like in this section.
+The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from five Baited Remote Underwater Video (BRUV) stations over 541 images. For more stats about the annotation composition, run \texttt{annotation\_stats}.
+Annotations are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups).
 
-\chapter{Cross-references}\label{cross}
+The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler.
 
-Cross-references make it easier for your readers to find and link to elements in your book.
+Ex. NO\_2025\_3007\_GarnRuse\_Lovund\_LO3\_RA1\_L9\_frame\_9, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse Survey, the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9.
 
-\section{Chapters and sub-chapters}\label{chapters-and-sub-chapters}
+So if youre applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions. If you are annotating your own dataset, a JSON file for the strcture applied in this annotation process can be found in (\texttt{script/annotation\_format}).
 
-There are two steps to cross-reference any heading:
+For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten \citeyearpar{broten_crabs_2026}.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Label the heading: \texttt{\#\ Hello\ world\ \{\#nice-label\}}.
+\chapter{From raw annotations to YOLO-ready data}\label{from-raw-annotations-to-yolo-ready-data}
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Leave the label off if you like the automated heading generated based on your heading title: for example, \texttt{\#\ Hello\ world} = \texttt{\#\ Hello\ world\ \{\#hello-world\}}.
-  \item
-    To label an un-numbered heading, use: \texttt{\#\ Hello\ world\ \{-\#nice-label\}} or \texttt{\{\#\ Hello\ world\ .unnumbered\}}.
-  \end{itemize}
-\item
-  Next, reference the labeled heading anywhere in the text using \texttt{\textbackslash{}@ref(nice-label)}; for example, please see Chapter \ref{cross}.
+Important mention, if you are applying another dataset than the test-dataset please be mindful of but not limited to
+- File paths
+- Stratified sampling for k-folds
 
-  \begin{itemize}
-  \tightlist
-  \item
-    If you prefer text as the link instead of a numbered reference use: \hyperref[cross]{any text you want can go here}.
-  \end{itemize}
-\end{enumerate}
+The goal of this script is to go from a JSON file and images, to a five fold stratified data set where the RLE-masks are converted to bounding boxes, where each image has its corresponding .txt document containing the (possible) annotation(s) and is ready for object detection training. The converted data set is spilt into folds, for maximizing the use of a limited dataset, the data is split following a random stratified sampling process.
 
-\section{Captioned figures and tables}\label{captioned-figures-and-tables}
+\subsection{1. Chunk 0 -- 3}\label{chunk-0-3}
 
-Figures and tables \emph{with captions} can also be cross-referenced from elsewhere in your book using \texttt{\textbackslash{}@ref(fig:chunk-label)} and \texttt{\textbackslash{}@ref(tab:chunk-label)}, respectively.
+The first chunks downloads and loads the necessary packages, and then finds and loads the correct working directory containing the annotated images and the annotations. The code chunks should run without any error (utdype?)
 
-See Figure \ref{fig:nice-fig}.
+If you are using another data set \texttt{CONFIG} in Chunk 2 must be changed to the correct directory and file paths.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, .}\DecValTok{1}\NormalTok{, .}\DecValTok{1}\NormalTok{))}
-\FunctionTok{plot}\NormalTok{(pressure, }\AttributeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\subsection{2. Chunk 4}\label{chunk-4}
 
-\begin{figure}
+Training object detection models with RLE-masks requires more run-time, and is ideal for object segmentation purposes. For a project like this where the sole goal is to identify (and quantify) crab in the images opting for the simplest version is preferable.
 
-{\centering \includegraphics[width=0.8\linewidth,alt={Plot with connected points showing that vapor pressure of mercury increases exponentially as temperature increases.}]{_main_files/figure-latex/nice-fig-1} 
+A bounding box is a rectangular boundary defined by four coordinates, whereas RLE-mask is a compressed binary pixel outlining the exact shape of an object. For object detection, bounding boxes are preferred, and to reduce run time since they are more lightweight.
 
-}
+RLE annotation is faster as its powered by Segment Anything Model in CVAT, making the already tedious annotation process a bit smoother.
 
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
+In this chunk, the RLE-masks get converted into tightly wrapped bounding boxes, and the coordinates for the bonding boxes are normalized to between the extected values from YOLO (0 -- 1)
 
-Don't miss Table \ref{tab:nice-tab}.
+All other species annotated thats not Decapod \& crab, keeps only one. Duplicated bounding boxes also get removed.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
-  \FunctionTok{head}\NormalTok{(pressure, }\DecValTok{10}\NormalTok{), }\AttributeTok{caption =} \StringTok{\textquotesingle{}Here is a nice table!\textquotesingle{}}\NormalTok{,}
-  \AttributeTok{booktabs =} \ConstantTok{TRUE}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\subsection{3. Chunk 5}\label{chunk-5}
 
-\begin{table}
+Links the images to the annotations, if you are using another dataset it is important that the names of the images and their corresponding .txt doucument with the annotations have the same name. Unmactched output means that there might be a typo, renamed files or missing files in the folders.
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rr}
-\toprule
-temperature & pressure\\
-\midrule
-0 & 0.0002\\
-20 & 0.0012\\
-40 & 0.0060\\
-60 & 0.0300\\
-80 & 0.0900\\
-\addlinespace
-100 & 0.2700\\
-120 & 0.7500\\
-140 & 1.8500\\
-160 & 4.2000\\
-180 & 8.8000\\
-\bottomrule
-\end{tabular}
-\end{table}
+NB, training on negative examples, empty frames has shown to imporve performance, so they are kept in the data set with a empty corresponding .txt document.
 
-\chapter{Parts}\label{parts}
+\subsection{4. Chunk 6 -- 7}\label{chunk-6-7}
 
-You can add parts to organize one or more book chapters together. Parts can be inserted at the top of an .Rmd file, before the first-level chapter heading in that same file.
+These chunks serve as a qualiy and safety checks, showing the first annotated image in the dataset
 
-Add a numbered part: \texttt{\#\ (PART)\ Act\ one\ \{-\}} (followed by \texttt{\#\ A\ chapter})
+Here, all the crabs in the image should have a red box tightly wrapping the crab
 
-Add an unnumbered part: \texttt{\#\ (PART\textbackslash{}*)\ Act\ one\ \{-\}} (followed by \texttt{\#\ A\ chapter})
-
-Add an appendix as a special kind of un-numbered part: \texttt{\#\ (APPENDIX)\ Other\ stuff\ \{-\}} (followed by \texttt{\#\ A\ chapter}). Chapters in an appendix are prepended with letters instead of numbers.
-
-\chapter{Footnotes and citations}\label{footnotes-and-citations}
-
-\section{Footnotes}\label{footnotes}
-
-Footnotes are put inside the square brackets after a caret \texttt{\^{}{[}{]}}. Like this one \footnote{This is a footnote.}.
-
-\section{Citations}\label{citations}
-
-Reference items in your bibliography file(s) using \texttt{@key}.
-
-For example, we are using the \textbf{bookdown} package \citep{R-bookdown} (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015} (this citation was added manually in an external file book.bib).
-Note that the \texttt{.bib} files need to be listed in the index.Rmd with the YAML \texttt{bibliography} key.
-
-The RStudio Visual Markdown Editor can also make it easier to insert citations: \url{https://rstudio.github.io/visual-markdown-editing/\#/citations}
-
-\chapter{Blocks}\label{blocks}
-
-\section{Equations}\label{equations}
-
-Here is an equation.
-
-\begin{equation} 
-  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
-  \label{eq:binom}
-\end{equation}
-
-You may refer to using \texttt{\textbackslash{}@ref(eq:binom)}, like see Equation \eqref{eq:binom}.
-
-\section{Theorems and proofs}\label{theorems-and-proofs}
-
-Labeled theorems can be referenced in text using \texttt{\textbackslash{}@ref(thm:tri)}, for example, check out this smart theorem \ref{thm:tri}.
-
-\begin{theorem}
-\protect\hypertarget{thm:tri}{}\label{thm:tri}For a right triangle, if \(c\) denotes the \emph{length} of the hypotenuse
-and \(a\) and \(b\) denote the lengths of the \textbf{other} two sides, we have
-\[a^2 + b^2 = c^2\]
-\end{theorem}
-
-Read more here \url{https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html}.
-
-\section{Callout blocks}\label{callout-blocks}
-
-The R Markdown Cookbook provides more help on how to use custom blocks to design your own callouts: \url{https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html}
-
-\chapter{Sharing your book}\label{sharing-your-book}
-
-\section{Publishing}\label{publishing}
-
-HTML books can be published online, see: \url{https://bookdown.org/yihui/bookdown/publishing.html}
-
-\section{404 pages}\label{pages}
-
-By default, users will be directed to a 404 page if they try to access a webpage that cannot be found. If you'd like to customize your 404 page instead of using the default, you may add either a \texttt{\_404.Rmd} or \texttt{\_404.md} file to your project root and use code and/or Markdown syntax.
-
-\section{Metadata for sharing}\label{metadata-for-sharing}
-
-Bookdown HTML books will provide HTML metadata for social sharing on platforms like Twitter, Facebook, and LinkedIn, using information you provide in the \texttt{index.Rmd} YAML. To setup, set the \texttt{url} for your book and the path to your \texttt{cover-image} file. Your book's \texttt{title} and \texttt{description} are also used.
-
-This \texttt{gitbook} uses the same social sharing data across all chapters in your book- all links shared will look the same.
-
-Specify your book's source repository on GitHub using the \texttt{edit} key under the configuration options in the \texttt{\_output.yml} file, which allows users to suggest an edit by linking to a chapter's source file.
-
-Read more about the features of this output format here:
-
-\url{https://pkgs.rstudio.com/bookdown/reference/gitbook.html}
-
-Or use:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{?bookdown}\SpecialCharTok{::}\NormalTok{gitbook}
-\end{Highlighting}
-\end{Shaded}
-
+Likevise for the RLE, th
 
 \bibliography{book.bib,packages.bib}
 

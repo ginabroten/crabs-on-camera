@@ -1,60 +1,73 @@
 --- 
-title: "A Minimal Book Example"
-author: "John Doe"
+title: "Crabs on camera: project documentation"
+author: "Gina Brøten"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
 # url: your book url like https://bookdown.org/yihui/bookdown
 # cover-image: path to the social sharing image like images/cover.jpg
-description: |
-  This is a minimal example of using the bookdown package to write a book.
-  The HTML output format for this example is bookdown::gitbook,
-  set in the _output.yml file.
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: "ginabroten/crabs-on-camera"
 ---
 
-# About
+# Background
 
-This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$.
+## Project and repository aims
 
-## Usage 
+The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was to improve monitoring of the data-limited brown crab (*Cancer pagurus*) stock in Norway using machine learning and underwater video surveys.
 
-Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading.
+The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.
 
-Use second-level and higher headings within chapters like: `## A short section` or `### An even shorter section`.
+## About the repository
 
-The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book.
+This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
 
-## Render book
-
-You can render the HTML version of this example book without changing anything:
-
-1. Find the **Build** pane in the RStudio IDE, and
-
-1. Click on **Build Book**, then select your output format, or select "All formats" if you'd like to use multiple formats from the same book source files.
-
-Or build the book from the R console:
-
-```{r, eval=FALSE}
-bookdown::render_book()
-```
-
-To render this example to PDF as a `bookdown::pdf_book`, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.org/tinytex/>.
-
-## Preview book
-
-As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console:
-
-```{r eval=FALSE}
-bookdown::serve_book()
-```
+What does this repository contain:
 
 
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
+To try it yourself, clone this repository, either on your own computer for the small example dataset, or on a server with GPU access if you plan to train on a larger dataset.
+
+AI tools (large language models) were used throughout this repository to help generate code, fix syntax, and clean up errors.
+
+
+
+## Glossary 
+Object detection
+Bounding box
+Mask
+Annotation
+Label
+Class
+Stratified sampling
+YOLO
+
+
+# Before running the scripts
+
+## Prerequisites
+
+All packages required for data transformation and object detection training are open-source and freely available.
+
+To identify and quantify crabs in the videos, this project uses the object detection framework "You Only Look Once" (YOLO), specifically version 8 [@jocher_ultralytics_2023], which builds on the original YOLO architecture introduced by Redmon et al. [-@redmon_you_2016]. Several object detection frameworks, including newer YOLO versions, could have been used instead. YOLOv8 was chosen because it is well documented and its common issues are well known, which makes it easier to troubleshoot for beginners in machine learning.
+
+Python must be installed. `raw_to_yolo.ipynb` checks for missing packages and installs them automatically (see Chunk 0).
+
+A server with GPU access is recommended if you plan to train on a large dataset — the small example dataset shipped with this repo can be run locally without one.
+
+If you want to train a detector on your own data, you'll need an annotated dataset structured the same way as the example dataset: an `annotations` folder containing the CVAT/COCO export (`instances_default.json`), and an `images/default` folder containing the matching image files.
+
+### Data
+
+The repo only ships a small example/test dataset (`data/annotations/test_annotations`) so the scripts can be run and verified without downloading everything.
+
+The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from five Baited Remote Underwater Video (BRUV) stations over 541 images. For more stats about the annotation composition, run  `annotation_stats`.
+Annotations are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups).
+
+The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler. 
+
+Ex. NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_frame_9, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse Survey, the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9. 
+
+So if youre applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions. If you are annotating your own dataset, a JSON file for the strcture applied in this annotation process can be found in (`script/annotation_format`).
+
+For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten [-@broten_crabs_2026].
