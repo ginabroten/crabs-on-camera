@@ -1,42 +1,75 @@
 # From raw annotations to YOLO-ready data
 
-Important mention, if you are applying another dataset than the test-dataset please be mindful of but not limited to
-- File paths
-- Stratified sampling for k-folds
+This script (`raw_to_yolo.ipnb`) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation. 
 
-The goal of this script is to go from a JSON file and images, to a five fold stratified data set where the RLE-masks are converted to bounding boxes, where each image has its corresponding .txt document containing the (possible) annotation(s) and is ready for object detection training. The converted data set is spilt into folds, for maximizing the use of a limited dataset, the data is split following a random stratified sampling process. 
+If you're applying this dataset to other than the shipped example, keep in mind (but not limited to)
+- File paths: `CONFIG` needs to point at your own annotation JSON and image folder.
+- Stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn't apply to your data, this step may need adjusting or turning off (see Chunk 9).
 
-### 1. Chunk 0 -- 3
+By the end of the script, each image has a matching `.txt` file listing its bounding box annotations (or an empty file, if there's no crab in it), organized into five train/validation folds ready for object detection training.
 
-The first chunks downloads and loads the necessary packages, and then finds and loads the correct working directory containing the annotated images and the annotations. The code chunks should run without any error (utdype?)
+### 1. Setup and loading data (Chunk 0 -- 3) {-}
 
-If you are using another data set `CONFIG` in Chunk 2 must be changed to the correct directory and file paths. 
+These chunks handle setup: installing any missing Python packages, loading the required libraries, and locating your dataset. They should run without errors, if Chunk 3 can't find your annotation file or image folder, double check the paths.
 
-###  2. Chunk 4
+If you're using your own dataset, update `CONFIG` in Chunk 2 with the correct paths to your annotation JSON and image folder.
 
-Training object detection models with RLE-masks requires more run-time, and is ideal for object segmentation purposes. For a project like this where the sole goal is to identify (and quantify) crab in the images opting for the simplest version is preferable. 
+### 2. Converting masks to bounding boxes (Chunk 4) {-}
 
-A bounding box is a rectangular boundary defined by four coordinates, whereas RLE-mask is a compressed binary pixel outlining the exact shape of an object. For object detection, bounding boxes are preferred, and to reduce run time since they are more lightweight. 
+RLE masks are precise, but training directly on them takes more compute time and is really built for image segmentation, not simple object detection. Since the goal here is just to find and count crabs (not trace their exact outline), converting to bounding boxes is the better trade-off: they're faster to train on, and sufficient for detection.
 
-RLE annotation is faster as its powered by Segment Anything Model in CVAT, making the already tedious annotation process a bit smoother. 
+RLE masks are also faster to draw in the first place, CVAT's Segment Anything–powered tool makes what's normally a tedious annotation process quicker.
 
-In this chunk, the RLE-masks get converted into tightly wrapped bounding boxes, and the coordinates for the bonding boxes are normalized to between the extected values from YOLO (0 -- 1)
+This chunk converts each RLE mask into a tightly-fitted bounding box, and normalizes the box coordinates to the 0–1 range YOLO expects. Two filters are applied at the same time: annotations for any species other than Decapod: crab are discarded, and overlapping duplicate boxes (drawn twice for the same crab) are reduced to one.
 
-All other species annotated thats not Decapod & crab, keeps only one. Duplicated bounding boxes also get removed.
+### 3. Linking images to annotations (Chunk 5) {-}
+
+Links each annotation to its actual image file, matching by filename. If you're using your own dataset, make sure image filenames match the identifiers in your annotation JSON exactly, any mismatches get reported as "unmatched," usually caused by a typo, a renamed file, or an image missing from the folder.
+
+Note: frames with no crab in them (negative examples) are deliberately kept in the dataset rather than discarded, training on empty frames as well as crab-present ones has been shown to improve performance [tror sorrenti er riktig kilde]. These get an empty `.txt` label file later, once the data is exported (Chunk 9).
+
+### 4. Visual quality checks (Chunk 6 -- 7) {-}
+
+These chunks are a visual quality check, not a processing step, and nothing here changes the data. Chunk 6 displays the first annotated image with its converted bounding box overlaid: every crab should have a red box tightly wrapping it, with no gaps or extra boxes.
+
+Chunk 7 goes further, placing the original RLE mask and the converted bounding box for the same crab side by side, so you can visually confirm the conversion in Chunk 4 didn't distort or misplace anything before relying on it for training.
+
+### 5. Location and station helpers (Chunk 8) {-}
+
+Filenames encode which location and BRUV station each image came from, but that information isn't stored as a separate field anywhere, it has to be pulled out of the filename itself. This chunk does that: `extract_location` reads out the site name (e.g. "Lovund"), and `extract_bruv_id` reads out the specific station ID (e.g. "LO3"). It also prints a quick summary: how many images come from each location, and how many of those are crab-present versus empty, worth a glance to check whether your dataset is skewed toward a few sites, since that affects how balanced the folds can be.
+
+If you're using your own dataset with a different filename convention, these two functions will need to be adjusted to match your naming pattern (see the Data section for the convention this project uses).
+
+### 6. Splitting into stratified, grouped folds (Chunk 9) {-}
+
+This is the core of the export step: it splits the linked dataset into five folds for cross-validation, applying two rules at once.
+
+Grouped: every image from the same BRUV station stays entirely in either training or validation within a fold, never split between the two. If the same station showed up in both, the model could effectively be tested on footage from a site it had already trained on, making it look like it's performing better than it actually would on a genuinely new site.
+
+Stratified: within that constraint, each fold's train/validation split keeps a similar proportion of crab-present vs. empty frames as the full dataset, so no fold accidentally ends up training almost entirely on empty frames.
+
+The function has a `stratify` option: `True` (the default) gives the behavior above; `False` skips the crab/empty balancing and keeps only the station grouping. Turning it off makes sense if your dataset is already fairly balanced, or if the crab/empty ratio varying between folds isn't a concern for you, station grouping still applies either way, so there's no risk of leakage regardless of this setting.
+
+For each fold, this chunk writes the images and label files into `images/train`, `images/val`, `labels/train`, `labels/val`, along with a `dataset.yaml`.
+
+YAML is a plain-text format for storing settings, written as simple, human-readable lines rather than code. YOLO's training tool reads `dataset.yaml` to know where to find the images and labels and what classes to expect. Each fold's file specifies: `path` (that fold's root folder), `train` and `val` (the image subfolders), `nc` (number of classes - 1, since this project only detects crabs), and `names` (mapping each class number to its name, e.g. `0: crab`).
 
 
+### 7. Running the export (Chunk 10) {-}
 
+This chunk runs the function from Chunk 9 on your dataset. By default it creates five folds under `data/kfold/`, each structured as:
+```
+data/kfold/
+├── fold1/
+│   ├── images/train/
+│   ├── images/val/
+│   ├── labels/train/
+│   ├── labels/val/
+│   └── dataset.yaml
+├── fold2/ ... fold5/          # same structure as fold1
+├── master_dataset.yaml
+└── fold_summary.csv
+```
+along with a `master_dataset.yaml`, a small reference file at the top level listing the class setup (`nc` and `names`, same as each fold's file) and a comment reminding you how to point training at a specific fold (e.g. `yolo train data=fold1/dataset.yaml ...`), and a `fold_summary.csv` with the actual per-fold stats mentioned above.
 
-### 3. Chunk 5
-
-Links the images to the annotations, if you are using another dataset it is important that the names of the images and their corresponding .txt doucument with the annotations have the same name. Unmactched output means that there might be a typo, renamed files or missing files in the folders. 
-
-NB, training on negative examples, empty frames has shown to imporve performance, so they are kept in the data set with a empty corresponding .txt document.
-
-### 4. Chunk 6 -- 7 
-
-These chunks serve as a qualiy and safety checks, showing the first annotated image in the dataset
-
-Here, all the crabs in the image should have a red box tightly wrapping the crab
-
-Likevise for the RLE, th
+Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that looks reasonable in the fold summary, the data is ready for training in `train.ipynb`.

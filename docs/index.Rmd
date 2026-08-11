@@ -21,31 +21,53 @@ The aim of this repository is not to push the boundaries of machine learning or 
 
 ## About the repository
 
-This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
+This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce. The structure of the repository is as follows:
 
-What does this repository contain:
-
+```
+crabs-on-camera/
+├── data/
+│   └── annotations/
+│       └── test_subset/              # example dataset shipped with the repo
+│           ├── annotations/
+│           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
+│           └── images/default/               # the video frames those annotations belong to
+├── script/
+│   ├── raw_to_yolo.ipynb             # converts raw annotations into a YOLO-ready dataset
+│   ├── build_test_subset.ipynb       # builds a smaller/more diverse test set from a larger one
+│   ├── annotation_stats.ipynb        # summary statistics on the annotation data
+│   ├── train.ipynb                   # trains the YOLO model
+│   └── annotation_format             # template CVAT label schema, for annotating your own data
+├── docs/                             # this documentation
+└── README.md
+```
+Everything needed to reproduce the pipeline lives in three places: `data/` holds a small data set you can run the scripts against immediately, `script/`holds the actual pipeline as a series of notebooks, and `docs/` is the code documentation.
 
 To try it yourself, clone this repository, either on your own computer for the small example dataset, or on a server with GPU access if you plan to train on a larger dataset.
 
 AI tools (large language models) were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
+## Glossary
+
+- **Object detection**: a computer vision task where a model finds where objects are in an image and identifies what they are — in this project, locating and identifying crabs in video frames.
+- **Bounding box**: a rectangular region defined by four coordinates that encloses a specific object within an image or frame.
+- **RLE mask** (Run-Length Encoded mask): a pixel-by-pixel outline of an object's exact shape, stored in a compressed format — this is how the original CVAT annotations are drawn, before being converted to bounding boxes.
+- **Annotation**: a label marking an object within an image — in CVAT, drawn as a mask or box around each crab.
+- **Label**: the concrete tag applied to an annotation — in this context, species (e.g. cod).
+- **Class**: the abstract category an object belongs to — in this context, species group/family (e.g. gadoid).
+<!-- TODO: double-check Label vs Class against the code before finalizing -- in raw_to_yolo.ipynb, `ann.label`/`target_label` refers to the broad CVAT category (e.g. "Decapods"), while the specific species is stored separately as a `species` attribute. Worth either swapping which term maps to which, or adding a line noting this. -->
+- **IoU** (Intersection over Union): a measure of how much two boxes overlap, used both to remove duplicate boxes during annotation cleanup and later as an evaluation metric.
+- **Fold**: one of the K train/validation splits created during K-fold cross-validation.
+- **K-fold cross-validation**: splitting the dataset into K equal-sized groups ("folds"). In each round, one fold is held out for validation while the model trains on the rest, repeated K times so every image gets used for both training and validation, just never in the same round. Example: with 5-fold cross-validation, the model is trained and validated 5 separate times, each on a different split, so results don't depend on one lucky (or unlucky) train/validation split.
+- **Stratified sampling**: splitting data so each subset keeps roughly the same proportion of a key category as the full dataset. Example: if 30% of all images contain a crab, stratified sampling makes sure each fold's train and validation sets are also close to 30% crab-present, instead of one fold accidentally ending up almost entirely empty frames.
+- **Station leakage**: when images from the same BRUV station appear in both the training and validation sets, letting the model partly be tested on footage from a site it already trained on, this project's K-fold export explicitly prevents it by grouping all images from a station together.
+- **Negative example / empty frame**: a frame with no crab in it, deliberately kept in the dataset (rather than discarded) because training on empty frames alongside crab-present ones has been shown to improve performance.
+- **Ground truth**: the human-annotated "correct answer" (the CVAT masks/boxes) that a model's predictions are compared against.
+- **YAML**: a plain-text file format for configuration settings, structured by indentation rather than punctuation: used here to tell the training script where the data lives and what classes to detect.
 
 
-## Glossary 
-Object detection
-Bounding box
-Mask
-Annotation
-Label
-Class
-Stratified sampling
-YOLO
+## Before running the scripts
 
-
-# Before running the scripts
-
-## Prerequisites
+### Prerequisites
 
 All packages required for data transformation and object detection training are open-source and freely available.
 
@@ -59,15 +81,14 @@ If you want to train a detector on your own data, you'll need an annotated datas
 
 ### Data
 
-The repo only ships a small example/test dataset (`data/annotations/test_annotations`) so the scripts can be run and verified without downloading everything.
+The repo only ships a small example/test dataset (`data/annotations/test_subset`) so the scripts can be run and verified without downloading everything.
 
-The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from five Baited Remote Underwater Video (BRUV) stations over 541 images. For more stats about the annotation composition, run  `annotation_stats`.
+The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from ten Baited Remote Underwater Video (BRUV) stations. For more stats about the annotation composition, run  `annotation_stats`.
+
 Annotations are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups).
 
 The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler. 
 
-Ex. NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_frame_9, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse Survey, the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9. 
+E.g,. **NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_frame_9**, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse survey (gill- and fyke-net), the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9. So if you are applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions.
 
-So if youre applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions. If you are annotating your own dataset, a JSON file for the strcture applied in this annotation process can be found in (`script/annotation_format`).
-
-For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten [-@broten_crabs_2026].
+If you are annotating your own dataset, a .JSON file for the structure applied in this annotation process can be found in (`script/annotation_format`). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten [-@broten_crabs_2026].
