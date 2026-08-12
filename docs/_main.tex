@@ -68,6 +68,20 @@
 \usepackage[]{natbib}
 \bibliographystyle{plainnat}
 \usepackage{booktabs}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -79,7 +93,11 @@
 
 \title{Crabs on camera: project documentation}
 \author{Gina Brøten}
+<<<<<<< Updated upstream
 \date{2026-08-11}
+=======
+\date{2026-08-12}
+>>>>>>> Stashed changes
 
 \begin{document}
 \maketitle
@@ -269,6 +287,85 @@ data/kfold/
 along with a \texttt{master\_dataset.yaml}, a small reference file at the top level listing the class setup (\texttt{nc} and \texttt{names}, same as each fold's file) and a comment reminding you how to point training at a specific fold (e.g.~\texttt{yolo\ train\ data=fold1/dataset.yaml\ ...}), and a \texttt{fold\_summary.csv} with the actual per-fold stats mentioned above.
 
 Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that looks reasonable in the fold summary, the data is ready for training in \texttt{train.ipynb}.
+<<<<<<< Updated upstream
+=======
+
+A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others.
+
+\chapter{Training the crab detector}\label{training-the-crab-detector}
+
+This script (\texttt{train.ipynb}) takes the five-fold dataset produced by \texttt{raw\_to\_yolo.ipynb} and trains a YOLOv8 object detector on it, one model per fold, so performance can be evaluated across several independent train/validation splits rather than trusting a single one.
+
+\subsection*{1. Setup (Chunk 1)}\label{setup-chunk-1}
+\addcontentsline{toc}{subsection}{1. Setup (Chunk 1)}
+
+This chunk locates the repository (the same \texttt{find\_repo\_root()} approach used in \texttt{raw\_to\_yolo.ipynb}, so paths work the same whether you're running this on a laptop or a server), sets up where training output gets written, and checks that a GPU is available. Training a model like this on a CPU is impractically slow, so this check is worth paying attention to: if \texttt{CUDA\ available:\ False} prints here, stop and sort out the GPU setup before continuing rather than letting a full training run crawl for days.
+
+\subsection*{2. Checking the folds (Chunk 2)}\label{checking-the-folds-chunk-2}
+\addcontentsline{toc}{subsection}{2. Checking the folds (Chunk 2)}
+
+Before spending hours training, this chunk verifies every fold from \texttt{raw\_to\_yolo.ipynb} is actually complete: that each fold has a readable \texttt{dataset.yaml}, and that the number of images and label files line up in both the train and validation sets. This is a safety gate, not a formality, training on a broken or incomplete fold wastes real compute time, so it's worth letting this fail loudly here rather than partway through a long run. Chunk 5 (the real training) refuses to start if this check doesn't pass.
+
+\subsection*{3. Hyperparameters (Chunk 3)}\label{hyperparameters-chunk-3}
+\addcontentsline{toc}{subsection}{3. Hyperparameters (Chunk 3)}
+
+This chunk sets out every training parameter in one place, so the whole run is reproducible from a single configuration. Rather than explaining every individual number, it's easier to think of them in three groups:
+
+\textbf{Model and image handling.} \texttt{yolov8s.pt} is the pretrained starting point the model builds on rather than learning from scratch, you can freely try other sizes of YOLOv8 or other versions by changing them out here. Images are resized to 960 pixels and processed in batches of 16, larger images and batches use more GPU memory, but a larger image size in particular can help the model pick out small objects like crabs against a wide frame.
+
+\textbf{How the model learns.} The optimizer, learning rate, and warmup settings control how aggressively the model adjusts itself while training, and how that pace changes over the course of the run (a ``cosine'' schedule, \texttt{cos\_lr}, means the learning rate eases off smoothly toward the end rather than dropping abruptly). These values were carried over from what worked in the original thesis training runs, rather than re-tuned from scratch here.
+
+\textbf{Augmentation.} During training, images are randomly rotated, shifted, scaled, and mirrored slightly before being shown to the model. The intent isn't to create unrealistic images, it's to stop the model from memorizing the exact footage it was trained on, so it generalizes better to new footage. A couple of these are deliberately constrained for this dataset: \texttt{flipud=0} means images are never flipped upside-down (a crab is never upside-down in real footage, so training on flipped versions would teach the model the wrong thing), and \texttt{single\_cls=True} reflects that there's only one class to detect here (crab), so the model doesn't spend effort distinguishing between species that don't apply.
+
+Two epoch counts are set here: \texttt{test\_epochs} (5) for the quick sanity check in Chunk 4, and \texttt{epochs} (100) for the real run in Chunk 5, 100 was chosen because performance had already converged by that point in the original thesis training.
+
+\subsection*{4. Test run (Chunk 4)}\label{test-run-chunk-4}
+\addcontentsline{toc}{subsection}{4. Test run (Chunk 4)}
+
+This runs a handful of epochs on one fold using the exact same settings as the full run, purely to confirm the pipeline works end-to-end, paths resolve, the GPU is used correctly, and training completes without errors before committing to a run that takes hours. The actual metrics from this run aren't meaningful and shouldn't be read as a preview of model quality: five epochs isn't enough for the model to properly learn, and results can look noisy or even get temporarily worse epoch to epoch. That's expected here, not a warning sign.
+
+\subsection*{5. Full training (Chunk 5)}\label{full-training-chunk-5}
+\addcontentsline{toc}{subsection}{5. Full training (Chunk 5)}
+
+This trains one full model per fold, using the hyperparameters from Chunk 3. Each fold's best-performing checkpoint is saved automatically, along with a checkpoint every 25 epochs during training in case a run needs to be resumed. There's a short pause between folds to let the GPU cool down. The current server utilized is NVIDIA RTX A6000, which used around 3-4 hours for the entire training run, whilst training the full dataset used in the thesis took around 16--18 hours.
+
+\subsection*{6. Collecting and interpreting results (Chunks 6 -- 8)}\label{collecting-and-interpreting-results-chunks-6-8}
+\addcontentsline{toc}{subsection}{6. Collecting and interpreting results (Chunks 6 -- 8)}
+
+\subsubsection*{Collection}\label{collection}
+\addcontentsline{toc}{subsubsection}{Collection}
+
+Training five separate models means five separate sets of results, so these chunks pull them together: loading each fold's training log, plotting the key metrics (mAP, precision, recall) side by side across folds, and then computing a summary, both the final numbers from training and a fresh, explicit validation pass on each fold's saved model, as a double-check against the training log alone.
+
+The reason to look across all folds rather than picking one is the same logic behind K-fold cross-validation in general: any single fold could happen to get an easy or a hard validation split by chance, so the story that matters is the overall pattern, not one number in isolation.
+
+\subsubsection*{Interpretation}\label{interpretation}
+\addcontentsline{toc}{subsubsection}{Interpretation}
+
+One limitation worth being upfront about: this dataset has only 10 BRUV stations, and because stations are kept fully separate between training and validation (to avoid the model being tested on footage it effectively already trained on -- see the K-fold export step in \texttt{raw\_to\_yolo.ipynb}), each fold's validation set ends up being just 1-3 stations. That's a small, uneven sample, and fold-to-fold variation in these results should be read as a consequence of the dataset's size, not a flaw in the training method. One fold in particular had very few crab-positive images in its validation set purely by chance, and its numbers should be treated as unreliable rather than averaged in on equal footing with the others.
+
+To evaluate object detection model performance, standard object detection metrics were used: true positives, false positives, false negatives, mean average precision (mAP50), precision, recall, and F1 (Table \ref{tab:cnnMetricsdef}). After training, each model was validated on the validation dataset. The model predicts the class and location of objects in each frame with bounding boxes. To assign these metrics, predictions were ranked by confidence and matched to the manually annotated bounding boxes from the validation dataset, with each annotation matched to at most one prediction. A predicted box was counted as a true positive (TP) if it overlapped an annotation of the same class sufficiently, assessed using intersection-over-union (IoU); unmatched predictions were counted as false positives (FP) and unmatched annotations as false negatives (FN). IoU is calculated as the area of overlap between the predicted and annotated box divided by the area of their union, giving a score between 0 and 1 \citep{biscarini_deep_2026}. An IoU threshold of 0.5 was applied, meaning a prediction had to overlap at least 50\% with the annotated box to be counted as correct, following standard object detection practice.
+
+\begin{table}
+
+\caption{\label{tab:cnnMetricsdef}Standard performance metrics for assessing object detection models. A detection is counted as correct (TP) if the predicted bounding box overlaps with an annotated box by at least 50\% (IoU $\geq$ 0.5). Metrics range from 0 to 1, where 1 indicates perfect performance.}
+\centering
+\begin{tabular}[t]{llc}
+\toprule
+Metric & Description & Formula\\
+\midrule
+True positive (TP) & Correct detections: predicted bounding box matches an annotated box. & \\
+False positive (FP) & Model predicts a bounding box where there is no object. & \\
+False negative (FN) & An object is present but the model produces no matching prediction. & \\
+Precision (0--1) & Ratio of correct positive predictions to all positive predictions, measures detection accuracy. & TP / (TP + FP)\\
+Recall (0--1) & Ratio of correct positive predictions to all actual positives, measures the model's ability to find all objects. & TP / (TP + FN)\\
+\addlinespace
+F1 (0--1) & Harmonic mean of precision and recall, balances avoiding false detections with capturing all objects. & 2 * TP / (2 * TP + FP + FN)\\
+Mean average precision (mAP50) & Average of precision scores across recall levels, summarized across all classes ($C$). & (1/C) * sum(AP\c) for c = 1...C\\
+\bottomrule
+\end{tabular}
+\end{table}
+>>>>>>> Stashed changes
 
 \bibliography{book.bib,packages.bib}
 

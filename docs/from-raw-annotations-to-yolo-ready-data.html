@@ -23,7 +23,11 @@
 <meta name="author" content="Gina Brøten" />
 
 
+<<<<<<< Updated upstream
 <meta name="date" content="2026-08-11" />
+=======
+<meta name="date" content="2026-08-12" />
+>>>>>>> Stashed changes
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +35,11 @@
   
   
 <link rel="prev" href="index.html"/>
+<<<<<<< Updated upstream
 <link rel="next" href="references.html"/>
+=======
+<link rel="next" href="training-the-crab-detector.html"/>
+>>>>>>> Stashed changes
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -52,6 +60,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 
@@ -118,6 +128,18 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="from-raw-annotations-to-yolo-ready-data.html"><a href="from-raw-annotations-to-yolo-ready-data.html#location-and-station-helpers-chunk-8"><i class="fa fa-check"></i>5. Location and station helpers (Chunk 8)</a></li>
 <li class="chapter" data-level="" data-path="from-raw-annotations-to-yolo-ready-data.html"><a href="from-raw-annotations-to-yolo-ready-data.html#splitting-into-stratified-grouped-folds-chunk-9"><i class="fa fa-check"></i>6. Splitting into stratified, grouped folds (Chunk 9)</a></li>
 <li class="chapter" data-level="" data-path="from-raw-annotations-to-yolo-ready-data.html"><a href="from-raw-annotations-to-yolo-ready-data.html#running-the-export-chunk-10"><i class="fa fa-check"></i>7. Running the export (Chunk 10)</a></li>
+<<<<<<< Updated upstream
+=======
+</ul></li>
+<li class="chapter" data-level="3" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html"><i class="fa fa-check"></i><b>3</b> Training the crab detector</a>
+<ul>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#setup-chunk-1"><i class="fa fa-check"></i>1. Setup (Chunk 1)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#checking-the-folds-chunk-2"><i class="fa fa-check"></i>2. Checking the folds (Chunk 2)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#hyperparameters-chunk-3"><i class="fa fa-check"></i>3. Hyperparameters (Chunk 3)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#test-run-chunk-4"><i class="fa fa-check"></i>4. Test run (Chunk 4)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#full-training-chunk-5"><i class="fa fa-check"></i>5. Full training (Chunk 5)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#collecting-and-interpreting-results-chunks-6-8"><i class="fa fa-check"></i>6. Collecting and interpreting results (Chunks 6 – 8)</a></li>
+>>>>>>> Stashed changes
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -197,6 +219,10 @@ div.csl-indent {
 └── fold_summary.csv</code></pre>
 <p>along with a <code>master_dataset.yaml</code>, a small reference file at the top level listing the class setup (<code>nc</code> and <code>names</code>, same as each fold’s file) and a comment reminding you how to point training at a specific fold (e.g. <code>yolo train data=fold1/dataset.yaml ...</code>), and a <code>fold_summary.csv</code> with the actual per-fold stats mentioned above.</p>
 <p>Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that looks reasonable in the fold summary, the data is ready for training in <code>train.ipynb</code>.</p>
+<<<<<<< Updated upstream
+=======
+<p>A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others.</p>
+>>>>>>> Stashed changes
 
 </div>
 </div>
@@ -206,7 +232,11 @@ div.csl-indent {
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<<<<<<< Updated upstream
 <a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+=======
+<a href="training-the-crab-detector.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+>>>>>>> Stashed changes
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -260,6 +290,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
