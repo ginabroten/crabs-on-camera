@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 From raw annotations to a YOLO-model | Crabs on camera: project documentation</title>
+  <meta name="description" content="Chapter 2 From raw annotations to a YOLO-model | Crabs on camera: project documentation" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 From raw annotations to a YOLO-model | Crabs on camera: project documentation" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="ginabroten/crabs-on-camera" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 From raw annotations to a YOLO-model | Crabs on camera: project documentation" />
+  
+  
+  
+
+<meta name="author" content="Gina Brøten" />
+
+
+<meta name="date" content="2026-08-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="training-the-crab-detector.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Crabs on camera: project documentation</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#project-and-repository-aims"><i class="fa fa-check"></i><b>1.1</b> Project and repository aims</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#about-the-repository"><i class="fa fa-check"></i><b>1.2</b> About the repository</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#glossary"><i class="fa fa-check"></i><b>1.3</b> Glossary</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#before-running-the-scripts"><i class="fa fa-check"></i><b>1.4</b> Before running the scripts</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.4.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.4.2" data-path="index.html"><a href="index.html#data"><i class="fa fa-check"></i><b>1.4.2</b> Data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html"><i class="fa fa-check"></i><b>2</b> From raw annotations to a YOLO-model</a>
+<ul>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#setup-and-loading-data-chunk-0-3"><i class="fa fa-check"></i>1. Setup and loading data (Chunk 0 – 3)</a></li>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#converting-masks-to-bounding-boxes-chunk-4"><i class="fa fa-check"></i>2. Converting masks to bounding boxes (Chunk 4)</a></li>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#linking-images-to-annotations-chunk-5"><i class="fa fa-check"></i>3. Linking images to annotations (Chunk 5)</a></li>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#visual-quality-checks-chunk-6-7"><i class="fa fa-check"></i>4. Visual quality checks (Chunk 6 – 7)</a></li>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#location-and-station-helpers-chunk-8"><i class="fa fa-check"></i>5. Location and station helpers (Chunk 8)</a></li>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#splitting-into-stratified-grouped-folds-chunk-9"><i class="fa fa-check"></i>6. Splitting into stratified, grouped folds (Chunk 9)</a></li>
+<li class="chapter" data-level="" data-path="from-raw-annotations-to-a-yolo-model.html"><a href="from-raw-annotations-to-a-yolo-model.html#running-the-export-chunk-10"><i class="fa fa-check"></i>7. Running the export (Chunk 10)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html"><i class="fa fa-check"></i><b>3</b> Training the crab detector</a>
+<ul>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#setup-chunk-1"><i class="fa fa-check"></i>1. Setup (Chunk 1)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#checking-the-folds-chunk-2"><i class="fa fa-check"></i>2. Checking the folds (Chunk 2)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#hyperparameters-chunk-3"><i class="fa fa-check"></i>3. Hyperparameters (Chunk 3)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#test-run-chunk-4"><i class="fa fa-check"></i>4. Test run (Chunk 4)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#full-training-chunk-5"><i class="fa fa-check"></i>5. Full training (Chunk 5)</a></li>
+<li class="chapter" data-level="" data-path="training-the-crab-detector.html"><a href="training-the-crab-detector.html#collecting-and-interpreting-results-chunks-6-8"><i class="fa fa-check"></i>6. Collecting and interpreting results (Chunks 6 – 8)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Crabs on camera: project documentation</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="from-raw-annotations-to-a-yolo-model" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> From raw annotations to a YOLO-model<a href="from-raw-annotations-to-a-yolo-model.html#from-raw-annotations-to-a-yolo-model" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The folder <code>create-a-crab-detector</code> contains sripts and datasets which makes its possible to go from raw annotations to a trained YOLO-model. The first script
+(<code>1-raw-to-yolo.ipnb</code>) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation.</p>
+<p>If you’re applying this dataset to other than the shipped example, keep in mind (but not limited to)
+- File paths: <code>CONFIG</code> needs to point at your own annotation JSON and image folder.
+- Stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn’t apply to your data, this step may need adjusting or turning off (see Chunk 9).</p>
+<p>By the end of the script, each image has a matching <code>.txt</code> file listing its bounding box annotations (or an empty file, if there’s no crab in it), organized into five train/validation folds ready for object detection training.</p>
+<div id="setup-and-loading-data-chunk-0-3" class="section level3 unnumbered hasAnchor">
+<h3>1. Setup and loading data (Chunk 0 – 3)<a href="from-raw-annotations-to-a-yolo-model.html#setup-and-loading-data-chunk-0-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>These chunks handle setup: installing any missing Python packages, loading the required libraries, and locating your dataset. They should run without errors, if Chunk 3 can’t find your annotation file or image folder, double check the paths.</p>
+<p>If you’re using your own dataset, update <code>CONFIG</code> in Chunk 2 with the correct paths to your annotation JSON and image folder.</p>
+</div>
+<div id="converting-masks-to-bounding-boxes-chunk-4" class="section level3 unnumbered hasAnchor">
+<h3>2. Converting masks to bounding boxes (Chunk 4)<a href="from-raw-annotations-to-a-yolo-model.html#converting-masks-to-bounding-boxes-chunk-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>RLE masks are precise, but training directly on them takes more compute time and is really built for image segmentation, not simple object detection. Since the goal here is just to find and count crabs (not trace their exact outline), converting to bounding boxes is the better trade-off: they’re faster to train on, and sufficient for detection.</p>
+<p>RLE masks are also faster to draw in the first place, CVAT’s Segment Anything–powered tool makes what’s normally a tedious annotation process quicker.</p>
+<p>This chunk converts each RLE mask into a tightly-fitted bounding box, and normalizes the box coordinates to the 0–1 range YOLO expects. Two filters are applied at the same time: annotations for any species other than Decapod: crab are discarded, and overlapping duplicate boxes (drawn twice for the same crab) are reduced to one.</p>
+</div>
+<div id="linking-images-to-annotations-chunk-5" class="section level3 unnumbered hasAnchor">
+<h3>3. Linking images to annotations (Chunk 5)<a href="from-raw-annotations-to-a-yolo-model.html#linking-images-to-annotations-chunk-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Links each annotation to its actual image file, matching by filename. If you’re using your own dataset, make sure image filenames match the identifiers in your annotation JSON exactly, any mismatches get reported as “unmatched,” usually caused by a typo, a renamed file, or an image missing from the folder.</p>
+<p>Note: frames with no crab in them (negative examples) are deliberately kept in the dataset rather than discarded, training on empty frames as well as crab-present ones has been shown to improve performance [tror sorrenti er riktig kilde]. These get an empty <code>.txt</code> label file later, once the data is exported (Chunk 9).</p>
+</div>
+<div id="visual-quality-checks-chunk-6-7" class="section level3 unnumbered hasAnchor">
+<h3>4. Visual quality checks (Chunk 6 – 7)<a href="from-raw-annotations-to-a-yolo-model.html#visual-quality-checks-chunk-6-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>These chunks are a visual quality check, not a processing step, and nothing here changes the data. Chunk 6 displays the first annotated image with its converted bounding box overlaid: every crab should have a red box tightly wrapping it, with no gaps or extra boxes.</p>
+<p>Chunk 7 goes further, placing the original RLE mask and the converted bounding box for the same crab side by side, so you can visually confirm the conversion in Chunk 4 didn’t distort or misplace anything before relying on it for training.</p>
+</div>
+<div id="location-and-station-helpers-chunk-8" class="section level3 unnumbered hasAnchor">
+<h3>5. Location and station helpers (Chunk 8)<a href="from-raw-annotations-to-a-yolo-model.html#location-and-station-helpers-chunk-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Filenames encode which location and BRUV station each image came from, but that information isn’t stored as a separate field anywhere, it has to be pulled out of the filename itself. This chunk does that: <code>extract_location</code> reads out the site name (e.g. “Lovund”), and <code>extract_bruv_id</code> reads out the specific station ID (e.g. “LO3”). It also prints a quick summary: how many images come from each location, and how many of those are crab-present versus empty, worth a glance to check whether your dataset is skewed toward a few sites, since that affects how balanced the folds can be.</p>
+<p>If you’re using your own dataset with a different filename convention, these two functions will need to be adjusted to match your naming pattern (see the Data section for the convention this project uses).</p>
+</div>
+<div id="splitting-into-stratified-grouped-folds-chunk-9" class="section level3 unnumbered hasAnchor">
+<h3>6. Splitting into stratified, grouped folds (Chunk 9)<a href="from-raw-annotations-to-a-yolo-model.html#splitting-into-stratified-grouped-folds-chunk-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is the core of the export step: it splits the linked dataset into five folds for cross-validation, applying two rules at once.</p>
+<p>Grouped: every image from the same BRUV station stays entirely in either training or validation within a fold, never split between the two. If the same station showed up in both, the model could effectively be tested on footage from a site it had already trained on, making it look like it’s performing better than it actually would on a genuinely new site.</p>
+<p>Stratified: within that constraint, each fold’s train/validation split keeps a similar proportion of crab-present vs. empty frames as the full dataset, so no fold accidentally ends up training almost entirely on empty frames.</p>
+<p>The function has a <code>stratify</code> option: <code>True</code> (the default) gives the behavior above; <code>False</code> skips the crab/empty balancing and keeps only the station grouping. Turning it off makes sense if your dataset is already fairly balanced, or if the crab/empty ratio varying between folds isn’t a concern for you, station grouping still applies either way, so there’s no risk of leakage regardless of this setting.</p>
+<p>For each fold, this chunk writes the images and label files into <code>images/train</code>, <code>images/val</code>, <code>labels/train</code>, <code>labels/val</code>, along with a <code>dataset.yaml</code>.</p>
+<p>YAML is a plain-text format for storing settings, written as simple, human-readable lines rather than code. YOLO’s training tool reads <code>dataset.yaml</code> to know where to find the images and labels and what classes to expect. Each fold’s file specifies: <code>path</code> (that fold’s root folder), <code>train</code> and <code>val</code> (the image subfolders), <code>nc</code> (number of classes - 1, since this project only detects crabs), and <code>names</code> (mapping each class number to its name, e.g. <code>0: crab</code>).</p>
+</div>
+<div id="running-the-export-chunk-10" class="section level3 unnumbered hasAnchor">
+<h3>7. Running the export (Chunk 10)<a href="from-raw-annotations-to-a-yolo-model.html#running-the-export-chunk-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This chunk runs the function from Chunk 9 on your dataset. By default it creates five folds under <code>data/kfold/</code>, each structured as:</p>
+<pre><code>data/kfold/
+├── fold1/
+│   ├── images/train/
+│   ├── images/val/
+│   ├── labels/train/
+│   ├── labels/val/
+│   └── dataset.yaml
+├── fold2/ ... fold5/          # same structure as fold1
+├── master_dataset.yaml
+└── fold_summary.csv</code></pre>
+<p>along with a <code>master_dataset.yaml</code>, a small reference file at the top level listing the class setup (<code>nc</code> and <code>names</code>, same as each fold’s file) and a comment reminding you how to point training at a specific fold (e.g. <code>yolo train data=fold1/dataset.yaml ...</code>), and a <code>fold_summary.csv</code> with the actual per-fold stats mentioned above.</p>
+<p>Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that looks reasonable in the fold summary, the data is ready for training in <code>train.ipynb</code>.</p>
+<p>A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others. Now you are ready to train!</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="training-the-crab-detector.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-create-a-crab-detector.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

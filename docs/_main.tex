@@ -93,11 +93,7 @@
 
 \title{Crabs on camera: project documentation}
 \author{Gina Brøten}
-<<<<<<< Updated upstream
-\date{2026-08-11}
-=======
 \date{2026-08-12}
->>>>>>> Stashed changes
 
 \begin{document}
 \maketitle
@@ -204,9 +200,10 @@ E.g,. \textbf{NO\_2025\_3007\_GarnRuse\_Lovund\_LO3\_RA1\_L9\_frame\_9}, is coll
 
 If you are annotating your own dataset, a .JSON file for the structure applied in this annotation process can be found in (\texttt{script/annotation\_format}). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten \citeyearpar{broten_crabs_2026}.
 
-\chapter{From raw annotations to YOLO-ready data}\label{from-raw-annotations-to-yolo-ready-data}
+\chapter{From raw annotations to a YOLO-model}\label{from-raw-annotations-to-a-yolo-model}
 
-This script (\texttt{raw\_to\_yolo.ipnb}) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation.
+The folder \texttt{create-a-crab-detector} contains sripts and datasets which makes its possible to go from raw annotations to a trained YOLO-model. The first script
+(\texttt{1-raw-to-yolo.ipnb}) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation.
 
 If you're applying this dataset to other than the shipped example, keep in mind (but not limited to)
 - File paths: \texttt{CONFIG} needs to point at your own annotation JSON and image folder.
@@ -287,10 +284,8 @@ data/kfold/
 along with a \texttt{master\_dataset.yaml}, a small reference file at the top level listing the class setup (\texttt{nc} and \texttt{names}, same as each fold's file) and a comment reminding you how to point training at a specific fold (e.g.~\texttt{yolo\ train\ data=fold1/dataset.yaml\ ...}), and a \texttt{fold\_summary.csv} with the actual per-fold stats mentioned above.
 
 Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that looks reasonable in the fold summary, the data is ready for training in \texttt{train.ipynb}.
-<<<<<<< Updated upstream
-=======
 
-A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others.
+A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others. Now you are ready to train!
 
 \chapter{Training the crab detector}\label{training-the-crab-detector}
 
@@ -344,7 +339,7 @@ The reason to look across all folds rather than picking one is the same logic be
 
 One limitation worth being upfront about: this dataset has only 10 BRUV stations, and because stations are kept fully separate between training and validation (to avoid the model being tested on footage it effectively already trained on -- see the K-fold export step in \texttt{raw\_to\_yolo.ipynb}), each fold's validation set ends up being just 1-3 stations. That's a small, uneven sample, and fold-to-fold variation in these results should be read as a consequence of the dataset's size, not a flaw in the training method. One fold in particular had very few crab-positive images in its validation set purely by chance, and its numbers should be treated as unreliable rather than averaged in on equal footing with the others.
 
-To evaluate object detection model performance, standard object detection metrics were used: true positives, false positives, false negatives, mean average precision (mAP50), precision, recall, and F1 (Table \ref{tab:cnnMetricsdef}). After training, each model was validated on the validation dataset. The model predicts the class and location of objects in each frame with bounding boxes. To assign these metrics, predictions were ranked by confidence and matched to the manually annotated bounding boxes from the validation dataset, with each annotation matched to at most one prediction. A predicted box was counted as a true positive (TP) if it overlapped an annotation of the same class sufficiently, assessed using intersection-over-union (IoU); unmatched predictions were counted as false positives (FP) and unmatched annotations as false negatives (FN). IoU is calculated as the area of overlap between the predicted and annotated box divided by the area of their union, giving a score between 0 and 1 \citep{biscarini_deep_2026}. An IoU threshold of 0.5 was applied, meaning a prediction had to overlap at least 50\% with the annotated box to be counted as correct, following standard object detection practice.
+To evaluate object detection model performance, standard object detection metrics were used: true positives, false positives, false negatives, mean average precision (mAP50), precision, recall, and F1 (Table \ref{tab:cnnMetricsdef}). After training, each model was validated on the validation dataset. The model predicts the class and location of objects in each frame with bounding boxes. To assign these metrics, predictions were ranked by confidence and matched to the manually annotated bounding boxes from the validation dataset, with each annotation matched to at most one prediction. A predicted box was counted as a true positive (TP) if it overlapped an annotation of the same class sufficiently, assessed using intersection-over-union (IoU); unmatched predictions were counted as false positives (FP) and unmatched annotations as false negatives (FN) (a confusion matrix showing the distirbution of all these can be found in \texttt{test\_runs/models/fold1\_yolov8s\_100epochs}. IoU is calculated as the area of overlap between the predicted and annotated box divided by the area of their union, giving a score between 0 and 1 \citep{biscarini_deep_2026}. An IoU threshold of 0.5 was applied, meaning a prediction had to overlap at least 50\% with the annotated box to be counted as correct, following standard object detection practice.
 
 \begin{table}
 
@@ -365,7 +360,8 @@ Mean average precision (mAP50) & Average of precision scores across recall level
 \bottomrule
 \end{tabular}
 \end{table}
->>>>>>> Stashed changes
+
+Aside for interpreting the performance metrics, its worth checking out the visual validation confirmations. In the folder \texttt{test\_runs/models/fold1\_yolov8s\_100epochs}, or any other fold. Compare the \texttt{val\_batch\_labels.jpg} with \texttt{val\_batch\_pred.jpg}, this compares the actual annotated images and the predicted annotations from the model to see the confidence scores and what the model catches/misses. If the behavior seems wrong, there is a plethora of tweaks possible to improve model behavior that I wont touch on here but is easiliy available online or with the help of LLMs.
 
 \bibliography{book.bib,packages.bib}
 
