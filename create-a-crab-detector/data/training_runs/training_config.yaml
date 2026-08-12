@@ -1,0 +1,28 @@
+amp: true
+augmentation:
+  close_mosaic: 9
+  degrees: 5.0
+  fliplr: 0.5
+  flipud: 0.0
+  mixup: 0.0
+  mosaic: 0.5
+  scale: 0.25
+  translate: 0.15
+batch_size: 16
+cache: disk
+cos_lr: true
+crop_fraction: 0.8
+device: 0
+epochs: 100
+imgsz: 960
+lr0: 0.001
+lrf: 0.01
+model_size: yolov8s.pt
+optimizer: AdamW
+plots: true
+rect: false
+single_cls: true
+test_epochs: 5
+warmup_epochs: 3
+weight_decay: 0.0005
+workers: 8
