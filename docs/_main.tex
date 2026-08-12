@@ -200,7 +200,7 @@ E.g,. \textbf{NO\_2025\_3007\_GarnRuse\_Lovund\_LO3\_RA1\_L9\_frame\_9}, is coll
 
 If you are annotating your own dataset, a .JSON file for the structure applied in this annotation process can be found in (\texttt{script/annotation\_format}). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten \citeyearpar{broten_crabs_2026}.
 
-\chapter{From raw annotations to a YOLO-model}\label{from-raw-annotations-to-a-yolo-model}
+\chapter{Create a crab detector}\label{create-a-crab-detector}
 
 The folder \texttt{create-a-crab-detector} contains sripts and datasets which makes its possible to go from raw annotations to a trained YOLO-model. The first script
 (\texttt{1-raw-to-yolo.ipnb}) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation.
@@ -210,6 +210,8 @@ If you're applying this dataset to other than the shipped example, keep in mind 
 - Stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn't apply to your data, this step may need adjusting or turning off (see Chunk 9).
 
 By the end of the script, each image has a matching \texttt{.txt} file listing its bounding box annotations (or an empty file, if there's no crab in it), organized into five train/validation folds ready for object detection training.
+
+\section{From raw annotations to a YOLO model}\label{from-raw-annotations-to-a-yolo-model}
 
 \subsection*{1. Setup and loading data (Chunk 0 -- 3)}\label{setup-and-loading-data-chunk-0-3}
 \addcontentsline{toc}{subsection}{1. Setup and loading data (Chunk 0 -- 3)}
@@ -287,7 +289,7 @@ Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that
 
 A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others. Now you are ready to train!
 
-\chapter{Training the crab detector}\label{training-the-crab-detector}
+\section{Training the crab detector}\label{training-the-crab-detector}
 
 This script (\texttt{train.ipynb}) takes the five-fold dataset produced by \texttt{raw\_to\_yolo.ipynb} and trains a YOLOv8 object detector on it, one model per fold, so performance can be evaluated across several independent train/validation splits rather than trusting a single one.
 
@@ -362,6 +364,18 @@ Mean average precision (mAP50) & Average of precision scores across recall level
 \end{table}
 
 Aside for interpreting the performance metrics, its worth checking out the visual validation confirmations. In the folder \texttt{test\_runs/models/fold1\_yolov8s\_100epochs}, or any other fold. Compare the \texttt{val\_batch\_labels.jpg} with \texttt{val\_batch\_pred.jpg}, this compares the actual annotated images and the predicted annotations from the model to see the confidence scores and what the model catches/misses. If the behavior seems wrong, there is a plethora of tweaks possible to improve model behavior that I wont touch on here but is easiliy available online or with the help of LLMs.
+
+\chapter{Use a crab detctor}\label{use-a-crab-detctor}
+
+Aims go from unseen material to assessment ready data
+
+Proces\#\# Go from unseen material to assessment ready data
+Use the added model, or add your own
+Independent testset to check generalizability go from
+Predict on unseen footage
+Interpret raw prediction behavior + collect raw MaxN
+Apply post-processing filters/confidence thresholding
+Collect assessmentready data
 
 \bibliography{book.bib,packages.bib}
 

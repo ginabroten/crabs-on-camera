@@ -1,0 +1,11 @@
+# Use a crab detctor
+
+Aims go from unseen material to assessment ready data
+
+Proces## Go from unseen material to assessment ready data
+Use the added model, or add your own
+Independent testset to check generalizability go from 
+Predict on unseen footage
+Interpret raw prediction behavior + collect raw MaxN
+Apply post-processing filters/confidence thresholding
+Collect assessmentready data
