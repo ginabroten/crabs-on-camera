@@ -9,13 +9,14 @@
 # Jupyter
 .ipynb_checkpoints/
 
-<<<<<<< Updated upstream
+
 # Script outputs (YOLO exports, trained weights, etc.)
+*.pt
+!use-a-crab-detector/model/pretrained-crab-detector/*.pt
 **/data/kfold
 **/data/training_runs
 yolo_split/ 
-data/kfold/
-=======
+data/kfold
 # Script outputs (YOLO exports, etc.. )
 
 create-a-crab-detector/.ipynb_checkpoints/
@@ -24,13 +25,6 @@ create-a-crab-detector/*.pt
 yolo_split/
 create-a-crab-detector/data/kfold/
 create-a-crab-detector/data/training_runs/
->>>>>>> Stashed changes
 runs/
-docs/technical_doc.Rmd
-docs/docs.Rproj
-docs/extras.Rmd
-<<<<<<< Updated upstream
-docs/format.docx
-=======
 
->>>>>>> Stashed changes
+
