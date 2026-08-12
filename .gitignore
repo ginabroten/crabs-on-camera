@@ -10,6 +10,8 @@
 .ipynb_checkpoints/
 
 # Script outputs (YOLO exports, trained weights, etc.)
+**/data/kfold
+**/data/training_runs
 yolo_split/ 
 data/kfold/
 runs/
