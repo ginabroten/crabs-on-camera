@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Crabs on camera: project documentation</title>
-  <meta name="description" content="References | Crabs on camera: project documentation" />
+  <title>Chapter 3 Use a crab detector | Crabs on camera: project documentation</title>
+  <meta name="description" content="Chapter 3 Use a crab detector | Crabs on camera: project documentation" />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Crabs on camera: project documentation" />
+  <meta property="og:title" content="Chapter 3 Use a crab detector | Crabs on camera: project documentation" />
   <meta property="og:type" content="book" />
   
   
   <meta name="github-repo" content="ginabroten/crabs-on-camera" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Crabs on camera: project documentation" />
+  <meta name="twitter:title" content="Chapter 3 Use a crab detector | Crabs on camera: project documentation" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="use-a-crab-detector.html"/>
-
+<link rel="prev" href="create-a-crab-detector.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -163,25 +163,43 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
-Biscarini, Filippo, and Nelson Nazzicari. 2026. <em>Deep <span>Learning</span> for <span>Life</span> <span>Sciences</span>: With <span>Python</span> <span>Notebooks</span> for <span>Examples</span> and <span>Exercises</span></em>. Vol. 1. Decoding <span>Evolution</span>. Springer Nature Switzerland. <a href="https://doi.org/10.1007/978-3-031-96852-5">https://doi.org/10.1007/978-3-031-96852-5</a>.
+<div id="use-a-crab-detector" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Use a crab detector<a href="use-a-crab-detector.html#use-a-crab-detector" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="background-and-aims" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Background and aims<a href="use-a-crab-detector.html#background-and-aims" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN obtained with either the pretrained crab detector, or another model.</p>
+<p>MaxN is the single image frame within a deployment with the highest count of individuals per deployment, wheras MeanN is the mean number of individual observed over a series of image frames <span class="citation">(<a href="#ref-whitmarsh_what_2017">Whitmarsh et al. 2017</a>)</span>. MaxN is the most commonly applied metric fr estimating abundances in video-based surveys, and its conservative with its aim to reduce the likelihood of double counting individuals.</p>
+<p>The pretrained crab detector developed in the thesis is included in this repository, in the folder <code>use-a-crab-detector/model/pretrained-crab-detector</code>.</p>
+<p>A few caveats are worth mentioning. This model is not yet plug and play, as documented in the thesis, and in the literature more broadly, YOLO models in particular struggle to generalize: when the input material shifts away from the domain it was trained on, performance drops. Specifically, this model was trained to detect brown crab in BRUVs placed in nearshore coastal areas between 62°N and 68°N. When applied outside this scope, whether due to a different video collection method or a different environment, it’s going to struggle (see the FjordFish test in Brøten <span class="citation">(<a href="#ref-broten_crabs_2026">2026</a>)</span>).</p>
+<p>If you’d still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model’s predictions, we need some understanding of how its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model’s predictions against the human-annotated ground truth.</p>
 </div>
-<div class="csl-entry">
+<div id="independent-test-set" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Independent test set<a href="use-a-crab-detector.html#independent-test-set" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Often described as the gold standard for evaluating a trained models performance, and is used after a model is fully trained. In this instance, its purpose is rather to evaluate the models “compatibility” with the data its going to predict on. All this is done in the script <code>get-ready-to-use-a-crab-detector</code>.</p>
+<p>To start, you will need a fully annotated dataset, it does not need to be big, and is often around 10 - 25% of the available data. This data needs to be annotated, exported as COCO 1.0, and put in the folders, <code>use-a-crab-detector/data/test_predictions</code> prior to running the script.</p>
+<p>Likewise to the data processing pipeline performed in <code>raw_to_yolo</code> the annotations are converted, and only the crab annotations are kept. The scrips logic for grouping is still based on the naming convention as previously mentioned, if the dataset uses another naming convention the code needs to be readjusted.</p>
+<p>The script handles the comparison between the predicted bounding boxes to the individual annotated boxes frame by frame, the script summarizes crab counts per BRUV stations using MaxN and MeanN.</p>
+<p>As the model predicts it assigns a confidence score to the prediction from 0 – 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce retains more true predictions but introduces noise. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing.</p>
+<p>In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline.</p>
+<p>Rather than comparing predicted boxes to individual annotated box.</p>
+<div id="interpreting-the-performance-metrics" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Interpreting the performance metrics<a href="use-a-crab-detector.html#interpreting-the-performance-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Similar method to FF-setup
+GRAd-CAM analysis can be interesting to understand the results if the model struggled</p>
+</div>
+</div>
+<div id="running-the-crab-detector" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Running the crab detector<a href="use-a-crab-detector.html#running-the-crab-detector" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-broten_crabs_2026" class="csl-entry">
 Brøten, Gina. 2026. <span>“Crabs on Camera: <span>Improving</span> the Monitoring of the Brown Crab (<em><span>Cancer</span> Pagurus</em>) with Machine Learning and <span>Baited</span> <span>Remote</span> <span>Underwater</span> <span>Video</span> (<span>BRUV</span>).”</span> Master’s thesis, University of Bergen. <a href="https://hdl.handle.net/11250/5537346">https://hdl.handle.net/11250/5537346</a>.
 </div>
-<div class="csl-entry">
-Jocher, Glenn, Jing Qiu, and Ayush Chaurasia. 2023. <em>Ultralytics <span>YOLO</span></em>. <a href="https://github.com/ultralytics/ultralytics">https://github.com/ultralytics/ultralytics</a>.
-</div>
-<div class="csl-entry">
-Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <em>You <span>Only</span> <span>Look</span> <span>Once</span>: <span>Unified</span>, <span>Real</span>-<span>Time</span> <span>Object</span> <span>Detection</span></em>. arXiv. <a href="https://doi.org/10.48550/arXiv.1506.02640">https://doi.org/10.48550/arXiv.1506.02640</a>.
-</div>
-<div class="csl-entry">
+<div id="ref-whitmarsh_what_2017" class="csl-entry">
 Whitmarsh, Sasha K., Peter G. Fairweather, and Charlie Huveneers. 2017. <span>“What Is <span>Big</span> <span>BRUVver</span> up to? <span>Methods</span> and Uses of Baited Underwater Video.”</span> <em>Reviews in Fish Biology and Fisheries</em> 27 (1): 53–73. <a href="https://doi.org/10.1007/s11160-016-9450-1">https://doi.org/10.1007/s11160-016-9450-1</a>.
-</div>
 </div>
 </div>
             </section>
@@ -189,8 +207,8 @@ Whitmarsh, Sasha K., Peter G. Fairweather, and Charlie Huveneers. 2017. <span>�
           </div>
         </div>
       </div>
-<a href="use-a-crab-detector.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="create-a-crab-detector.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -221,7 +239,7 @@ gitbook.start({
     "size": 2
   },
   "edit": {
-    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-references.Rmd",
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-use-a-crab-detector.Rmd",
     "text": "Edit"
   },
   "history": {
