@@ -93,7 +93,7 @@
 
 \title{Crabs on camera: project documentation}
 \author{Gina Brøten}
-\date{2026-08-13}
+\date{2026-08-14}
 
 \begin{document}
 \maketitle
@@ -112,7 +112,9 @@ The aim of this repository is not to push the boundaries of machine learning or 
 
 \section{About the repository}\label{about-the-repository}
 
-This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce. The structure of the repository is as follows:
+This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
+
+(\textbf{NEEDS UPDATING}) The structure of the repository is as follows:
 
 \begin{verbatim}
 crabs-on-camera/
@@ -369,19 +371,17 @@ Aside for interpreting the performance metrics, its worth checking out the visua
 
 \section{Background and aims}\label{background-and-aims}
 
-The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN obtained with either the pretrained crab detector, or another model.
+The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN per BRUV/video station obtained with either the pretrained crab detector, or another model.
 
-MaxN is the single image frame within a deployment with the highest count of individuals per deployment, wheras MeanN is the mean number of individual observed over a series of image frames \citep{whitmarsh_what_2017}. MaxN is the most commonly applied metric fr estimating abundances in video-based surveys, and its conservative with its aim to reduce the likelihood of double counting individuals.
+MaxN is the single image frame within a deployment with the highest count of individuals per deployment, wheras MeanN is the mean number of individual observed over a series of image frames \citep{whitmarsh_what_2017}. MaxN is the most commonly applied metric ofr estimating abundances in video-based surveys, and its conservative with its aim to reduce the likelihood of double counting individuals.
 
-The pretrained crab detector developed in the thesis is included in this repository, in the folder \texttt{use-a-crab-detector/model/pretrained-crab-detector}.
+The pretrained crab detector developed in the thesis is included in this repository, in the folder \texttt{use-a-crab-detector/model/pretrained-crab-detector}. This model is not yet plug and play, as documented in the thesis, and in the literature more broadly, YOLO models in particular struggle to generalize: when the input material shifts away from the domain it was trained on, performance drops. Specifically, this model was trained to detect brown crab in BRUVs placed in nearshore coastal areas between 62°N and 68°N. When applied outside this scope, whether due to a different video collection method or a different environment, it's going to struggle (see the FjordFish test in Brøten \citeyearpar{broten_crabs_2026}).
 
-A few caveats are worth mentioning. This model is not yet plug and play, as documented in the thesis, and in the literature more broadly, YOLO models in particular struggle to generalize: when the input material shifts away from the domain it was trained on, performance drops. Specifically, this model was trained to detect brown crab in BRUVs placed in nearshore coastal areas between 62°N and 68°N. When applied outside this scope, whether due to a different video collection method or a different environment, it's going to struggle (see the FjordFish test in Brøten \citeyearpar{broten_crabs_2026}).
-
-If you'd still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model's predictions, we need some understanding of how its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model's predictions against the human-annotated ground truth.
+If you'd still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model's predictions, we need some understanding of its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model's predictions against the human-annotated ground truth.
 
 \section{Independent test set}\label{independent-test-set}
 
-Often described as the gold standard for evaluating a trained models performance, and is used after a model is fully trained. In this instance, its purpose is rather to evaluate the models ``compatibility'' with the data its going to predict on. All this is done in the script \texttt{get-ready-to-use-a-crab-detector}.
+Often described as the gold standard for evaluating a trained models performance, and applied after a model is fully trained. In this instance, its purpose is rather to evaluate the models ``compatibility'' with the data its going to predict on. All this is done in the script \texttt{get-ready-to-use-a-crab-detector}.
 
 To start, you will need a fully annotated dataset, it does not need to be big, and is often around 10 - 25\% of the available data. This data needs to be annotated, exported as COCO 1.0, and put in the folders, \texttt{use-a-crab-detector/data/test\_predictions} prior to running the script.
 
@@ -393,14 +393,36 @@ As the model predicts it assigns a confidence score to the prediction from 0 -- 
 
 In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline.
 
-Rather than comparing predicted boxes to individual annotated box.
-
 \subsection{Interpreting the performance metrics}\label{interpreting-the-performance-metrics}
 
 Similar method to FF-setup
 GRAd-CAM analysis can be interesting to understand the results if the model struggled
 
 \section{Running the crab detector}\label{running-the-crab-detector}
+
+\subsection{Before starting the predictions}\label{before-starting-the-predictions}
+
+To avoid taking up unsesseacy server space, and
+
+Applying the model one or very few models is possible to do on a local computer, but if it surpasses a two digit amount of videos or a reasonable size totatl some precautions about saving space and GPU should be taken.
+
+in the thesis work the server wiht the vidoes was mounted, rather than exporting them to the server to save space
+
+When you are ready there,
+
+Its posisble to change the rate of the predictions
+Set threshold in the predictions early on if youd want, in the thesis it was set low on purpose to test a pipeline
+
+\subsection{Collecting indices}\label{collecting-indices}
+
+Based on grouping logic
+Histogram of detections as well as the bound box centre dispersion
+
+\section{Post-processing-pipeline}\label{post-processing-pipeline}
+
+\section{Collecting results}\label{collecting-results}
+
+a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in species distribution models+
 
 \bibliography{book.bib,packages.bib}
 

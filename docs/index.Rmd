@@ -21,7 +21,9 @@ The aim of this repository is not to push the boundaries of machine learning or 
 
 ## About the repository
 
-This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce. The structure of the repository is as follows:
+This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
+
+(**NEEDS UPDATING**) The structure of the repository is as follows:
 
 ```
 crabs-on-camera/

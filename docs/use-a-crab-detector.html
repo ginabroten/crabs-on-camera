@@ -23,7 +23,7 @@
 <meta name="author" content="Gina Brøten" />
 
 
-<meta name="date" content="2026-08-13" />
+<meta name="date" content="2026-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -140,7 +140,13 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#interpreting-the-performance-metrics"><i class="fa fa-check"></i><b>3.2.1</b> Interpreting the performance metrics</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#running-the-crab-detector"><i class="fa fa-check"></i><b>3.3</b> Running the crab detector</a></li>
+<li class="chapter" data-level="3.3" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#running-the-crab-detector"><i class="fa fa-check"></i><b>3.3</b> Running the crab detector</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#before-starting-the-predictions"><i class="fa fa-check"></i><b>3.3.1</b> Before starting the predictions</a></li>
+<li class="chapter" data-level="3.3.2" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#collecting-indices"><i class="fa fa-check"></i><b>3.3.2</b> Collecting indices</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#post-processing-pipeline"><i class="fa fa-check"></i><b>3.4</b> Post-processing-pipeline</a></li>
+<li class="chapter" data-level="3.5" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#collecting-results"><i class="fa fa-check"></i><b>3.5</b> Collecting results</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -167,21 +173,19 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 3</span> Use a crab detector<a href="use-a-crab-detector.html#use-a-crab-detector" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="background-and-aims" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Background and aims<a href="use-a-crab-detector.html#background-and-aims" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN obtained with either the pretrained crab detector, or another model.</p>
-<p>MaxN is the single image frame within a deployment with the highest count of individuals per deployment, wheras MeanN is the mean number of individual observed over a series of image frames <span class="citation">(<a href="#ref-whitmarsh_what_2017">Whitmarsh et al. 2017</a>)</span>. MaxN is the most commonly applied metric fr estimating abundances in video-based surveys, and its conservative with its aim to reduce the likelihood of double counting individuals.</p>
-<p>The pretrained crab detector developed in the thesis is included in this repository, in the folder <code>use-a-crab-detector/model/pretrained-crab-detector</code>.</p>
-<p>A few caveats are worth mentioning. This model is not yet plug and play, as documented in the thesis, and in the literature more broadly, YOLO models in particular struggle to generalize: when the input material shifts away from the domain it was trained on, performance drops. Specifically, this model was trained to detect brown crab in BRUVs placed in nearshore coastal areas between 62°N and 68°N. When applied outside this scope, whether due to a different video collection method or a different environment, it’s going to struggle (see the FjordFish test in Brøten <span class="citation">(<a href="#ref-broten_crabs_2026">2026</a>)</span>).</p>
-<p>If you’d still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model’s predictions, we need some understanding of how its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model’s predictions against the human-annotated ground truth.</p>
+<p>The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN per BRUV/video station obtained with either the pretrained crab detector, or another model.</p>
+<p>MaxN is the single image frame within a deployment with the highest count of individuals per deployment, wheras MeanN is the mean number of individual observed over a series of image frames <span class="citation">(<a href="#ref-whitmarsh_what_2017">Whitmarsh et al. 2017</a>)</span>. MaxN is the most commonly applied metric ofr estimating abundances in video-based surveys, and its conservative with its aim to reduce the likelihood of double counting individuals.</p>
+<p>The pretrained crab detector developed in the thesis is included in this repository, in the folder <code>use-a-crab-detector/model/pretrained-crab-detector</code>. This model is not yet plug and play, as documented in the thesis, and in the literature more broadly, YOLO models in particular struggle to generalize: when the input material shifts away from the domain it was trained on, performance drops. Specifically, this model was trained to detect brown crab in BRUVs placed in nearshore coastal areas between 62°N and 68°N. When applied outside this scope, whether due to a different video collection method or a different environment, it’s going to struggle (see the FjordFish test in Brøten <span class="citation">(<a href="#ref-broten_crabs_2026">2026</a>)</span>).</p>
+<p>If you’d still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model’s predictions, we need some understanding of its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model’s predictions against the human-annotated ground truth.</p>
 </div>
 <div id="independent-test-set" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Independent test set<a href="use-a-crab-detector.html#independent-test-set" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Often described as the gold standard for evaluating a trained models performance, and is used after a model is fully trained. In this instance, its purpose is rather to evaluate the models “compatibility” with the data its going to predict on. All this is done in the script <code>get-ready-to-use-a-crab-detector</code>.</p>
+<p>Often described as the gold standard for evaluating a trained models performance, and applied after a model is fully trained. In this instance, its purpose is rather to evaluate the models “compatibility” with the data its going to predict on. All this is done in the script <code>get-ready-to-use-a-crab-detector</code>.</p>
 <p>To start, you will need a fully annotated dataset, it does not need to be big, and is often around 10 - 25% of the available data. This data needs to be annotated, exported as COCO 1.0, and put in the folders, <code>use-a-crab-detector/data/test_predictions</code> prior to running the script.</p>
 <p>Likewise to the data processing pipeline performed in <code>raw_to_yolo</code> the annotations are converted, and only the crab annotations are kept. The scrips logic for grouping is still based on the naming convention as previously mentioned, if the dataset uses another naming convention the code needs to be readjusted.</p>
 <p>The script handles the comparison between the predicted bounding boxes to the individual annotated boxes frame by frame, the script summarizes crab counts per BRUV stations using MaxN and MeanN.</p>
 <p>As the model predicts it assigns a confidence score to the prediction from 0 – 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce retains more true predictions but introduces noise. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing.</p>
 <p>In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline.</p>
-<p>Rather than comparing predicted boxes to individual annotated box.</p>
 <div id="interpreting-the-performance-metrics" class="section level3 hasAnchor" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Interpreting the performance metrics<a href="use-a-crab-detector.html#interpreting-the-performance-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Similar method to FF-setup
@@ -190,6 +194,27 @@ GRAd-CAM analysis can be interesting to understand the results if the model stru
 </div>
 <div id="running-the-crab-detector" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Running the crab detector<a href="use-a-crab-detector.html#running-the-crab-detector" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="before-starting-the-predictions" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Before starting the predictions<a href="use-a-crab-detector.html#before-starting-the-predictions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To avoid taking up unsesseacy server space, and</p>
+<p>Applying the model one or very few models is possible to do on a local computer, but if it surpasses a two digit amount of videos or a reasonable size totatl some precautions about saving space and GPU should be taken.</p>
+<p>in the thesis work the server wiht the vidoes was mounted, rather than exporting them to the server to save space</p>
+<p>When you are ready there,</p>
+<p>Its posisble to change the rate of the predictions
+Set threshold in the predictions early on if youd want, in the thesis it was set low on purpose to test a pipeline</p>
+</div>
+<div id="collecting-indices" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Collecting indices<a href="use-a-crab-detector.html#collecting-indices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Based on grouping logic
+Histogram of detections as well as the bound box centre dispersion</p>
+</div>
+</div>
+<div id="post-processing-pipeline" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Post-processing-pipeline<a href="use-a-crab-detector.html#post-processing-pipeline" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="collecting-results" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Collecting results<a href="use-a-crab-detector.html#collecting-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in species distribution models+</p>
 
 </div>
 </div>
