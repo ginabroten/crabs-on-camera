@@ -17,6 +17,9 @@
 **/data/training_runs
 yolo_split/ 
 data/kfold
+# stresstest
+
+use-a-crab-detector/stresstest
 # Script outputs (YOLO exports, etc.. )
 
 create-a-crab-detector/.ipynb_checkpoints/
