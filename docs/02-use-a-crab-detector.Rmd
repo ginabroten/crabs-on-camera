@@ -1,6 +1,6 @@
 # Use a crab detector
 
-## Background and aims
+## Background
 The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN per BRUV/video station obtained with either the pretrained crab detector, or another model. 
 
 MaxN is the single image frame within a deployment with the highest count of individuals per deployment, wheras MeanN is the mean number of individual observed over a series of image frames [@whitmarsh_what_2017]. MaxN is the most commonly applied metric ofr estimating abundances in video-based surveys, and its conservative with its aim to reduce the likelihood of double counting individuals.
@@ -9,7 +9,14 @@ The pretrained crab detector developed in the thesis is included in this reposit
 
 If you'd still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model's predictions, we need some understanding of its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model's predictions against the human-annotated ground truth.
 
-## Independent test set
+Recommended running order: 
+1. `get-ready-to-use-a-crab-detector`
+2. `use-a-detector`
+3. `interpret-raw-detections`
+4. `post-processing-pipeline`
+
+
+## Before running the detector - independent test set
 
 Often described as the gold standard for evaluating a trained models performance, and applied after a model is fully trained. In this instance, its purpose is rather to evaluate the models "compatibility" with the data its going to predict on. All this is done in the script `get-ready-to-use-a-crab-detector`.
 
@@ -23,56 +30,26 @@ The script handles the comparison between the predicted bounding boxes to the in
 
 As the model predicts it assigns a confidence score to the prediction from 0 -- 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce retains more true predictions but introduces noise. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing. 
 
-In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline. 
+In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline. To ruther understay what features drove the detector to make a prediction, a Grad-CAM analysis can be performed, which produces a heatmap highighting important areas for detection. For YOLOV8 layer C21 is good. 
 
-If the results are dissapoining it could be worth doing a Grad-CAM analysis which produces a heatmap highighting 
+## Running the detector 
 
 ### Applying the detector to new footage
 
-Once the crab-detector returned acceptable results on the independent testset, `apply-a-crab-detector` runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder cointaining the desired footage, and the script does the rest. The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single `predictions.json` file. 
+Once the crab-detector returned acceptable results on the independent testset, `apply-a-crab-detector` runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder containing the desired footage and desired model, its also possible to change the image size, hyperparamteres (though these should be close to the initial training setup) and confidence threshold.The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single `predictions.json` file. 
 
-The confidence threshold applied is deliberatly low (0.1), hence the script is not deciding what counts as a "real" crab, just recodring every prediction. The actual filtering, so choosing a confidence threhsold and removing likely false detection happes in the next steps. 
+The confidence threshold is set to be deliberately low (0.1), hence the script is not deciding what counts as a "real" crab, just recording every prediction. The actual filtering, so choosing a confidence threshold and removing likely false detection happens in the next steps.  
 
-### Interpreting the performance metrics
+Before running this on a large batch, it is worth checking that the video filenames march the expected deployment naming logic, the script reports how many unique deployments it found and flags any videos it could not match. By default this script only saves the detections and not annotated videos, to activate this there is a toggle in the scripts configuration to save a copy of each video with the predicted videos drawn in, off is the default since it adds significant disk use and processing time.
 
-Similar method to FF-setup
-GRAd-CAM analysis can be interesting to understand the results if the model struggled
+### Checking what the model found
 
-## Running the crab detector
+Before doing any real filtering, it is worth looking at what the detector actually predicted. `summarize_detections` reads the `predictions.json` file and reports the total number of detections, how many frames had at least one and how many detections fall above a couple confidence cutoffs (0.5 and 0.75 by default). It plots a histogram of the confidence score of every detection as a sanity check, and should (if you are applying the pretrained model) have a bimodal structure, with a high peak withing the lower end of confidence scores, and a second smaller peak with the higher scores (Figure \@ref(fig:histpreds24)),
 
-### Before starting the predictions
+```{r histpreds24, echo=FALSE, fig.cap = "Distribution  of confidence scores for crab predictions generated by the object detection model on BRUV videos from the 2024 gill- and fyke-net survey (Brøten, 2026). A confidence score reflects how certain the model is in its prediction of a crab from 0 to 1, where 1 indicates the highest model certainty. Each prediction represents a detection within a single frame, and not necessarily a unique individual."}
+knitr::include_graphics("images/confthresholdHistogram.png")
 
-To avoid taking up unsesseacy server space, and
-
-Applying the model one or very few videos is possible to do on a local computer, but if it surpasses a two digit amount of videos or a reasonable size total some precautions about saving space and GPU should be taken. 
-In the thesis around 76 hours of footage was analyzed, taking up 2 TB of space - and the total run time was mutliple days. 
-in the thesis work the server wiht the vidoes was mounted, rather than exporting them to the server to save space
-
-When you are ready there, 
-
-Its posisble to change the rate of the predictions
-Set  threshold in the predictions early on if youd want, in the thesis it was set low on purpose to test a pipeline
-
-When youre there you are ready to run
-
-Changebale things
-imgz
-model
-confidence threshold
-
-### After the predictions are done
-
-Look at the produced .avi files if you are interested
-
-If some of the same behavior happes as in the example video, so
-deduplicated boxes arund the same object
-hallucinations
-
-### Collecting indices
-
-Based on grouping logic
-Histogram of detections as well as the bound box centre dispersion
-
+```
 
 
 ## Post-processing-pipeline

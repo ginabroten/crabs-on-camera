@@ -93,7 +93,7 @@
 
 \title{Crabs on camera: project documentation}
 \author{Gina Brøten}
-\date{2026-08-17}
+\date{}
 
 \begin{document}
 \maketitle
@@ -380,7 +380,7 @@ Aside for interpreting the performance metrics, its worth checking out the visua
 
 \chapter{Use a crab detector}\label{use-a-crab-detector}
 
-\section{Background and aims}\label{background-and-aims}
+\section{Background}\label{background-1}
 
 The aim of this leg of the repository is to go from unseen data to assessment ready data, where unseen video material is the input and the output is the relative abundance indices MaxN and MeanN per BRUV/video station obtained with either the pretrained crab detector, or another model.
 
@@ -390,7 +390,13 @@ The pretrained crab detector developed in the thesis is included in this reposit
 
 If you'd still like to apply this detector given these caveats, or apply a new (and likely better) model, some manual work is still needed. To interpret the model's predictions, we need some understanding of its generalizability. One important step is building an independent test set: annotate a small subset of unseen data, let the model predict on it, then compare the model's predictions against the human-annotated ground truth.
 
-\section{Independent test set}\label{independent-test-set}
+Recommended running order:
+1. \texttt{get-ready-to-use-a-crab-detector}
+2. \texttt{use-a-detector}
+3. \texttt{interpret-raw-detections}
+4. \texttt{post-processing-pipeline}
+
+\section{Before running the detector - independent test set}\label{before-running-the-detector---independent-test-set}
 
 Often described as the gold standard for evaluating a trained models performance, and applied after a model is fully trained. In this instance, its purpose is rather to evaluate the models ``compatibility'' with the data its going to predict on. All this is done in the script \texttt{get-ready-to-use-a-crab-detector}.
 
@@ -404,55 +410,25 @@ The script handles the comparison between the predicted bounding boxes to the in
 
 As the model predicts it assigns a confidence score to the prediction from 0 -- 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce retains more true predictions but introduces noise. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing.
 
-In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline.
+In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline. To ruther understay what features drove the detector to make a prediction, a Grad-CAM analysis can be performed, which produces a heatmap highighting important areas for detection. For YOLOV8 layer C21 is good.
 
-If the results are dissapoining it could be worth doing a Grad-CAM analysis which produces a heatmap highighting
+\section{Running the detector}\label{running-the-detector}
 
 \subsection{Applying the detector to new footage}\label{applying-the-detector-to-new-footage}
 
-Once the crab-detector returned acceptable results on the independent testset, \texttt{apply-a-crab-detector} runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder cointaining the desired footage, and the script does the rest. The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single \texttt{predictions.json} file.
+Once the crab-detector returned acceptable results on the independent testset, \texttt{apply-a-crab-detector} runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder containing the desired footage and desired model, its also possible to change the image size, hyperparamteres (though these should be close to the initial training setup) and confidence threshold.The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single \texttt{predictions.json} file.
 
-The confidence threshold applied is deliberatly low (0.1), hence the script is not deciding what counts as a ``real'' crab, just recodring every prediction. The actual filtering, so choosing a confidence threhsold and removing likely false detection happes in the next steps.
+The confidence threshold is set to be deliberately low (0.1), hence the script is not deciding what counts as a ``real'' crab, just recording every prediction. The actual filtering, so choosing a confidence threshold and removing likely false detection happens in the next steps.
 
-\subsection{Interpreting the performance metrics}\label{interpreting-the-performance-metrics}
+Before running this on a large batch, it is worth checking that the video filenames march the expected deployment naming logic, the script reports how many unique deployments it found and flags any videos it could not match. By default this script only saves the detections and not annotated videos, to activate this there is a toggle in the scripts configuration to save a copy of each video with the predicted videos drawn in, off is the default since it adds significant disk use and processing time.
 
-Similar method to FF-setup
-GRAd-CAM analysis can be interesting to understand the results if the model struggled
+\subsection{Checking what the model found}\label{checking-what-the-model-found}
 
-\section{Running the crab detector}\label{running-the-crab-detector}
+Before doing any real filtering, it is worth looking at what the detector actually predicted. \texttt{summarize\_detections} reads the \texttt{predictions.json} file and reports the total number of detections, how many frames had at least one and how many detections fall above a couple confidence cutoffs (0.5 and 0.75 by default). It plots a histogram of the confidence score of every detection as a sanity check, and should (if you are applying the pretrained model) have a bimodal structure, with a high peak withing the lower end of confidence scores, and a second smaller peak with the higher scores (Figure \ref{fig:histpreds24}),
 
-\subsection{Before starting the predictions}\label{before-starting-the-predictions}
-
-To avoid taking up unsesseacy server space, and
-
-Applying the model one or very few videos is possible to do on a local computer, but if it surpasses a two digit amount of videos or a reasonable size total some precautions about saving space and GPU should be taken.
-In the thesis around 76 hours of footage was analyzed, taking up 2 TB of space - and the total run time was mutliple days.
-in the thesis work the server wiht the vidoes was mounted, rather than exporting them to the server to save space
-
-When you are ready there,
-
-Its posisble to change the rate of the predictions
-Set threshold in the predictions early on if youd want, in the thesis it was set low on purpose to test a pipeline
-
-When youre there you are ready to run
-
-Changebale things
-imgz
-model
-confidence threshold
-
-\subsection{After the predictions are done}\label{after-the-predictions-are-done}
-
-Look at the produced .avi files if you are interested
-
-If some of the same behavior happes as in the example video, so
-deduplicated boxes arund the same object
-hallucinations
-
-\subsection{Collecting indices}\label{collecting-indices}
-
-Based on grouping logic
-Histogram of detections as well as the bound box centre dispersion
+\begin{figure}
+\includegraphics[width=41.67in]{images/confthresholdHistogram} \caption{Distribution  of confidence scores for crab predictions generated by the object detection model on BRUV videos from the 2024 gill- and fyke-net survey (Brøten, 2026). A confidence score reflects how certain the model is in its prediction of a crab from 0 to 1, where 1 indicates the highest model certainty. Each prediction represents a detection within a single frame, and not necessarily a unique individual.}\label{fig:histpreds24}
+\end{figure}
 
 \section{Post-processing-pipeline}\label{post-processing-pipeline}
 
