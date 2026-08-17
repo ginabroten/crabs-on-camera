@@ -93,7 +93,7 @@
 
 \title{Crabs on camera: project documentation}
 \author{Gina Brøten}
-\date{2026-08-14}
+\date{2026-08-17}
 
 \begin{document}
 \maketitle
@@ -118,19 +118,30 @@ This repository uses the same code, functions, and packages developed for the ma
 
 \begin{verbatim}
 crabs-on-camera/
-├── data/
-│   └── annotations/
-│       └── test_subset/              # example dataset shipped with the repo
-│           ├── annotations/
-│           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
-│           └── images/default/               # the video frames those annotations belong to
-├── script/
-│   ├── raw_to_yolo.ipynb             # converts raw annotations into a YOLO-ready dataset
-│   ├── build_test_subset.ipynb       # builds a smaller/more diverse test set from a larger one
-│   ├── annotation_stats.ipynb        # summary statistics on the annotation data
-│   ├── train.ipynb                   # trains the YOLO model
-│   └── annotation_format             # template CVAT label schema, for annotating your own data
-├── docs/                             # this documentation
+├── create-a-crab-detector/
+│   ├── data/
+│   │   └── annotations/
+│   │       └── test_subset/                  # example dataset shipped with the repo
+│   │           ├── annotations/
+│   │           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
+│   │           └── images/default/               # the video frames those annotations belong to
+│   ├── raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
+│   ├── build_test_subset.ipynb        # builds a smaller/more diverse test set from a larger one
+│   ├── annotation_stats.ipynb         # summary statistics on the annotation data
+│   ├── train.ipynb                    # trains the YOLO model
+│   └── annotation_format              # template CVAT label schema, for annotating your own data
+├── use-a-crab-detector/
+│   ├── model/
+│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt, last.pt)
+│   ├── data/
+│   │   ├── videos/                    # your own BRUV footage to run the detector on (not shipped)
+│   │   ├── predictions/               # raw detections and post-processing output, generated
+│   │   └── test_predictions/          # the independent test set: annotations, images, predictions, results
+│   ├── apply-crab-detector.ipynb      # runs the model on a folder of new BRUV videos
+│   ├── summarize_detections.ipynb     # quick overview of a completed detection run
+│   ├── filtered_maxN.ipynb            # removes likely false detections, recomputes maxN
+│   └── get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+├── docs/                              # this documentation
 └── README.md
 \end{verbatim}
 
@@ -387,11 +398,21 @@ To start, you will need a fully annotated dataset, it does not need to be big, a
 
 Likewise to the data processing pipeline performed in \texttt{raw\_to\_yolo} the annotations are converted, and only the crab annotations are kept. The scrips logic for grouping is still based on the naming convention as previously mentioned, if the dataset uses another naming convention the code needs to be readjusted.
 
+If the mAp is close to 0.7 rnage it means its alligned
+
 The script handles the comparison between the predicted bounding boxes to the individual annotated boxes frame by frame, the script summarizes crab counts per BRUV stations using MaxN and MeanN.
 
 As the model predicts it assigns a confidence score to the prediction from 0 -- 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce retains more true predictions but introduces noise. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing.
 
 In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline.
+
+If the results are dissapoining it could be worth doing a Grad-CAM analysis which produces a heatmap highighting
+
+\subsection{Applying the detector to new footage}\label{applying-the-detector-to-new-footage}
+
+Once the crab-detector returned acceptable results on the independent testset, \texttt{apply-a-crab-detector} runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder cointaining the desired footage, and the script does the rest. The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single \texttt{predictions.json} file.
+
+The confidence threshold applied is deliberatly low (0.1), hence the script is not deciding what counts as a ``real'' crab, just recodring every prediction. The actual filtering, so choosing a confidence threhsold and removing likely false detection happes in the next steps.
 
 \subsection{Interpreting the performance metrics}\label{interpreting-the-performance-metrics}
 
@@ -404,8 +425,8 @@ GRAd-CAM analysis can be interesting to understand the results if the model stru
 
 To avoid taking up unsesseacy server space, and
 
-Applying the model one or very few models is possible to do on a local computer, but if it surpasses a two digit amount of videos or a reasonable size totatl some precautions about saving space and GPU should be taken.
-
+Applying the model one or very few videos is possible to do on a local computer, but if it surpasses a two digit amount of videos or a reasonable size total some precautions about saving space and GPU should be taken.
+In the thesis around 76 hours of footage was analyzed, taking up 2 TB of space - and the total run time was mutliple days.
 in the thesis work the server wiht the vidoes was mounted, rather than exporting them to the server to save space
 
 When you are ready there,
@@ -413,12 +434,29 @@ When you are ready there,
 Its posisble to change the rate of the predictions
 Set threshold in the predictions early on if youd want, in the thesis it was set low on purpose to test a pipeline
 
+When youre there you are ready to run
+
+Changebale things
+imgz
+model
+confidence threshold
+
+\subsection{After the predictions are done}\label{after-the-predictions-are-done}
+
+Look at the produced .avi files if you are interested
+
+If some of the same behavior happes as in the example video, so
+deduplicated boxes arund the same object
+hallucinations
+
 \subsection{Collecting indices}\label{collecting-indices}
 
 Based on grouping logic
 Histogram of detections as well as the bound box centre dispersion
 
 \section{Post-processing-pipeline}\label{post-processing-pipeline}
+
+This step is optional, but shows the workflow for removing likely false dete
 
 \section{Collecting results}\label{collecting-results}
 

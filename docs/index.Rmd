@@ -27,19 +27,30 @@ This repository uses the same code, functions, and packages developed for the ma
 
 ```
 crabs-on-camera/
-├── data/
-│   └── annotations/
-│       └── test_subset/              # example dataset shipped with the repo
-│           ├── annotations/
-│           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
-│           └── images/default/               # the video frames those annotations belong to
-├── script/
-│   ├── raw_to_yolo.ipynb             # converts raw annotations into a YOLO-ready dataset
-│   ├── build_test_subset.ipynb       # builds a smaller/more diverse test set from a larger one
-│   ├── annotation_stats.ipynb        # summary statistics on the annotation data
-│   ├── train.ipynb                   # trains the YOLO model
-│   └── annotation_format             # template CVAT label schema, for annotating your own data
-├── docs/                             # this documentation
+├── create-a-crab-detector/
+│   ├── data/
+│   │   └── annotations/
+│   │       └── test_subset/                  # example dataset shipped with the repo
+│   │           ├── annotations/
+│   │           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
+│   │           └── images/default/               # the video frames those annotations belong to
+│   ├── raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
+│   ├── build_test_subset.ipynb        # builds a smaller/more diverse test set from a larger one
+│   ├── annotation_stats.ipynb         # summary statistics on the annotation data
+│   ├── train.ipynb                    # trains the YOLO model
+│   └── annotation_format              # template CVAT label schema, for annotating your own data
+├── use-a-crab-detector/
+│   ├── model/
+│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt, last.pt)
+│   ├── data/
+│   │   ├── videos/                    # your own BRUV footage to run the detector on (not shipped)
+│   │   ├── predictions/               # raw detections and post-processing output, generated
+│   │   └── test_predictions/          # the independent test set: annotations, images, predictions, results
+│   ├── apply-crab-detector.ipynb      # runs the model on a folder of new BRUV videos
+│   ├── summarize_detections.ipynb     # quick overview of a completed detection run
+│   ├── filtered_maxN.ipynb            # removes likely false detections, recomputes maxN
+│   └── get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+├── docs/                              # this documentation
 └── README.md
 ```
 Everything needed to reproduce the pipeline lives in three places: `data/` holds a small data set you can run the scripts against immediately, `script/`holds the actual pipeline as a series of notebooks, and `docs/` is the code documentation.

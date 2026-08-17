@@ -27,6 +27,12 @@ In the thesis, this comparison highlighted that neither a low or a high threshol
 
 If the results are dissapoining it could be worth doing a Grad-CAM analysis which produces a heatmap highighting 
 
+### Applying the detector to new footage
+
+Once the crab-detector returned acceptable results on the independent testset, `apply-a-crab-detector` runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder cointaining the desired footage, and the script does the rest. The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single `predictions.json` file. 
+
+The confidence threshold applied is deliberatly low (0.1), hence the script is not deciding what counts as a "real" crab, just recodring every prediction. The actual filtering, so choosing a confidence threhsold and removing likely false detection happes in the next steps. 
+
 ### Interpreting the performance metrics
 
 Similar method to FF-setup
