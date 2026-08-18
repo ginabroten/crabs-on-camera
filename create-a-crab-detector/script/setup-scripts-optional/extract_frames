@@ -1,0 +1,47 @@
+# collects frames to use for annotations or prediction purposens, colelcts rougly around 1 image per minute of footage. 
+# uses the same names, just adds a number behind
+import cv2
+from pathlib import Path
+
+#change these to fit where to collect the videos and the output for the frames
+src = Path(r"")
+dst = Path(r"")
+dst.mkdir(parents=True, exist_ok=True)
+
+video_exts = {".mp4", ".mov", ".avi", ".mkv"}
+frames_per_hour = 65
+
+for video_path in src.rglob("*"):
+    if video_path.suffix.lower() not in video_exts:
+        continue
+
+    cap = cv2.VideoCapture(str(video_path))
+    if not cap.isOpened():
+        print(f"Could not open: {video_path.name}")
+        continue
+
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    duration_sec = total_frames / fps if fps else 0
+
+    # how many frames to extract for this video's duration
+    n_extract = max(1, round(frames_per_hour * duration_sec / 3600))
+
+    # evenly spaced frame indices across the video
+    frame_indices = [int(i * total_frames / n_extract) for i in range(n_extract)]
+
+    name = video_path.stem
+    saved = 0
+    for idx in frame_indices:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
+        ret, frame = cap.read()
+        if not ret:
+            continue
+        saved += 1
+        out_path = dst / f"{name}_{saved:04d}.jpg"
+        cv2.imwrite(str(out_path), frame)
+
+    cap.release()
+    print(f"{video_path.name}: extracted {saved} frames ({duration_sec/60:.1f} min video)")
+
+print("Done.")

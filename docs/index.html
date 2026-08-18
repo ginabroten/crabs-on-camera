@@ -188,10 +188,9 @@ div.csl-indent {
 │   │           ├── annotations/
 │   │           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
 │   │           └── images/default/               # the video frames those annotations belong to
-│   ├── raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
-│   ├── build_test_subset.ipynb        # builds a smaller/more diverse test set from a larger one
+│   ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
 │   ├── annotation_stats.ipynb         # summary statistics on the annotation data
-│   ├── train.ipynb                    # trains the YOLO model
+│   ├── 2-train.ipynb                    # trains the YOLO model
 │   └── annotation_format              # template CVAT label schema, for annotating your own data
 ├── use-a-crab-detector/
 │   ├── model/
@@ -200,10 +199,10 @@ div.csl-indent {
 │   │   ├── videos/                    # your own BRUV footage to run the detector on (not shipped)
 │   │   ├── predictions/               # raw detections and post-processing output, generated
 │   │   └── test_predictions/          # the independent test set: annotations, images, predictions, results
-│   ├── apply-crab-detector.ipynb      # runs the model on a folder of new BRUV videos
-│   ├── summarize_detections.ipynb     # quick overview of a completed detection run
-│   ├── filtered_maxN.ipynb            # removes likely false detections, recomputes maxN
-│   └── get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│   ├── 3-interpret-raw-detections.ipynb      # interprets raw predictions
+│   ├── 4-post-processing-pipeline.ipynb     # removal of likel false detections and collect abundance info
+│   ├── 2-use-a-detector.ipynb            # runs the model on unseen material
+│   └── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
 ├── docs/                              # this documentation
 └── README.md</code></pre>
 <p>Everything needed to reproduce the pipeline lives in three places: <code>data/</code> holds a small data set you can run the scripts against immediately, <code>script/</code>holds the actual pipeline as a series of notebooks, and <code>docs/</code> is the code documentation.</p>

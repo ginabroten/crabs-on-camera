@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  17 AUG 2026 15:25
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  17 AUG 2026 15:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -955,7 +955,7 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (89.0pt too wide) in paragraph at lines 146--146
+Overfull \hbox (89.0pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │       └── test_subset/                  # example datas
 et shipped with the repo[] 
  []
@@ -974,7 +974,7 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (118.05pt too wide) in paragraph at lines 146--146
+Overfull \hbox (118.05pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │           │   └── instances_default.json   # CVAT/COCO 
 export: labels + crab outlines[] 
  []
@@ -986,7 +986,7 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (146.75pt too wide) in paragraph at lines 146--146
+Overfull \hbox (146.75pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │           └── images/default/               # the video
  frames those annotations belong to[] 
  []
@@ -997,9 +997,9 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (122.95pt too wide) in paragraph at lines 146--146
-[]\TU/lmtt/m/n/10 │   ├── raw_to_yolo.ipynb              # converts raw annotat
-ions into a YOLO-ready dataset[] 
+Overfull \hbox (133.45pt too wide) in paragraph at lines 145--145
+[]\TU/lmtt/m/n/10 │   ├── 1-raw_to_yolo.ipynb              # converts raw annot
+ations into a YOLO-ready dataset[] 
  []
 
 Missing character: There is no │ in font [lmmono10-regular]:!
@@ -1008,18 +1008,7 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (154.45pt too wide) in paragraph at lines 146--146
-[]\TU/lmtt/m/n/10 │   ├── build_test_subset.ipynb        # builds a smaller/mor
-e diverse test set from a larger one[] 
- []
-
-Missing character: There is no │ in font [lmmono10-regular]:!
-Missing character: There is no │ in font [lmmono10-regular]:!
-Missing character: There is no ├ in font [lmmono10-regular]:!
-Missing character: There is no ─ in font [lmmono10-regular]:!
-Missing character: There is no ─ in font [lmmono10-regular]:!
-
-Overfull \hbox (75.7pt too wide) in paragraph at lines 146--146
+Overfull \hbox (75.7pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   ├── annotation_stats.ipynb         # summary statistics o
 n the annotation data[] 
  []
@@ -1029,18 +1018,18 @@ Missing character: There is no │ in font [lmmono10-regular]:!
 Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
-[5]
 Missing character: There is no │ in font [lmmono10-regular]:!
 Missing character: There is no │ in font [lmmono10-regular]:!
 Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (154.45pt too wide) in paragraph at lines 146--146
+Overfull \hbox (154.45pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   └── annotation_format              # template CVAT label 
 schema, for annotating your own data[] 
  []
 
+[5]
 Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ├ in font [lmmono10-regular]:!
@@ -1060,7 +1049,7 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (131.0pt too wide) in paragraph at lines 146--146
+Overfull \hbox (131.0pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │   └── pretrained-crab-detector/  # the trained model fr
 om the thesis (best.pt, last.pt)[] 
  []
@@ -1077,7 +1066,7 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (162.5pt too wide) in paragraph at lines 146--146
+Overfull \hbox (162.5pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │   ├── videos/                    # your own BRUV footag
 e to run the detector on (not shipped)[] 
  []
@@ -1089,7 +1078,7 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (131.0pt too wide) in paragraph at lines 146--146
+Overfull \hbox (131.0pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │   ├── predictions/               # raw detections and p
 ost-processing output, generated[] 
  []
@@ -1101,7 +1090,7 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (209.75pt too wide) in paragraph at lines 146--146
+Overfull \hbox (209.75pt too wide) in paragraph at lines 145--145
 []\TU/lmtt/m/n/10 │   │   └── test_predictions/          # the independent test
  set: annotations, images, predictions, results[] 
  []
@@ -1112,9 +1101,9 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (96.7pt too wide) in paragraph at lines 146--146
-[]\TU/lmtt/m/n/10 │   ├── apply-crab-detector.ipynb      # runs the model on a 
-folder of new BRUV videos[] 
+Overfull \hbox (33.7pt too wide) in paragraph at lines 145--145
+[]\TU/lmtt/m/n/10 │   ├── 3-interpret-raw-detections.ipynb      # interprets ra
+w predictions[] 
  []
 
 Missing character: There is no │ in font [lmmono10-regular]:!
@@ -1123,9 +1112,9 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (86.2pt too wide) in paragraph at lines 146--146
-[]\TU/lmtt/m/n/10 │   ├── summarize_detections.ipynb     # quick overview of a 
-completed detection run[] 
+Overfull \hbox (206.95pt too wide) in paragraph at lines 145--145
+[]\TU/lmtt/m/n/10 │   ├── 4-post-processing-pipeline.ipynb     # removal of lik
+el false detections and collect abundance info[] 
  []
 
 Missing character: There is no │ in font [lmmono10-regular]:!
@@ -1134,9 +1123,9 @@ Missing character: There is no ├ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (112.45pt too wide) in paragraph at lines 146--146
-[]\TU/lmtt/m/n/10 │   ├── filtered_maxN.ipynb            # removes likely false
- detections, recomputes maxN[] 
+Overfull \hbox (49.45pt too wide) in paragraph at lines 145--145
+[]\TU/lmtt/m/n/10 │   ├── 2-use-a-detector.ipynb            # runs the model on
+ unseen material[] 
  []
 
 Missing character: There is no │ in font [lmmono10-regular]:!
@@ -1145,9 +1134,9 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (217.45pt too wide) in paragraph at lines 146--146
-[]\TU/lmtt/m/n/10 │   └── get-ready-to-use-a-crab-detector.ipynb   # compares m
-odel predictions to the human-annotated test set[] 
+Overfull \hbox (227.95pt too wide) in paragraph at lines 145--145
+[]\TU/lmtt/m/n/10 │   └── 1-get-ready-to-use-a-crab-detector.ipynb   # compares
+ model predictions to the human-annotated test set[] 
  []
 
 Missing character: There is no ├ in font [lmmono10-regular]:!
@@ -1165,13 +1154,13 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 [6] [7]
-Overfull \hbox (19.37001pt too wide) in paragraph at lines 204--205
+Overfull \hbox (19.37001pt too wide) in paragraph at lines 203--204
 \TU/lmr/m/n/10 The repo only ships a small example/test dataset (\TU/lmtt/m/n/1
 0 data/annotations/test_subset\TU/lmr/m/n/10 )
  []
 
 
-Overfull \hbox (1.81001pt too wide) in paragraph at lines 212--213
+Overfull \hbox (1.81001pt too wide) in paragraph at lines 211--212
 []\TU/lmr/m/n/10 E.g,. \TU/lmr/bx/n/10 NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_
 frame_9\TU/lmr/m/n/10 ,
  []
@@ -1236,13 +1225,13 @@ Missing character: There is no └ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 Missing character: There is no ─ in font [lmmono10-regular]:!
 
-Overfull \hbox (26.92001pt too wide) in paragraph at lines 307--308
+Overfull \hbox (26.92001pt too wide) in paragraph at lines 306--307
 \TU/lmr/m/n/10 This script (\TU/lmtt/m/n/10 train.ipynb\TU/lmr/m/n/10 ) takes t
 he five-fold dataset produced by \TU/lmtt/m/n/10 raw_to_yolo.ipynb
  []
 
 
-Underfull \hbox (badness 4621) in paragraph at lines 317--318
+Underfull \hbox (badness 4621) in paragraph at lines 316--317
 \TU/lmr/m/n/10 Before spending hours training, this chunk verifies every fold f
 rom
  []
@@ -1250,18 +1239,18 @@ rom
 [12] [13] [14]
 Missing character: There is no ̧ in font [lmroman10-regular]:mapping=tex-text;!
 
-Overfull \hbox (440.94005pt too wide) in paragraph at lines 363--377
+Overfull \hbox (440.94005pt too wide) in paragraph at lines 362--376
  [][] 
  []
 
 
-Overfull \hbox (31.73001pt too wide) in paragraph at lines 379--380
+Overfull \hbox (31.73001pt too wide) in paragraph at lines 378--379
 \TU/lmr/m/n/10 validation confirmations. In the folder \TU/lmtt/m/n/10 test_run
 s/models/fold1_yolov8s_100epochs\TU/lmr/m/n/10 ,
  []
 
 
-Overfull \hbox (14.78001pt too wide) in paragraph at lines 379--380
+Overfull \hbox (14.78001pt too wide) in paragraph at lines 378--379
 \TU/lmr/m/n/10 or any other fold. Compare the \TU/lmtt/m/n/10 val_batch_labels.
 jpg \TU/lmr/m/n/10 with \TU/lmtt/m/n/10 val_batch_pred.jpg\TU/lmr/m/n/10 ,
  []
@@ -1271,7 +1260,7 @@ jpg \TU/lmr/m/n/10 with \TU/lmtt/m/n/10 val_batch_pred.jpg\TU/lmr/m/n/10 ,
 ]
 Chapter 3.
 
-Overfull \hbox (8.64001pt too wide) in paragraph at lines 393--398
+Overfull \hbox (8.64001pt too wide) in paragraph at lines 392--397
 \TU/lmtt/m/n/10 use-a-detector \TU/lmr/m/n/10 3. \TU/lmtt/m/n/10 interpret-raw-
 detections \TU/lmr/m/n/10 4. \TU/lmtt/m/n/10 post-processing-pipeline 
  []
@@ -1283,12 +1272,12 @@ Underfull \vbox (badness 7064) has occurred while \output is active []
 File: images/confthresholdHistogram.png Graphic file (type bmp)
 <images/confthresholdHistogram.png>
 
-Overfull \hbox (2666.49075pt too wide) in paragraph at lines 430--430
+Overfull \hbox (2666.49075pt too wide) in paragraph at lines 429--429
 [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 1542.1546pt on input line 431.
+LaTeX Warning: Float too large for page by 1542.1546pt on input line 430.
 
 (_main.bbl [19] [20]) [21
 
