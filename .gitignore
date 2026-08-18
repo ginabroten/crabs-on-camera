@@ -21,7 +21,7 @@ data/kfold
 
 use-a-crab-detector/stresstest
 # Script outputs (YOLO exports, etc.. )
-
+use-a-crab-detector/data/test_predictions
 create-a-crab-detector/.ipynb_checkpoints/
 create-a-crab-detector/runs/
 create-a-crab-detector/*.pt
