@@ -18,19 +18,23 @@ Recommended running order:
 
 ## Before running the detector - independent test set
 
-Often described as the gold standard for evaluating a trained models performance, and applied after a model is fully trained. In this instance, its purpose is rather to evaluate the models "compatibility" with the data its going to predict on. All this is done in the script `get-ready-to-use-a-crab-detector`.
+Often described as the gold standard for evaluating a trained models performance, and applied after a model is fully trained to assess the ability of the model to generalize, and its ability to detect general features of crabs rather than memorizing its training data [@biscarini_deep_2026. In this instance, its purpose is rather to evaluate the models "compatibility" with the data its going to predict upon. The model will predict on a small annotated dataset, and the predictions will be compared to the annotations. All this is done in the script `get-ready-to-use-a-crab-detector`.
 
-To start, you will need a fully annotated dataset, it does not need to be big, and is often around 10 - 25% of the available data. This data needs to be annotated, exported as COCO 1.0, and put in the folders, `use-a-crab-detector/data/test_predictions` prior to running the script.
+### Setup an collecting predictions (Chunk 0 -- 2)
+To start, you will need a fully annotated dataset, it does not need to be big, and is often around 10 -- 25% of the available data. This data needs to be annotated (look in `create-a-crab-deetctor/setup-scripts-optional` for scripts to collect frames for annotation and predictions and for annotation setup), exported as COCO 1.0, and put in the folders, `use-a-crab-detector/data/test_predictions` prior to running the script. Make sure the paths are correct, if applying another model. 
 
-Likewise to the data processing pipeline performed in `raw_to_yolo` the annotations are converted, and only the crab annotations are kept. The scrips logic for grouping is still based on the naming convention as previously mentioned, if the dataset uses another naming convention the code needs to be readjusted. 
+Likewise to the data processing pipeline performed in `raw_to_yolo` the annotations are converted from RLE-masks to bounding boxes, and only the crab annotations are kept. The scrips logic for grouping is still based on the naming convention as previously mentioned, if the dataset uses another naming convention the code needs to be readjusted. The model will then predict on the dataset assigned, these are saved in `use-a-crab-detector/data/test_predictions/predictions.json`.
 
-If the mAp is close to 0.7 rnage it means its alligned
+### Comparing model predictions to human ground truth (Chunk 3 -- 6)
 
-The script handles the comparison between the predicted bounding boxes to the individual annotated boxes frame by frame, the script summarizes crab counts per BRUV stations using MaxN and MeanN.
+First the per stations maxN, meanN and total crab count from the human-anotated test set is collected, this is the ground truth the predictions are compared against, then the same is done for the models predictions. Duplicated bounding boxes (two bounding boxes overlapping) are removed, and every image at a station is counted even when the model found nothing. 
 
-As the model predicts it assigns a confidence score to the prediction from 0 -- 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce retains more true predictions but introduces noise. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing. 
+As the model predicts it assigns a confidence score to the prediction from 0 -- 1 based on how sure it is, the confidence threshold for predictions can be adjusted. High confidence thresholds keeps only the models most certain predictions (fewer false detections, but real crabs might be missed), wheras low confidence thresholds introduce introduces noise but retains more predictions. Because there is no single correct threshold, the script evaluates several thresholds (none, 0.5 and 0.75 by default) so you can see the trade-off rather than guessing. 
 
-In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detections, this is covered in the post-processing-pipeline. To ruther understay what features drove the detector to make a prediction, a Grad-CAM analysis can be performed, which produces a heatmap highighting important areas for detection. For YOLOV8 layer C21 is good. 
+The script saves two things: `threshold_summary.csv`, with one row per threshold
+giving the total crab count and average maxN/meanN for both the human annotator alongside three bar charts (`total_crabs_by_station.png`, `maxN_by_station.png`, `meanN_by_station.png`) comparing the human truth against the model at each threshold.
+
+In the thesis, this comparison highlighted that neither a low or a high threshold was able to give an accurate MaxN prediction and highlighting the need for a more flexible solution for interpreting the detentions, this is covered in the post-processing-pipeline. To ruther understand what features drove the detector to make a prediction, a Grad-CAM analysis can be performed, which produces a heatmap highlighting important areas for detection.
 
 ## Running the detector 
 

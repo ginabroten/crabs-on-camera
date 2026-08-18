@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  17 AUG 2026 15:42
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  18 AUG 2026 13:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1266,37 +1266,78 @@ detections \TU/lmr/m/n/10 4. \TU/lmtt/m/n/10 post-processing-pipeline
  []
 
 [17]
-Underfull \vbox (badness 7064) has occurred while \output is active []
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
+\TU/lmr/m/n/10 annotated (look in \TU/lmtt/m/n/10 create-a-crab-deetctor/setup-
+scripts-optional
+ []
+
+
+Underfull \hbox (badness 3557) in paragraph at lines 404--405
+\TU/lmr/m/n/10 for scripts to collect frames for annotation and predictions and
+ for
+ []
+
+
+Underfull \hbox (badness 3657) in paragraph at lines 404--405
+\TU/lmr/m/n/10 annotation setup), exported as COCO 1.0, and put in the folders,
+
+ []
+
+
+Underfull \hbox (badness 1009) in paragraph at lines 406--407
+[]\TU/lmr/m/n/10 Likewise to the data processing pipeline performed in \TU/lmtt
+/m/n/10 raw_to_yolo \TU/lmr/m/n/10 the
+ []
+
+
+Underfull \hbox (badness 4378) in paragraph at lines 406--407
+\TU/lmr/m/n/10 annotations are converted from RLE-masks to bounding boxes, and
+ []
+
+
+Underfull \hbox (badness 1286) in paragraph at lines 406--407
+\TU/lmr/m/n/10 only the crab annotations are kept. The scrips logic for groupin
+g is
+ []
+
+
+Underfull \hbox (badness 2005) in paragraph at lines 406--407
+\TU/lmr/m/n/10 still based on the naming convention as previously mentioned, if
+ the
+ []
 
 [18]
+Underfull \vbox (badness 6526) has occurred while \output is active []
+
+[19]
 File: images/confthresholdHistogram.png Graphic file (type bmp)
 <images/confthresholdHistogram.png>
 
-Overfull \hbox (2666.49075pt too wide) in paragraph at lines 429--429
+Overfull \hbox (2666.49075pt too wide) in paragraph at lines 434--434
 [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 1542.1546pt on input line 430.
+LaTeX Warning: Float too large for page by 1542.1546pt on input line 435.
 
-(_main.bbl [19] [20]) [21
+(_main.bbl [20] [21] [22
 
-] (_main.aux)
+]) [23] (_main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 20439 strings out of 409617
- 363952 string characters out of 5778276
+ 20441 strings out of 409617
+ 364056 string characters out of 5778276
  1934191 words of memory out of 5000000
- 42250 multiletter control sequences out of 15000+600000
+ 42252 multiletter control sequences out of 15000+600000
  564634 words of font info for 91 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  90i,10n,120p,1389b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _main.pdf (21 pages).
+Output written on _main.pdf (23 pages).
 
 ! miktex-dvipdfmx: major issue: So far, no MiKTeX administrator has checked for updates.
 ! xelatex: major issue: So far, no MiKTeX administrator has checked for updates.
