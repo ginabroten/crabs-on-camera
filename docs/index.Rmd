@@ -67,6 +67,8 @@ To run the scripts, clone a copy of the repository to a local folder or server, 
 
 To identify and quantify crabs in the videos, this project uses the object detection framework "You Only Look Once" (YOLO), specifically version 8 [@jocher_ultralytics_2023], which builds on the original YOLO architecture introduced by Redmon et al. [-@redmon_you_2016]. Several object detection frameworks, including newer YOLO versions, could have been used instead. YOLOv8 was chosen because it is well documented and its common issues are well known, which makes it easier to troubleshoot for beginners in machine learning.
 
+A glossary for all terms can be found in Chapter 4.
+
 ### Data
 
 The repo only ships a small example/test dataset (`data/annotations/test_subset`) so the scripts can be run and verified without downloading everything. The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from ten Baited Remote Underwater Video (BRUV) stations. For more stats about the annotation composition, run  `annotation_stats`.

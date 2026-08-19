@@ -3,9 +3,7 @@
 The folder `create-a-crab-detector` contains sripts and datasets which makes its possible to go from raw annotations to a trained YOLO-model. The first script
 (`1-raw-to-yolo.ipnb`) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation. 
 
-If you're applying this dataset to other than the shipped example, keep in mind (but not limited to)
-- File paths: `CONFIG` needs to point at your own annotation JSON and image folder.
-- Stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn't apply to your data, this step may need adjusting or turning off (see Chunk 9).
+If you're applying this dataset to other than the shipped example, keep in mind (but not limited to); file paths: `CONFIG` needs to point at your own annotation JSON and image folder, and stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn't apply to your data, this step may need adjusting or turning off (see Chunk 9).
 
 By the end of the script, each image has a matching `.txt` file listing its bounding box annotations (or an empty file, if there's no crab in it), organized into five train/validation folds ready for object detection training.
 
