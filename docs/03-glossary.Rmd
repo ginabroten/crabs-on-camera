@@ -1,0 +1,19 @@
+# Glossary
+
+- **Object detection**: a computer vision task where a model finds where objects are in an image and identifies what they are — in this project, locating and identifying crabs in video frames.
+- **Bounding box**: a rectangular region defined by four coordinates that encloses a specific object within an image or frame.
+- **RLE mask** (Run-Length Encoded mask): a pixel-by-pixel outline of an object's exact shape, stored in a compressed format — this is how the original CVAT annotations are drawn, before being converted to bounding boxes.
+- **Annotation**: a label marking an object within an image — in CVAT, drawn as a mask or box around each crab.
+- **Label**: the concrete tag applied to an annotation — in this context, species (e.g. cod).
+- **Class**: the abstract category an object belongs to — in this context, species group/family (e.g. gadoid).
+<!-- TODO: double-check Label vs Class against the code before finalizing -- in raw_to_yolo.ipynb, `ann.label`/`target_label` refers to the broad CVAT category (e.g. "Decapods"), while the specific species is stored separately as a `species` attribute. Worth either swapping which term maps to which, or adding a line noting this. -->
+- **IoU** (Intersection over Union): a measure of how much two boxes overlap, used both to remove duplicate boxes during annotation cleanup and later as an evaluation metric.
+- **Fold**: one of the K train/validation splits created during K-fold cross-validation.
+- **K-fold cross-validation**: splitting the dataset into K equal-sized groups ("folds"). In each round, one fold is held out for validation while the model trains on the rest, repeated K times so every image gets used for both training and validation, just never in the same round. Example: with 5-fold cross-validation, the model is trained and validated 5 separate times, each on a different split, so results don't depend on one lucky (or unlucky) train/validation split.
+- **Stratified sampling**: splitting data so each subset keeps roughly the same proportion of a key category as the full dataset. Example: if 30% of all images contain a crab, stratified sampling makes sure each fold's train and validation sets are also close to 30% crab-present, instead of one fold accidentally ending up almost entirely empty frames.
+- **Station leakage**: when images from the same BRUV station appear in both the training and validation sets, letting the model partly be tested on footage from a site it already trained on, this project's K-fold export explicitly prevents it by grouping all images from a station together.
+- **Negative example / empty frame**: a frame with no crab in it, deliberately kept in the dataset (rather than discarded) because training on empty frames alongside crab-present ones has been shown to improve performance.
+- **Ground truth**: the human-annotated "correct answer" (the CVAT masks/boxes) that a model's predictions are compared against.
+- **YAML**: a plain-text file format for configuration settings, structured by indentation rather than punctuation: used here to tell the training script where the data lives and what classes to detect.
+
+
