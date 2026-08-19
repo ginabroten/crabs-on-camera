@@ -30,4 +30,7 @@ create-a-crab-detector/data/kfold/
 create-a-crab-detector/data/training_runs/
 runs/
 
+# analysis of newly predicted data
+/extras
+
 
