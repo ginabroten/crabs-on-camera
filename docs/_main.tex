@@ -106,9 +106,11 @@
 
 \section{Project and repository aims}\label{project-and-repository-aims}
 
-The basis of this project is rooted in the work done in the masters thesis by Brøten \citeyearpar{broten_crabs_2026}. The aim of the project was to improve monitoring of the data-limited brown crab (\emph{Cancer pagurus}) stock in Norway using machine learning and underwater video surveys.
+The basis of this project is rooted in the work done in the masters thesis by Brøten \citeyearpar{broten_crabs_2026}. The aim of the project was to improve monitoring of the data-limited brown crab (\emph{Cancer pagurus}) stock in Norway using machine learning and underwater video surveys. With the scripts and methods applied in this repository you can: 1. create your own detector for crab; 2. apply either the pretrained crab detector, or your own.
 
 The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.
+
+AI tools were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
 \section{About the repository}\label{about-the-repository}
 
@@ -146,82 +148,32 @@ crabs-on-camera/
 
 Everything needed to reproduce the pipeline lives in three places: \texttt{data/} holds a small data set you can run the scripts against immediately, \texttt{script/}holds the actual pipeline as a series of notebooks, and \texttt{docs/} is the code documentation.
 
-To try it yourself, clone this repository, either on your own computer for the small example dataset, or on a server with GPU access if you plan to train on a larger dataset.
-
-AI tools (large language models) were used throughout this repository to help generate code, fix syntax, and clean up errors.
-
-\section{Glossary}\label{glossary}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Object detection}: a computer vision task where a model finds where objects are in an image and identifies what they are --- in this project, locating and identifying crabs in video frames.
-\item
-  \textbf{Bounding box}: a rectangular region defined by four coordinates that encloses a specific object within an image or frame.
-\item
-  \textbf{RLE mask} (Run-Length Encoded mask): a pixel-by-pixel outline of an object's exact shape, stored in a compressed format --- this is how the original CVAT annotations are drawn, before being converted to bounding boxes.
-\item
-  \textbf{Annotation}: a label marking an object within an image --- in CVAT, drawn as a mask or box around each crab.
-\item
-  \textbf{Label}: the concrete tag applied to an annotation --- in this context, species (e.g.~cod).
-\item
-  \textbf{Class}: the abstract category an object belongs to --- in this context, species group/family (e.g.~gadoid).
-\item
-  \textbf{IoU} (Intersection over Union): a measure of how much two boxes overlap, used both to remove duplicate boxes during annotation cleanup and later as an evaluation metric.
-\item
-  \textbf{Fold}: one of the K train/validation splits created during K-fold cross-validation.
-\item
-  \textbf{K-fold cross-validation}: splitting the dataset into K equal-sized groups (``folds''). In each round, one fold is held out for validation while the model trains on the rest, repeated K times so every image gets used for both training and validation, just never in the same round. Example: with 5-fold cross-validation, the model is trained and validated 5 separate times, each on a different split, so results don't depend on one lucky (or unlucky) train/validation split.
-\item
-  \textbf{Stratified sampling}: splitting data so each subset keeps roughly the same proportion of a key category as the full dataset. Example: if 30\% of all images contain a crab, stratified sampling makes sure each fold's train and validation sets are also close to 30\% crab-present, instead of one fold accidentally ending up almost entirely empty frames.
-\item
-  \textbf{Station leakage}: when images from the same BRUV station appear in both the training and validation sets, letting the model partly be tested on footage from a site it already trained on, this project's K-fold export explicitly prevents it by grouping all images from a station together.
-\item
-  \textbf{Negative example / empty frame}: a frame with no crab in it, deliberately kept in the dataset (rather than discarded) because training on empty frames alongside crab-present ones has been shown to improve performance.
-\item
-  \textbf{Ground truth}: the human-annotated ``correct answer'' (the CVAT masks/boxes) that a model's predictions are compared against.
-\item
-  \textbf{YAML}: a plain-text file format for configuration settings, structured by indentation rather than punctuation: used here to tell the training script where the data lives and what classes to detect.
-\end{itemize}
-
 \section{Before running the scripts}\label{before-running-the-scripts}
 
 \subsection{Prerequisites}\label{prerequisites}
 
-All packages required for data transformation and object detection training are open-source and freely available.
+To run the scripts, clone a copy of the repository to a local folder or server, depending on the amounts of data is going to be processed. A server with GPU access is recommended if you plan to train on a large dataset, the small example datasets shipped with this repository can be run locally without one. To run the scripts multiple IDEs are possible, such as VS Studio Code. Python needs to be downloaded, the scripts are primarily jupyter notebooks, which follow a similar structure as .rmd documents with chunks. At the start of both initial scrips in the repository, checks for missing packages and installs them. All packages required for the script to run is freely available and open-source.
 
 To identify and quantify crabs in the videos, this project uses the object detection framework ``You Only Look Once'' (YOLO), specifically version 8 \citep{jocher_ultralytics_2023}, which builds on the original YOLO architecture introduced by Redmon et al. \citeyearpar{redmon_you_2016}. Several object detection frameworks, including newer YOLO versions, could have been used instead. YOLOv8 was chosen because it is well documented and its common issues are well known, which makes it easier to troubleshoot for beginners in machine learning.
 
-Python must be installed. \texttt{raw\_to\_yolo.ipynb} checks for missing packages and installs them automatically (see Chunk 0).
-
-A server with GPU access is recommended if you plan to train on a large dataset --- the small example dataset shipped with this repo can be run locally without one.
-
-If you want to train a detector on your own data, you'll need an annotated dataset structured the same way as the example dataset: an \texttt{annotations} folder containing the CVAT/COCO export (\texttt{instances\_default.json}), and an \texttt{images/default} folder containing the matching image files.
+A glossary for all terms can be found in Chapter 4.
 
 \subsection{Data}\label{data}
 
-The repo only ships a small example/test dataset (\texttt{data/annotations/test\_subset}) so the scripts can be run and verified without downloading everything.
-
-The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from ten Baited Remote Underwater Video (BRUV) stations. For more stats about the annotation composition, run \texttt{annotation\_stats}.
-
-Annotations are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups).
-
-The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler.
+The repository ships two example datasets so the scripts can be run and verified without applying new data. The both of the datasets are from Institute of Marine Research inshore gill-and fyke-net survey conducted in 2025 \& 2026. The datasets are image frames collected from Baited Remote Underwater Videos (BRUVs), alongside annotations which are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups). The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler.
 
 E.g,. \textbf{NO\_2025\_3007\_GarnRuse\_Lovund\_LO3\_RA1\_L9\_frame\_9}, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse survey (gill- and fyke-net), the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9. So if you are applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions.
 
-If you are annotating your own dataset, a .JSON file for the structure applied in this annotation process can be found in (\texttt{script/annotation\_format}). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten \citeyearpar{broten_crabs_2026}.
+To collect frames for annotations, an example script is in the repo (\texttt{script/setup-scripts-optional/extract\_frames}). Likewise a .JSON file for the structure applied in this annotation process can be found in (\texttt{script/setup-scripts-optional/annotation\_format}). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten \citeyearpar{broten_crabs_2026}.
 
 \chapter{Create a crab detector}\label{create-a-crab-detector}
 
 The folder \texttt{create-a-crab-detector} contains sripts and datasets which makes its possible to go from raw annotations to a trained YOLO-model. The first script
 (\texttt{1-raw-to-yolo.ipnb}) takes raw CVAT annotations and turns them into a dataset ready for training an YOLO object detection model: RLE mask are converted into bounding boxes, and the data is split into five stratified folds for cross-validation.
 
-If you're applying this dataset to other than the shipped example, keep in mind (but not limited to)
-- File paths: \texttt{CONFIG} needs to point at your own annotation JSON and image folder.
-- Stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn't apply to your data, this step may need adjusting or turning off (see Chunk 9).
+If you're applying this dataset to other than the shipped example, keep in mind (but not limited to); file paths: \texttt{CONFIG} needs to point at your own annotation JSON and image folder, and stratified sampling for the k-folds, this assumes your images can be grouped by BRUV station and labeled crab-present/empty; if that doesn't apply to your data, this step may need adjusting or turning off (see Chunk 9).
 
-By the end of the script, each image has a matching \texttt{.txt} file listing its bounding box annotations (or an empty file, if there's no crab in it), organized into five train/validation folds ready for object detection training.
+By the end of the script, each image should have a matching \texttt{.txt} file listing its bounding box annotations (or an empty file, if there's no crab in it), organized into five train/validation folds ready for object detection training.
 
 \section{From raw annotations to a YOLO model}\label{from-raw-annotations-to-a-yolo-model}
 
@@ -230,37 +182,33 @@ By the end of the script, each image has a matching \texttt{.txt} file listing i
 
 These chunks handle setup: installing any missing Python packages, loading the required libraries, and locating your dataset. They should run without errors, if Chunk 3 can't find your annotation file or image folder, double check the paths.
 
-If you're using your own dataset, update \texttt{CONFIG} in Chunk 2 with the correct paths to your annotation JSON and image folder.
-
 \subsection*{2. Converting masks to bounding boxes (Chunk 4)}\label{converting-masks-to-bounding-boxes-chunk-4}
 \addcontentsline{toc}{subsection}{2. Converting masks to bounding boxes (Chunk 4)}
 
-RLE masks are precise, but training directly on them takes more compute time and is really built for image segmentation, not simple object detection. Since the goal here is just to find and count crabs (not trace their exact outline), converting to bounding boxes is the better trade-off: they're faster to train on, and sufficient for detection.
+RLE masks are precise, but training directly on them takes more compute time and is really built for image segmentation, not simple object detection. Since the goal here is just to find and count crabs (not trace their exact outline), converting to bounding boxes is the better trade-off as they're faster to train on, and sufficient for detection. RLE masks are faster to draw as the annotation program utlized for the example datasets, Computer Vision Annotation Tool (CVAT;Sekachev,2020) applies Segment Anything Model 2 from META \citep{ravi_sam_2024} which makes the annotation process much faster than drawing traditional bounding boxes.
 
-RLE masks are also faster to draw in the first place, CVAT's Segment Anything--powered tool makes what's normally a tedious annotation process quicker.
-
-This chunk converts each RLE mask into a tightly-fitted bounding box, and normalizes the box coordinates to the 0--1 range YOLO expects. Two filters are applied at the same time: annotations for any species other than Decapod: crab are discarded, and overlapping duplicate boxes (drawn twice for the same crab) are reduced to one.
+This chunk converts each RLE mask into a tightly-fitted bounding box, and normalizes the box coordinates to the 0---1 range YOLO expects. Two filters are applied at the same time: annotations for any species other than decapod: crab are discarded, and overlapping duplicate boxes (drawn twice for the same crab) are reduced to one.
 
 \subsection*{3. Linking images to annotations (Chunk 5)}\label{linking-images-to-annotations-chunk-5}
 \addcontentsline{toc}{subsection}{3. Linking images to annotations (Chunk 5)}
 
-Links each annotation to its actual image file, matching by filename. If you're using your own dataset, make sure image filenames match the identifiers in your annotation JSON exactly, any mismatches get reported as ``unmatched,'' usually caused by a typo, a renamed file, or an image missing from the folder.
+Links each annotation to its actual image file, matching by filename, again make sure image filenames match the identifiers in the annotation JSON exactly, any mismatches get reported as ``unmatched,'' usually caused by a typo, a renamed file, or an image missing from the folder.
 
-Note: frames with no crab in them (negative examples) are deliberately kept in the dataset rather than discarded, training on empty frames as well as crab-present ones has been shown to improve performance {[}tror sorrenti er riktig kilde{]}. These get an empty \texttt{.txt} label file later, once the data is exported (Chunk 9).
+Note: frames with no crab in them (negative examples) are deliberately kept in the dataset rather than discarded, training on empty frames as well as crab-present ones has been shown to improve performance \citep{sorrenti_weakly_2025}. These get an empty \texttt{.txt} label file later, once the data is exported (Chunk 9).
 
 \subsection*{4. Visual quality checks (Chunk 6 -- 7)}\label{visual-quality-checks-chunk-6-7}
 \addcontentsline{toc}{subsection}{4. Visual quality checks (Chunk 6 -- 7)}
 
 These chunks are a visual quality check, not a processing step, and nothing here changes the data. Chunk 6 displays the first annotated image with its converted bounding box overlaid: every crab should have a red box tightly wrapping it, with no gaps or extra boxes.
 
-Chunk 7 goes further, placing the original RLE mask and the converted bounding box for the same crab side by side, so you can visually confirm the conversion in Chunk 4 didn't distort or misplace anything before relying on it for training.
+Chunk 7 places the original RLE mask and the converted bounding box for the same crab side by side, to visually confirm the conversion in Chunk 4 didn't distort or misplace anything before relying on it for training.
 
 \subsection*{5. Location and station helpers (Chunk 8)}\label{location-and-station-helpers-chunk-8}
 \addcontentsline{toc}{subsection}{5. Location and station helpers (Chunk 8)}
 
-Filenames encode which location and BRUV station each image came from, but that information isn't stored as a separate field anywhere, it has to be pulled out of the filename itself. This chunk does that: \texttt{extract\_location} reads out the site name (e.g.~``Lovund''), and \texttt{extract\_bruv\_id} reads out the specific station ID (e.g.~``LO3''). It also prints a quick summary: how many images come from each location, and how many of those are crab-present versus empty, worth a glance to check whether your dataset is skewed toward a few sites, since that affects how balanced the folds can be.
+Filenames encode which location and BRUV station each image came from, but that information isn't stored as a separate field anywhere, it has to be pulled out of the filename itself. This chunk does that: \texttt{extract\_location} reads out the site name (e.g.~``Lovund''), and \texttt{extract\_bruv\_id} reads out the specific station ID (e.g.~``LO3''). It also prints a quick summary: how many images come from each location, and how many of those are crab-present versus empty, worth a glance to check whether the dataset is skewed toward a few sites, since that affects how balanced the folds can be.
 
-If you're using your own dataset with a different filename convention, these two functions will need to be adjusted to match your naming pattern (see the Data section for the convention this project uses).
+If applying another dataset with a different naming logic, these two functions will need to be adjusted to match the naming pattern (see Section \ref{data}.
 
 \subsection*{6. Splitting into stratified, grouped folds (Chunk 9)}\label{splitting-into-stratified-grouped-folds-chunk-9}
 \addcontentsline{toc}{subsection}{6. Splitting into stratified, grouped folds (Chunk 9)}
@@ -299,21 +247,21 @@ along with a \texttt{master\_dataset.yaml}, a small reference file at the top le
 
 Once this runs cleanly, no station-overlap warnings, and a crab/empty ratio that looks reasonable in the fold summary, the data is ready for training in \texttt{train.ipynb}.
 
-A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced - and we can expect that the folds that look more unbalanced will perform worse than the others. Now you are ready to train!
+A caveat is that with this limited dataset of only ten stations, we are not expecting the folds to be perfectly balanced, and it is expected that the folds that look more unbalanced will perform worse than the others. Now the dataset is ready for training!
 
 \section{Training the crab detector}\label{training-the-crab-detector}
 
-This script (\texttt{train.ipynb}) takes the five-fold dataset produced by \texttt{raw\_to\_yolo.ipynb} and trains a YOLOv8 object detector on it, one model per fold, so performance can be evaluated across several independent train/validation splits rather than trusting a single one.
+This script (\texttt{train.ipynb}) takes the five-fold dataset produced by \texttt{1-raw\_to\_yolo.ipynb} and trains a YOLOv8 object detector on it, one model per fold, so performance can be evaluated across several independent train/validation splits rather than trusting a single one.
 
 \subsection*{1. Setup (Chunk 1)}\label{setup-chunk-1}
 \addcontentsline{toc}{subsection}{1. Setup (Chunk 1)}
 
-This chunk locates the repository (the same \texttt{find\_repo\_root()} approach used in \texttt{raw\_to\_yolo.ipynb}, so paths work the same whether you're running this on a laptop or a server), sets up where training output gets written, and checks that a GPU is available. Training a model like this on a CPU is impractically slow, so this check is worth paying attention to: if \texttt{CUDA\ available:\ False} prints here, stop and sort out the GPU setup before continuing rather than letting a full training run crawl for days.
+This chunk locates the repository (the same \texttt{find\_repo\_root()} approach used in \texttt{1-raw\_to\_yolo.ipynb}, so paths work the same whether its running on a laptop or a server), sets up where training output gets written, and checks that a GPU is available. Training a model like this on a CPU is impractically slow, so this check is worth paying attention to: if \texttt{CUDA\ available:\ False} prints here, stop and sort out the GPU setup before continuing rather than letting a full training run crawl for days.
 
 \subsection*{2. Checking the folds (Chunk 2)}\label{checking-the-folds-chunk-2}
 \addcontentsline{toc}{subsection}{2. Checking the folds (Chunk 2)}
 
-Before spending hours training, this chunk verifies every fold from \texttt{raw\_to\_yolo.ipynb} is actually complete: that each fold has a readable \texttt{dataset.yaml}, and that the number of images and label files line up in both the train and validation sets. This is a safety gate, not a formality, training on a broken or incomplete fold wastes real compute time, so it's worth letting this fail loudly here rather than partway through a long run. Chunk 5 (the real training) refuses to start if this check doesn't pass.
+Before spending hours training, this chunk verifies every fold from \texttt{1-raw\_to\_yolo.ipynb} is actually complete: that each fold has a readable \texttt{dataset.yaml}, and that the number of images and label files line up in both the train and validation sets. This is a safety gate, not a formality, training on a broken or incomplete fold wastes real compute time, so it's worth letting this fail loudly here rather than partway through a long run. Chunk 5 (the real training) refuses to start if this check doesn't pass.
 
 \subsection*{3. Hyperparameters (Chunk 3)}\label{hyperparameters-chunk-3}
 \addcontentsline{toc}{subsection}{3. Hyperparameters (Chunk 3)}
@@ -441,6 +389,40 @@ This step is optional, but shows the workflow for removing likely false dete
 \section{Collecting results}\label{collecting-results}
 
 a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in species distribution models+
+
+\chapter{Glossary}\label{glossary}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Object detection}: a computer vision task where a model finds where objects are in an image and identifies what they are --- in this project, locating and identifying crabs in video frames.
+\item
+  \textbf{Bounding box}: a rectangular region defined by four coordinates that encloses a specific object within an image or frame.
+\item
+  \textbf{RLE mask} (Run-Length Encoded mask): a pixel-by-pixel outline of an object's exact shape, stored in a compressed format --- this is how the original CVAT annotations are drawn, before being converted to bounding boxes.
+\item
+  \textbf{Annotation}: a label marking an object within an image --- in CVAT, drawn as a mask or box around each crab.
+\item
+  \textbf{Label}: the concrete tag applied to an annotation --- in this context, species (e.g.~cod).
+\item
+  \textbf{Class}: the abstract category an object belongs to --- in this context, species group/family (e.g.~gadoid).
+\item
+  \textbf{IoU} (Intersection over Union): a measure of how much two boxes overlap, used both to remove duplicate boxes during annotation cleanup and later as an evaluation metric.
+\item
+  \textbf{Fold}: one of the K train/validation splits created during K-fold cross-validation.
+\item
+  \textbf{K-fold cross-validation}: splitting the dataset into K equal-sized groups (``folds''). In each round, one fold is held out for validation while the model trains on the rest, repeated K times so every image gets used for both training and validation, just never in the same round. Example: with 5-fold cross-validation, the model is trained and validated 5 separate times, each on a different split, so results don't depend on one lucky (or unlucky) train/validation split.
+\item
+  \textbf{Stratified sampling}: splitting data so each subset keeps roughly the same proportion of a key category as the full dataset. Example: if 30\% of all images contain a crab, stratified sampling makes sure each fold's train and validation sets are also close to 30\% crab-present, instead of one fold accidentally ending up almost entirely empty frames.
+\item
+  \textbf{Station leakage}: when images from the same BRUV station appear in both the training and validation sets, letting the model partly be tested on footage from a site it already trained on, this project's K-fold export explicitly prevents it by grouping all images from a station together.
+\item
+  \textbf{Negative example / empty frame}: a frame with no crab in it, deliberately kept in the dataset (rather than discarded) because training on empty frames alongside crab-present ones has been shown to improve performance.
+\item
+  \textbf{Ground truth}: the human-annotated ``correct answer'' (the CVAT masks/boxes) that a model's predictions are compared against.
+\item
+  \textbf{YAML}: a plain-text file format for configuration settings, structured by indentation rather than punctuation: used here to tell the training script where the data lives and what classes to detect.
+\end{itemize}
 
 \bibliography{book.bib,packages.bib}
 

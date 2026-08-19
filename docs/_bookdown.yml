@@ -1,6 +1,6 @@
 delete_merged_file: true
 output_dir: "."
-rmd_files: ["index.Rmd", "01-create-a-crab-detector.Rmd","02-use-a-crab-detector.Rmd", "03-glossary","07-references.Rmd"]
+rmd_files: ["index.Rmd", "01-create-a-crab-detector.Rmd","02-use-a-crab-detector.Rmd", "03-glossary.Rmd","07-references.Rmd"]
 language:
   ui:
     chapter_name: "Chapter "
