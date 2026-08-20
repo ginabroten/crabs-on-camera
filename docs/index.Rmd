@@ -8,15 +8,18 @@ bibliography: [book.bib, packages.bib]
 cover-image: images/cover.jpg
 link-citations: yes
 github-repo: "ginabroten/crabs-on-camera"
+notcite: '@sekachev_opencvcvat_2020'
 ---
 
 # Background
 
 ## Project and repository aims
 
-The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was to improve monitoring of the data-limited brown crab (*Cancer pagurus*) stock in Norway using machine learning and underwater video surveys.
+The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was to improve monitoring of the data-limited brown crab (*Cancer pagurus*) stock in Norway using machine learning and underwater video surveys. With the scripts and methods applied in this repository you can: 1. create your own detector for crab; 2. apply either the pretrained crab detector, or your own. 
 
 The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.
+
+AI tools were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
 ## About the repository
 
@@ -53,28 +56,20 @@ crabs-on-camera/
 ```
 Everything needed to reproduce the pipeline lives in three places: `data/` holds a small data set you can run the scripts against immediately, `script/`holds the actual pipeline as a series of notebooks, and `docs/` is the code documentation.
 
-To try it yourself, clone this repository, either on your own computer for the small example dataset, or on a server with GPU access if you plan to train on a larger dataset.
-
-AI tools (large language models) were used throughout this repository to help generate code, fix syntax, and clean up errors.
-
-
-
 ## Before running the scripts
 
 ### Prerequisites
 
-To run the scripts, clone a copy of the repository to a local folder or server, depending on the amounts of data is going to be processed. A server with GPU access is recommended if you plan to train on a large dataset, the small example datasets shipped with this repo can be run locally without one. To run the scripts mulitple IDEs are possible, such as VS Studio. Python needs to be downloaded, the scripts are primarily jupyter notebooks, which follow a smiliar structure as .rmd documents with chunks. At the start of both inital scrips in the repos, checks for missing packages and installs them. All packages required for the script to run is freely available and open-source.
+To run the scripts, clone a copy of the repository to a local folder or server, depending on the amounts of data is going to be processed. A server with GPU access is recommended if you plan to train on a large dataset, the small example datasets shipped with this repository can be run locally without one. To run the scripts multiple IDEs are possible, such as VS Studio Code. Python needs to be downloaded, the scripts are primarily jupyter notebooks, which follow a similar structure as .rmd documents with chunks. At the start of both initial scrips in the repository, checks for missing packages and installs them. All packages required for the script to run is freely available and open-source.
 
 To identify and quantify crabs in the videos, this project uses the object detection framework "You Only Look Once" (YOLO), specifically version 8 [@jocher_ultralytics_2023], which builds on the original YOLO architecture introduced by Redmon et al. [-@redmon_you_2016]. Several object detection frameworks, including newer YOLO versions, could have been used instead. YOLOv8 was chosen because it is well documented and its common issues are well known, which makes it easier to troubleshoot for beginners in machine learning.
 
 A glossary for all terms can be found in Chapter 4.
 
-### Data
+### Data {#data}
 
-The repo only ships a small example/test dataset (`data/annotations/test_subset`) so the scripts can be run and verified without downloading everything. The dataset used here for testing is from the Institute of Marine Research inshore gill- and fyke-net survey conducted in 2025. The material is from ten Baited Remote Underwater Video (BRUV) stations. For more stats about the annotation composition, run  `annotation_stats`.
-
-Annotations are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups). The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler. 
+The repository ships two example datasets so the scripts can be run and verified without applying new data. The both of the datasets are from Institute of Marine Research inshore gill-and fyke-net survey conducted in 2025 & 2026. The datasets are image frames collected from Baited Remote Underwater Videos (BRUVs), alongside annotations which are exported from CVAT, as a .JSON file, which is a plain text file storing structured data, in this case annotations, and such as categories (here these are species groups). The images are labelled with multiple identifiers to make analysis and stratified sampling later simpler. 
 
 E.g,. **NO_2025_3007_GarnRuse_Lovund_LO3_RA1_L9_frame_9**, is collected in Norway, in 2025 on the 30.07 on the Garn and Ruse survey (gill- and fyke-net), the location name is Lovund, and is station number is LO3, and the BRUV-rig used is L9, and this is video number 9 from the left camera (L9), and is frame number 9. So if you are applying another type of video-survey or other naming logic please be mindful, though its possible to turn off this stratified sampling in the functions.
 
-To collect frames for annotations, an example script is in the repo (`script/setup-scripts-optional/extract_frames`). If you are annotating a dataset to apply, a .JSON file for the structure applied in this annotation process can be found in (`script/setup-scripts-optional/annotation_format`). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten [-@broten_crabs_2026].
+To collect frames for annotations, an example script is in the repo (`script/setup-scripts-optional/extract_frames`). Likewise a .JSON file for the structure applied in this annotation process can be found in (`script/setup-scripts-optional/annotation_format`). For more in depth information about the sampling methods and areas, annotation choices and a discussion of methods can be found in Brøten [-@broten_crabs_2026].
