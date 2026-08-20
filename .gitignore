@@ -30,8 +30,13 @@ create-a-crab-detector/data/kfold/
 create-a-crab-detector/data/training_runs/
 runs/
 
+<<<<<<< Updated upstream
 # analysis of newly predicted data
 /extras
+=======
+# analysis files
+/analysis
+>>>>>>> Stashed changes
 
 
 use-a-crab-detector/data/videos/

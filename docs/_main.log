@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  19 AUG 2026 14:14
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  19 AUG 2026 15:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1253,18 +1253,18 @@ Underfull \vbox (badness 1253) has occurred while \output is active []
 [12] [13] [14]
 Missing character: There is no ̧ in font [lmroman10-regular]:mapping=tex-text;!
 
-Overfull \hbox (440.94005pt too wide) in paragraph at lines 310--324
+Overfull \hbox (440.94005pt too wide) in paragraph at lines 307--321
  [][] 
  []
 
 
-Overfull \hbox (31.73001pt too wide) in paragraph at lines 326--327
+Overfull \hbox (31.73001pt too wide) in paragraph at lines 323--324
 \TU/lmr/m/n/10 validation confirmations. In the folder \TU/lmtt/m/n/10 test_run
 s/models/fold1_yolov8s_100epochs\TU/lmr/m/n/10 ,
  []
 
 
-Overfull \hbox (14.78001pt too wide) in paragraph at lines 326--327
+Overfull \hbox (14.78001pt too wide) in paragraph at lines 323--324
 \TU/lmr/m/n/10 or any other fold. Compare the \TU/lmtt/m/n/10 val_batch_labels.
 jpg \TU/lmr/m/n/10 with \TU/lmtt/m/n/10 val_batch_pred.jpg\TU/lmr/m/n/10 ,
  []
@@ -1273,89 +1273,45 @@ jpg \TU/lmr/m/n/10 with \TU/lmtt/m/n/10 val_batch_pred.jpg\TU/lmr/m/n/10 ,
 
 ]
 Chapter 3.
-
-Overfull \hbox (8.64001pt too wide) in paragraph at lines 340--345
-\TU/lmtt/m/n/10 use-a-detector \TU/lmr/m/n/10 3. \TU/lmtt/m/n/10 interpret-raw-
-detections \TU/lmr/m/n/10 4. \TU/lmtt/m/n/10 post-processing-pipeline 
- []
-
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 352--353
-\TU/lmr/m/n/10 annotated (look in \TU/lmtt/m/n/10 create-a-crab-deetctor/setup-
-scripts-optional
+Overfull \hbox (40.14001pt too wide) in paragraph at lines 337--342
+\TU/lmtt/m/n/10 2-use-a-detector \TU/lmr/m/n/10 3. \TU/lmtt/m/n/10 3-interpret-
+raw-detections \TU/lmr/m/n/10 4. \TU/lmtt/m/n/10 4-post-processing-pipeline 
  []
 
-
-Underfull \hbox (badness 3557) in paragraph at lines 352--353
-\TU/lmr/m/n/10 for scripts to collect frames for annotation and predictions and
- for
- []
-
-
-Underfull \hbox (badness 3657) in paragraph at lines 352--353
-\TU/lmr/m/n/10 annotation setup), exported as COCO 1.0, and put in the folders,
-
- []
-
-
-Underfull \hbox (badness 1009) in paragraph at lines 354--355
-[]\TU/lmr/m/n/10 Likewise to the data processing pipeline performed in \TU/lmtt
-/m/n/10 raw_to_yolo \TU/lmr/m/n/10 the
- []
-
-
-Underfull \hbox (badness 4378) in paragraph at lines 354--355
-\TU/lmr/m/n/10 annotations are converted from RLE-masks to bounding boxes, and
- []
-
-
-Underfull \hbox (badness 1286) in paragraph at lines 354--355
-\TU/lmr/m/n/10 only the crab annotations are kept. The scrips logic for groupin
-g is
- []
-
-
-Underfull \hbox (badness 2005) in paragraph at lines 354--355
-\TU/lmr/m/n/10 still based on the naming convention as previously mentioned, if
- the
- []
-
-[18]
-Underfull \vbox (badness 6526) has occurred while \output is active []
-
-[19]
+[18] [19]
 File: images/confthresholdHistogram.png Graphic file (type bmp)
 <images/confthresholdHistogram.png>
 
-Overfull \hbox (2666.49075pt too wide) in paragraph at lines 382--382
+Overfull \hbox (2666.49075pt too wide) in paragraph at lines 375--375
 [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 1542.1546pt on input line 383.
+LaTeX Warning: Float too large for page by 1542.1546pt on input line 376.
 
 [20] [21] [22
 
 ]
 Chapter 4.
-[23] (_main.bbl [24]) [25
+[23] (_main.bbl [24] [25
 
-] (_main.aux)
+]) [26] (_main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 20447 strings out of 409617
- 364203 string characters out of 5778276
+ 20449 strings out of 409617
+ 364272 string characters out of 5778276
  1937191 words of memory out of 5000000
- 42258 multiletter control sequences out of 15000+600000
+ 42260 multiletter control sequences out of 15000+600000
  564634 words of font info for 91 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,10n,120p,1389b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,10n,120p,1390b,536s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _main.pdf (25 pages).
+Output written on _main.pdf (26 pages).
 
 ! miktex-dvipdfmx: major issue: So far, no MiKTeX administrator has checked for updates.
 ! xelatex: major issue: So far, no MiKTeX administrator has checked for updates.
