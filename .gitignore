@@ -40,3 +40,6 @@ runs/
 
 
 use-a-crab-detector/data/videos/
+
+# Interactive R Shiny interface (local dev tool, not part of the pipeline)
+crab-detector-shiny-app/
