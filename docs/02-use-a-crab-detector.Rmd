@@ -58,7 +58,7 @@ applied in thesis. The idea behind was based on visual observation of the behavi
 
 Occasionally the model produced many overlapping bounding boxes for the same individual crab. To address this, deduplication filters were applied within each individual frame with IoU. Pairwise IoU were calculated between all bounding boxes from model inference. Based on comparisons of multiple IoU thresholds, an IoU threshold of 0.3 was found to remove most overlapping bounding boxes, lower than 0.5 used in model evaluation, as the goal was to remove duplicate detections rather than assess accuracy. Only the largest bounding box (by area) was kept under the assumption that it was more likely to contain the entire crab (Figure \@ref(fig:duplicatebbox)).
 
-```{r duplicatebbox, out.width="100%", fig.cap=cap, fig.align='center'}
+```{r duplicatebbox, echo = FALSE,out.width="100%", fig.cap=cap, fig.align='center'}
 
 knitr::include_graphics("images/frame_1_NO_2024_0608_GarnRuse_Edoy_EN5_Ra7_L4_501068451_979.jpg")
 

@@ -20,7 +20,6 @@
   
   <meta name="twitter:image" content="/images/cover.jpg" />
 
-<meta name="author" content="Gina Brøten" />
 
 
 
@@ -145,7 +144,6 @@ div.csl-indent {
 <li class="chapter" data-level="3.3.2" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#checking-what-the-model-found"><i class="fa fa-check"></i><b>3.3.2</b> Checking what the model found</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#post-processing-pipeline"><i class="fa fa-check"></i><b>3.4</b> Post-processing-pipeline</a></li>
-<li class="chapter" data-level="3.5" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#collecting-results"><i class="fa fa-check"></i><b>3.5</b> Collecting results</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i><b>4</b> Glossary</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -171,14 +169,13 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Crabs on camera: project documentation</h1>
-<p class="author"><em>Gina Brøten</em></p>
 </div>
 <div id="background" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Background<a href="index.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="project-and-repository-aims" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Project and repository aims<a href="index.html#project-and-repository-aims" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The basis of this project is rooted in the work done in the masters thesis by Brøten <span class="citation">(<a href="#ref-broten_crabs_2026">2026</a>)</span>. The aim of the project was to improve monitoring of the data-limited brown crab (<em>Cancer pagurus</em>) stock in Norway using machine learning and underwater video surveys. With the scripts and methods applied in this repository you can: 1. create your own detector for crab; 2. apply either the pretrained crab detector, or your own.</p>
-<p>The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.</p>
+<p>The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications. A glossary is found in Chapter 4.</p>
 <p>AI tools were used throughout this repository to help generate code, fix syntax, and clean up errors.</p>
 </div>
 <div id="about-the-repository" class="section level2 hasAnchor" number="1.2">
@@ -193,21 +190,26 @@ div.csl-indent {
 │   │           ├── annotations/
 │   │           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
 │   │           └── images/default/               # the video frames those annotations belong to
-│   ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
-│   ├── annotation_stats.ipynb         # summary statistics on the annotation data
-│   ├── 2-train.ipynb                    # trains the YOLO model
-│   └── annotation_format              # template CVAT label schema, for annotating your own data
+│   └── script/
+│       ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
+│       ├── 2-train.ipynb                    # trains the YOLO model
+│       └── setup-scripts-optional/
+│           ├── annotation_stats.ipynb       # summary statistics on the annotation data
+│           ├── annotation_format/           # template CVAT label schema, for annotating your own data
+│           └── extract_frames/              # script for collecting frames for annotation
 ├── use-a-crab-detector/
 │   ├── model/
-│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt, last.pt)
+│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt)
 │   ├── data/
 │   │   ├── videos/                    # your own BRUV footage to run the detector on (not shipped)
 │   │   ├── predictions/               # raw detections and post-processing output, generated
+│   │   │   └── annotated_videos/      # optional annotated output videos, if SAVE_VIDEOS is enabled
 │   │   └── test_predictions/          # the independent test set: annotations, images, predictions, results
-│   ├── 3-interpret-raw-detections.ipynb      # interprets raw predictions
-│   ├── 4-post-processing-pipeline.ipynb     # removal of likel false detections and collect abundance info
-│   ├── 2-use-a-detector.ipynb            # runs the model on unseen material
-│   └── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│   └── script/
+│       ├── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│       ├── 2-use-a-detector.ipynb                     # runs the model on unseen material
+│       ├── 3-interpret-raw-detections.ipynb           # interprets raw predictions
+│       └── 4-post-processing-pipeline.ipynb           # removal of likely false detections and collect abundance info
 ├── docs/                              # this documentation
 └── README.md</code></pre>
 <p>Everything needed to reproduce the pipeline lives in three places: <code>data/</code> holds a small data set you can run the scripts against immediately, <code>script/</code>holds the actual pipeline as a series of notebooks, and <code>docs/</code> is the code documentation.</p>

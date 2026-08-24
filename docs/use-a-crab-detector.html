@@ -20,7 +20,6 @@
   
   <meta name="twitter:image" content="/images/cover.jpg" />
 
-<meta name="author" content="Gina Brøten" />
 
 
 
@@ -145,7 +144,6 @@ div.csl-indent {
 <li class="chapter" data-level="3.3.2" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#checking-what-the-model-found"><i class="fa fa-check"></i><b>3.3.2</b> Checking what the model found</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#post-processing-pipeline"><i class="fa fa-check"></i><b>3.4</b> Post-processing-pipeline</a></li>
-<li class="chapter" data-level="3.5" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#collecting-results"><i class="fa fa-check"></i><b>3.5</b> Collecting results</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i><b>4</b> Glossary</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -202,13 +200,12 @@ giving the total crab count and average maxN/meanN for both the human annotator 
 <h2><span class="header-section-number">3.3</span> Running the detector<a href="use-a-crab-detector.html#running-the-detector" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="applying-the-detector-to-new-footage" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Applying the detector to new footage<a href="use-a-crab-detector.html#applying-the-detector-to-new-footage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Once the crab-detector returned acceptable results on the independent testset, <code>apply-a-crab-detector</code> runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder containing the desired footage and desired model, its also possible to change the image size, hyperparamteres (though these should be close to the initial training setup) and confidence threshold.The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single <code>predictions.json</code> file.</p>
-<p>The confidence threshold is set to be deliberately low (0.1), hence the script is not deciding what counts as a “real” crab, just recording every prediction. The actual filtering, so choosing a confidence threshold and removing likely false detection happens in the next steps.</p>
-<p>Before running this on a large batch, it is worth checking that the video filenames march the expected deployment naming logic, the script reports how many unique deployments it found and flags any videos it could not match. By default this script only saves the detections and not annotated videos, to activate this there is a toggle in the scripts configuration to save a copy of each video with the predicted videos drawn in, off is the default since it adds significant disk use and processing time.</p>
+<p>Once the crab-detector returned acceptable results on the independent testset, <code>2-use.-crab-detector</code> runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder containing the desired footage and desired model, its also possible to change the image size, hyperparameters (though these should be close to the initial training setup) and confidence threshold. The script makes the detector predict roughly every second (matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single <code>predictions.json</code> file.</p>
+<p>The confidence threshold is set to be deliberately low (0.1), hence the script is not deciding what counts as a “real” crab, just recording every prediction. The actual filtering, so choosing a confidence threshold and removing likely false detection happens in the next steps. By default this script only saves the detections and not annotated videos, to activate this there is a toggle in the scripts configuration to save a copy of each video with the predicted videos drawn in, off is the default since it adds significant disk use and processing time.</p>
 </div>
 <div id="checking-what-the-model-found" class="section level3 hasAnchor" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Checking what the model found<a href="use-a-crab-detector.html#checking-what-the-model-found" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Before doing any real filtering, it is worth looking at what the detector actually predicted. <code>summarize_detections</code> reads the <code>predictions.json</code> file and reports the total number of detections, how many frames had at least one and how many detections fall above a couple confidence cutoffs (0.5 and 0.75 by default). It plots a histogram of the confidence score of every detection as a sanity check, and should (if you are applying the pretrained model) have a bimodal structure, with a high peak withing the lower end of confidence scores, and a second smaller peak with the higher scores (Figure <a href="use-a-crab-detector.html#fig:histpreds24">3.1</a>),</p>
+<p>Before doing any real filtering, it is worth looking at what the detector actually predicted. <code>3-interpret_detections</code> reads the <code>predictions.json</code> file and reports the total number of detections, how many frames had at least one and how many detections fall above a couple confidence cutoffs (0.5 and 0.75 by default). It plots a histogram of the confidence score of every detection as a sanity check, and should (if you are applying the pretrained model) have a bimodal structure, with a high peak withing the lower end of confidence scores, and a second smaller peak with the higher scores (Figure <a href="use-a-crab-detector.html#fig:histpreds24">3.1</a>),</p>
 <div class="figure"><span style="display:block;" id="fig:histpreds24"></span>
 <img src="images/confthresholdHistogram.png" alt="Distribution  of confidence scores for crab predictions generated by the object detection model on BRUV videos from the 2024 gill- and fyke-net survey (Brøten, 2026). A confidence score reflects how certain the model is in its prediction of a crab from 0 to 1, where 1 indicates the highest model certainty. Each prediction represents a detection within a single frame, and not necessarily a unique individual." width="1500" />
 <p class="caption">
@@ -219,11 +216,19 @@ Figure 3.1: Distribution of confidence scores for crab predictions generated by 
 </div>
 <div id="post-processing-pipeline" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Post-processing-pipeline<a href="use-a-crab-detector.html#post-processing-pipeline" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This step is optional, but shows the workflow for removing likely false dete</p>
+<p>This step is optional, but shows the workflow for removing likely false detections whilst maximizing the amount of true crab predictions beyoud what confidence thresholding alone could achevie in <code>4-post-processing-pipeline</code></p>
+<p>applied in thesis. The idea behind was based on visual observation of the behavior of the crab in the model aswell as the models predictions behavior. To maximize true crab detections beyond what confidence thresholding alone could achieve, a post-processing pipeline was developed based on visual inspection of model predictions and known crab behavior in the BRUV footage.</p>
+<p>Occasionally the model produced many overlapping bounding boxes for the same individual crab. To address this, deduplication filters were applied within each individual frame with IoU. Pairwise IoU were calculated between all bounding boxes from model inference. Based on comparisons of multiple IoU thresholds, an IoU threshold of 0.3 was found to remove most overlapping bounding boxes, lower than 0.5 used in model evaluation, as the goal was to remove duplicate detections rather than assess accuracy. Only the largest bounding box (by area) was kept under the assumption that it was more likely to contain the entire crab (Figure <a href="use-a-crab-detector.html#fig:duplicatebbox">3.2</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:duplicatebbox"></span>
+<img src="images/frame_1_NO_2024_0608_GarnRuse_Edoy_EN5_Ra7_L4_501068451_979.jpg" alt="A random frame from inference on BRUV footage from the 2024 gill- and fyke-net survey, where there are two detections (yellow boxes), and their bounding boxes overlap more than 30% (IoU $\geq$ 0.3) over the same crab. After applying a post-processing pipeline to remove noise and unlikely predictions of crab, only the largest box of the two is kept." width="100%" />
+<p class="caption">
+Figure 3.2: A random frame from inference on BRUV footage from the 2024 gill- and fyke-net survey, where there are two detections (yellow boxes), and their bounding boxes overlap more than 30% (IoU <span class="math inline">\(\geq\)</span> 0.3) over the same crab. After applying a post-processing pipeline to remove noise and unlikely predictions of crab, only the largest box of the two is kept.
+</p>
 </div>
-<div id="collecting-results" class="section level2 hasAnchor" number="3.5">
-<h2><span class="header-section-number">3.5</span> Collecting results<a href="use-a-crab-detector.html#collecting-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in species distribution models+</p>
+<p>After deduplication, all predictions with a confidence of <span class="math inline">\(\geq\)</span> 0.3 were kept, based on visual inspections that true crab predictions were rarely below this threshold.</p>
+<p>The crab’s behavior in the BRUV footage differs from fish, they moved slower and stayed in the frame for extended periods. To exploit this behavior, a tracking-based filtering approach was implemented. Detections were linked across consecutive frames into tracks based on the spatial proximity of bounding box centers and bounding box overlap in consecutive frames. Tracks were allowed to persist across short frame gaps (± 2 frames) to account for missed detections. Tracks with a duration of fewer than 3 frames, was assumed to likely represent false detections, and was removed. Conversely, tracks persisting for over 500 frames were also removed as these typically corresponded to static false detections such as substrate features misidentified across the deployment. The predictions that were left after the post-processing pipeline were saved for further analysis.</p>
+<p>The post-processing pipeline therefore consisted of four steps: 1) bounding box deduplication using IoU filtering, 2) confidence thresholding, 3) temporal tracking of detections, and 4) removal of short</p>
+<p>The same script collect multiple metrics saved as a .csv for analysis of collected predicted data for further analysis.</p>
 
 </div>
 </div>

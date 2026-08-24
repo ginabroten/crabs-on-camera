@@ -87,13 +87,12 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={Crabs on camera: project documentation},
-  pdfauthor={Gina Brøten},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{Crabs on camera: project documentation}
-\author{Gina Brøten}
-\date{}
+\author{}
+\date{\vspace{-2.5em}}
 
 \begin{document}
 \maketitle
@@ -108,7 +107,7 @@
 
 The basis of this project is rooted in the work done in the masters thesis by Brøten \citeyearpar{broten_crabs_2026}. The aim of the project was to improve monitoring of the data-limited brown crab (\emph{Cancer pagurus}) stock in Norway using machine learning and underwater video surveys. With the scripts and methods applied in this repository you can: 1. create your own detector for crab; 2. apply either the pretrained crab detector, or your own.
 
-The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.
+The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications. A glossary is found in Chapter 4.
 
 AI tools were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
@@ -127,21 +126,26 @@ crabs-on-camera/
 │   │           ├── annotations/
 │   │           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
 │   │           └── images/default/               # the video frames those annotations belong to
-│   ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
-│   ├── annotation_stats.ipynb         # summary statistics on the annotation data
-│   ├── 2-train.ipynb                    # trains the YOLO model
-│   └── annotation_format              # template CVAT label schema, for annotating your own data
+│   └── script/
+│       ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
+│       ├── 2-train.ipynb                    # trains the YOLO model
+│       └── setup-scripts-optional/
+│           ├── annotation_stats.ipynb       # summary statistics on the annotation data
+│           ├── annotation_format/           # template CVAT label schema, for annotating your own data
+│           └── extract_frames/              # script for collecting frames for annotation
 ├── use-a-crab-detector/
 │   ├── model/
-│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt, last.pt)
+│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt)
 │   ├── data/
 │   │   ├── videos/                    # your own BRUV footage to run the detector on (not shipped)
 │   │   ├── predictions/               # raw detections and post-processing output, generated
+│   │   │   └── annotated_videos/      # optional annotated output videos, if SAVE_VIDEOS is enabled
 │   │   └── test_predictions/          # the independent test set: annotations, images, predictions, results
-│   ├── 3-interpret-raw-detections.ipynb      # interprets raw predictions
-│   ├── 4-post-processing-pipeline.ipynb     # removal of likel false detections and collect abundance info
-│   ├── 2-use-a-detector.ipynb            # runs the model on unseen material
-│   └── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│   └── script/
+│       ├── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│       ├── 2-use-a-detector.ipynb                     # runs the model on unseen material
+│       ├── 3-interpret-raw-detections.ipynb           # interprets raw predictions
+│       └── 4-post-processing-pipeline.ipynb           # removal of likely false detections and collect abundance info
 ├── docs/                              # this documentation
 └── README.md
 \end{verbatim}
@@ -361,15 +365,13 @@ In the thesis, this comparison highlighted that neither a low or a high threshol
 
 \subsection{Applying the detector to new footage}\label{applying-the-detector-to-new-footage}
 
-Once the crab-detector returned acceptable results on the independent testset, \texttt{apply-a-crab-detector} runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder containing the desired footage and desired model, its also possible to change the image size, hyperparamteres (though these should be close to the initial training setup) and confidence threshold.The script makes the detector predict roughly every second(matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single \texttt{predictions.json} file.
+Once the crab-detector returned acceptable results on the independent testset, \texttt{2-use.-crab-detector} runs the model across a full folder of new BRUV videos. Point it (change the path) at the folder containing the desired footage and desired model, its also possible to change the image size, hyperparameters (though these should be close to the initial training setup) and confidence threshold. The script makes the detector predict roughly every second (matching the extraction of training data), but this can be changed, runs the detector on these frames and collects every detection into a single \texttt{predictions.json} file.
 
-The confidence threshold is set to be deliberately low (0.1), hence the script is not deciding what counts as a ``real'' crab, just recording every prediction. The actual filtering, so choosing a confidence threshold and removing likely false detection happens in the next steps.
-
-Before running this on a large batch, it is worth checking that the video filenames march the expected deployment naming logic, the script reports how many unique deployments it found and flags any videos it could not match. By default this script only saves the detections and not annotated videos, to activate this there is a toggle in the scripts configuration to save a copy of each video with the predicted videos drawn in, off is the default since it adds significant disk use and processing time.
+The confidence threshold is set to be deliberately low (0.1), hence the script is not deciding what counts as a ``real'' crab, just recording every prediction. The actual filtering, so choosing a confidence threshold and removing likely false detection happens in the next steps. By default this script only saves the detections and not annotated videos, to activate this there is a toggle in the scripts configuration to save a copy of each video with the predicted videos drawn in, off is the default since it adds significant disk use and processing time.
 
 \subsection{Checking what the model found}\label{checking-what-the-model-found}
 
-Before doing any real filtering, it is worth looking at what the detector actually predicted. \texttt{summarize\_detections} reads the \texttt{predictions.json} file and reports the total number of detections, how many frames had at least one and how many detections fall above a couple confidence cutoffs (0.5 and 0.75 by default). It plots a histogram of the confidence score of every detection as a sanity check, and should (if you are applying the pretrained model) have a bimodal structure, with a high peak withing the lower end of confidence scores, and a second smaller peak with the higher scores (Figure \ref{fig:histpreds24}),
+Before doing any real filtering, it is worth looking at what the detector actually predicted. \texttt{3-interpret\_detections} reads the \texttt{predictions.json} file and reports the total number of detections, how many frames had at least one and how many detections fall above a couple confidence cutoffs (0.5 and 0.75 by default). It plots a histogram of the confidence score of every detection as a sanity check, and should (if you are applying the pretrained model) have a bimodal structure, with a high peak withing the lower end of confidence scores, and a second smaller peak with the higher scores (Figure \ref{fig:histpreds24}),
 
 \begin{figure}
 \includegraphics[width=41.67in]{images/confthresholdHistogram} \caption{Distribution  of confidence scores for crab predictions generated by the object detection model on BRUV videos from the 2024 gill- and fyke-net survey (Brøten, 2026). A confidence score reflects how certain the model is in its prediction of a crab from 0 to 1, where 1 indicates the highest model certainty. Each prediction represents a detection within a single frame, and not necessarily a unique individual.}\label{fig:histpreds24}
@@ -377,11 +379,28 @@ Before doing any real filtering, it is worth looking at what the detector actual
 
 \section{Post-processing-pipeline}\label{post-processing-pipeline}
 
-This step is optional, but shows the workflow for removing likely false dete
+This step is optional, but shows the workflow for removing likely false detections whilst maximizing the amount of true crab predictions beyoud what confidence thresholding alone could achevie in \texttt{4-post-processing-pipeline}
 
-\section{Collecting results}\label{collecting-results}
+applied in thesis. The idea behind was based on visual observation of the behavior of the crab in the model aswell as the models predictions behavior. To maximize true crab detections beyond what confidence thresholding alone could achieve, a post-processing pipeline was developed based on visual inspection of model predictions and known crab behavior in the BRUV footage.
 
-a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in species distribution models+
+Occasionally the model produced many overlapping bounding boxes for the same individual crab. To address this, deduplication filters were applied within each individual frame with IoU. Pairwise IoU were calculated between all bounding boxes from model inference. Based on comparisons of multiple IoU thresholds, an IoU threshold of 0.3 was found to remove most overlapping bounding boxes, lower than 0.5 used in model evaluation, as the goal was to remove duplicate detections rather than assess accuracy. Only the largest bounding box (by area) was kept under the assumption that it was more likely to contain the entire crab (Figure \ref{fig:duplicatebbox}).
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/frame_1_NO_2024_0608_GarnRuse_Edoy_EN5_Ra7_L4_501068451_979} 
+
+}
+
+\caption{A random frame from inference on BRUV footage from the 2024 gill- and fyke-net survey, where there are two detections (yellow boxes), and their bounding boxes overlap more than 30\% (IoU $\geq$ 0.3) over the same crab. After applying a post-processing pipeline to remove noise and unlikely predictions of crab, only the largest box of the two is kept.}\label{fig:duplicatebbox}
+\end{figure}
+
+After deduplication, all predictions with a confidence of \(\geq\) 0.3 were kept, based on visual inspections that true crab predictions were rarely below this threshold.
+
+The crab's behavior in the BRUV footage differs from fish, they moved slower and stayed in the frame for extended periods. To exploit this behavior, a tracking-based filtering approach was implemented. Detections were linked across consecutive frames into tracks based on the spatial proximity of bounding box centers and bounding box overlap in consecutive frames. Tracks were allowed to persist across short frame gaps (± 2 frames) to account for missed detections. Tracks with a duration of fewer than 3 frames, was assumed to likely represent false detections, and was removed. Conversely, tracks persisting for over 500 frames were also removed as these typically corresponded to static false detections such as substrate features misidentified across the deployment. The predictions that were left after the post-processing pipeline were saved for further analysis.
+
+The post-processing pipeline therefore consisted of four steps: 1) bounding box deduplication using IoU filtering, 2) confidence thresholding, 3) temporal tracking of detections, and 4) removal of short
+
+The same script collect multiple metrics saved as a .csv for analysis of collected predicted data for further analysis.
 
 \chapter{Glossary}\label{glossary}
 
@@ -390,15 +409,17 @@ a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in spec
 \item
   \textbf{Object detection}: a computer vision task where a model finds where objects are in an image and identifies what they are --- in this project, locating and identifying crabs in video frames.
 \item
+  \textbf{YOLO}: ``You Only Look Once'' object detection framework by Redmon et al. \citeyearpar{redmon_you_2016}, commonly used for identification and classification of marine species. YOLO combines object localization and classification in one step, predicting bounding boxes and class labels directly, enabling processing of large volumes of data and facilitating for species identification, abundance counts and size estimations for fisheries applications.
+\item
+  \textbf{CVAT}:Open-source program Computer Vision Annotation Tool (CVAT; Sekachev et al., 2020) for annotation.
+\item
   \textbf{Bounding box}: a rectangular region defined by four coordinates that encloses a specific object within an image or frame.
 \item
   \textbf{RLE mask} (Run-Length Encoded mask): a pixel-by-pixel outline of an object's exact shape, stored in a compressed format --- this is how the original CVAT annotations are drawn, before being converted to bounding boxes.
 \item
   \textbf{Annotation}: a label marking an object within an image --- in CVAT, drawn as a mask or box around each crab.
 \item
-  \textbf{Label}: the concrete tag applied to an annotation --- in this context, species (e.g.~cod).
-\item
-  \textbf{Class}: the abstract category an object belongs to --- in this context, species group/family (e.g.~gadoid).
+  \textbf{Confidence threshold}: when a machine learning model predicts, it assigns the prediction a score from 0--1 based on how sure it is about the detection, where 1 is most certain.
 \item
   \textbf{IoU} (Intersection over Union): a measure of how much two boxes overlap, used both to remove duplicate boxes during annotation cleanup and later as an evaluation metric.
 \item
@@ -415,6 +436,10 @@ a csv with the maxN/meanN per station, combine wiht lat/lon etc to apply in spec
   \textbf{Ground truth}: the human-annotated ``correct answer'' (the CVAT masks/boxes) that a model's predictions are compared against.
 \item
   \textbf{YAML}: a plain-text file format for configuration settings, structured by indentation rather than punctuation: used here to tell the training script where the data lives and what classes to detect.
+\item
+  \textbf{MaxN}: MaxN is
+  a relative abundance index, which has the intent to reflect local
+  density while avoiding double counting of individuals.
 \end{itemize}
 
 \bibliography{book.bib,packages.bib}

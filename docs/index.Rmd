@@ -1,6 +1,5 @@
 --- 
 title: "Crabs on camera: project documentation"
-author: "Gina Brøten"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -17,7 +16,7 @@ notcite: '@sekachev_opencvcvat_2020'
 
 The basis of this project is rooted in the work done in the masters thesis by Brøten [-@broten_crabs_2026]. The aim of the project was to improve monitoring of the data-limited brown crab (*Cancer pagurus*) stock in Norway using machine learning and underwater video surveys. With the scripts and methods applied in this repository you can: 1. create your own detector for crab; 2. apply either the pretrained crab detector, or your own. 
 
-The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications.
+The aim of this repository is not to push the boundaries of machine learning or showcase new methods, rather to make these methods more approachable for marine scientists working in fisheries applications. A glossary is found in Chapter 4. 
 
 AI tools were used throughout this repository to help generate code, fix syntax, and clean up errors.
 
@@ -36,21 +35,26 @@ crabs-on-camera/
 │   │           ├── annotations/
 │   │           │   └── instances_default.json   # CVAT/COCO export: labels + crab outlines
 │   │           └── images/default/               # the video frames those annotations belong to
-│   ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
-│   ├── annotation_stats.ipynb         # summary statistics on the annotation data
-│   ├── 2-train.ipynb                    # trains the YOLO model
-│   └── annotation_format              # template CVAT label schema, for annotating your own data
+│   └── script/
+│       ├── 1-raw_to_yolo.ipynb              # converts raw annotations into a YOLO-ready dataset
+│       ├── 2-train.ipynb                    # trains the YOLO model
+│       └── setup-scripts-optional/
+│           ├── annotation_stats.ipynb       # summary statistics on the annotation data
+│           ├── annotation_format/           # template CVAT label schema, for annotating your own data
+│           └── extract_frames/              # script for collecting frames for annotation
 ├── use-a-crab-detector/
 │   ├── model/
-│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt, last.pt)
+│   │   └── pretrained-crab-detector/  # the trained model from the thesis (best.pt)
 │   ├── data/
 │   │   ├── videos/                    # your own BRUV footage to run the detector on (not shipped)
 │   │   ├── predictions/               # raw detections and post-processing output, generated
+│   │   │   └── annotated_videos/      # optional annotated output videos, if SAVE_VIDEOS is enabled
 │   │   └── test_predictions/          # the independent test set: annotations, images, predictions, results
-│   ├── 3-interpret-raw-detections.ipynb      # interprets raw predictions
-│   ├── 4-post-processing-pipeline.ipynb     # removal of likel false detections and collect abundance info
-│   ├── 2-use-a-detector.ipynb            # runs the model on unseen material
-│   └── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│   └── script/
+│       ├── 1-get-ready-to-use-a-crab-detector.ipynb   # compares model predictions to the human-annotated test set
+│       ├── 2-use-a-detector.ipynb                     # runs the model on unseen material
+│       ├── 3-interpret-raw-detections.ipynb           # interprets raw predictions
+│       └── 4-post-processing-pipeline.ipynb           # removal of likely false detections and collect abundance info
 ├── docs/                              # this documentation
 └── README.md
 ```

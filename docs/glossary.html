@@ -20,7 +20,6 @@
   
   <meta name="twitter:image" content="/images/cover.jpg" />
 
-<meta name="author" content="Gina Brøten" />
 
 
 
@@ -145,7 +144,6 @@ div.csl-indent {
 <li class="chapter" data-level="3.3.2" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#checking-what-the-model-found"><i class="fa fa-check"></i><b>3.3.2</b> Checking what the model found</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#post-processing-pipeline"><i class="fa fa-check"></i><b>3.4</b> Post-processing-pipeline</a></li>
-<li class="chapter" data-level="3.5" data-path="use-a-crab-detector.html"><a href="use-a-crab-detector.html#collecting-results"><i class="fa fa-check"></i><b>3.5</b> Collecting results</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i><b>4</b> Glossary</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -173,12 +171,12 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 4</span> Glossary<a href="glossary.html#glossary" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <ul>
 <li><strong>Object detection</strong>: a computer vision task where a model finds where objects are in an image and identifies what they are — in this project, locating and identifying crabs in video frames.</li>
+<li><strong>YOLO</strong>: “You Only Look Once” object detection framework by Redmon et al. <span class="citation">(<a href="#ref-redmon_you_2016">2016</a>)</span>, commonly used for identification and classification of marine species. YOLO combines object localization and classification in one step, predicting bounding boxes and class labels directly, enabling processing of large volumes of data and facilitating for species identification, abundance counts and size estimations for fisheries applications.</li>
+<li><strong>CVAT</strong>:Open-source program Computer Vision Annotation Tool (CVAT; Sekachev et al., 2020) for annotation.</li>
 <li><strong>Bounding box</strong>: a rectangular region defined by four coordinates that encloses a specific object within an image or frame.</li>
 <li><strong>RLE mask</strong> (Run-Length Encoded mask): a pixel-by-pixel outline of an object’s exact shape, stored in a compressed format — this is how the original CVAT annotations are drawn, before being converted to bounding boxes.</li>
 <li><strong>Annotation</strong>: a label marking an object within an image — in CVAT, drawn as a mask or box around each crab.</li>
-<li><strong>Label</strong>: the concrete tag applied to an annotation — in this context, species (e.g. cod).</li>
-<li><strong>Class</strong>: the abstract category an object belongs to — in this context, species group/family (e.g. gadoid).
-<!-- TODO: double-check Label vs Class against the code before finalizing -- in raw_to_yolo.ipynb, `ann.label`/`target_label` refers to the broad CVAT category (e.g. "Decapods"), while the specific species is stored separately as a `species` attribute. Worth either swapping which term maps to which, or adding a line noting this. --></li>
+<li><strong>Confidence threshold</strong>: when a machine learning model predicts, it assigns the prediction a score from 0–1 based on how sure it is about the detection, where 1 is most certain.</li>
 <li><strong>IoU</strong> (Intersection over Union): a measure of how much two boxes overlap, used both to remove duplicate boxes during annotation cleanup and later as an evaluation metric.</li>
 <li><strong>Fold</strong>: one of the K train/validation splits created during K-fold cross-validation.</li>
 <li><strong>K-fold cross-validation</strong>: splitting the dataset into K equal-sized groups (“folds”). In each round, one fold is held out for validation while the model trains on the rest, repeated K times so every image gets used for both training and validation, just never in the same round. Example: with 5-fold cross-validation, the model is trained and validated 5 separate times, each on a different split, so results don’t depend on one lucky (or unlucky) train/validation split.</li>
@@ -187,8 +185,17 @@ div.csl-indent {
 <li><strong>Negative example / empty frame</strong>: a frame with no crab in it, deliberately kept in the dataset (rather than discarded) because training on empty frames alongside crab-present ones has been shown to improve performance.</li>
 <li><strong>Ground truth</strong>: the human-annotated “correct answer” (the CVAT masks/boxes) that a model’s predictions are compared against.</li>
 <li><strong>YAML</strong>: a plain-text file format for configuration settings, structured by indentation rather than punctuation: used here to tell the training script where the data lives and what classes to detect.</li>
+<li><strong>MaxN</strong>: MaxN is
+a relative abundance index, which has the intent to reflect local
+density while avoiding double counting of individuals.</li>
 </ul>
 
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-redmon_you_2016" class="csl-entry">
+Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <em>You <span>Only</span> <span>Look</span> <span>Once</span>: <span>Unified</span>, <span>Real</span>-<span>Time</span> <span>Object</span> <span>Detection</span></em>. arXiv. <a href="https://doi.org/10.48550/arXiv.1506.02640">https://doi.org/10.48550/arXiv.1506.02640</a>.
+</div>
 </div>
             </section>
 
