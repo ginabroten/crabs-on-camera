@@ -1,4 +1,5 @@
 <div align="center">
+
 # Crabs on camera
 
 <img src="docs/images/cover.jpg" alt="Crabs on camera cover image" width="720" />
