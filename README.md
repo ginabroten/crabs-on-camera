@@ -4,7 +4,7 @@
 
 <img src="docs/images/cover.jpg" alt="Crabs on camera cover image" width="720" />
 
-Code and pipeline for detecting brown crabs (*Cancer pagurus*) in underwater video, developed from the methods described in my master's thesis and a forthcoming article.
+Code and pipeline for detecting brown crabs (*Cancer pagurus*) in underwater video, developed from the methods described in the masters thesis, Brøten (2026).
 
 **Detect and count brown crabs in BRUV footage using a pretrained YOLOv8 model, from raw video to filtered MaxN data.**
 
@@ -19,7 +19,7 @@ The repository is split into two workflows:
 
 **Thesis:** Brøten, Gina. 2026. *Crabs on camera: Improving the monitoring of the brown crab (Cancer pagurus) with machine learning and Baited Remote Underwater Video (BRUV)*. Master's thesis, University of Bergen. <https://hdl.handle.net/11250/5537346>
 
-**Article:** [citation to be added once published]
+**Article:** [in the works!]
 
 ## Following along with the article
 
