@@ -24,7 +24,7 @@ AI tools were used throughout this repository to help generate code, fix syntax,
 
 This repository uses the same code, functions, and packages developed for the masters thesis, though some functions have been simplified here to make the pipeline easier to reproduce.
 
-(**NEEDS UPDATING**) The structure of the repository is as follows:
+The structure of the repository is as follows:
 
 ```
 crabs-on-camera/

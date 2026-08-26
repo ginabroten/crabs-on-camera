@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  24 AUG 2026 11:15
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.8.12)  26 AUG 2026 11:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1335,35 +1335,35 @@ Overfull \hbox (2666.49075pt too wide) in paragraph at lines 377--377
 
 LaTeX Warning: Float too large for page by 1542.1546pt on input line 378.
 
-
-Underfull \vbox (badness 1122) has occurred while \output is active []
-
 [19] [20]
+File: images/trackBbox.png Graphic file (type bmp)
+<images/trackBbox.png>
+[21]
 File: images/frame_1_NO_2024_0608_GarnRuse_Edoy_EN5_Ra7_L4_501068451_979.jpg Gr
 aphic file (type bmp)
 <images/frame_1_NO_2024_0608_GarnRuse_Edoy_EN5_Ra7_L4_501068451_979.jpg>
-[21] [22]
+[22] [23] [24
+
+]
 Chapter 4.
-[23
+[25] (_main.bbl [26] [27
 
-] (_main.bbl [24] [25
-
-]) [26] (_main.aux)
+]) [28] (_main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 20472 strings out of 409617
- 365992 string characters out of 5778276
- 1938191 words of memory out of 5000000
- 42281 multiletter control sequences out of 15000+600000
+ 20495 strings out of 409617
+ 366566 string characters out of 5778276
+ 1940191 words of memory out of 5000000
+ 42303 multiletter control sequences out of 15000+600000
  564634 words of font info for 91 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,10n,120p,1390b,536s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,10n,120p,1390b,538s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _main.pdf (26 pages).
+Output written on _main.pdf (28 pages).
 
 ! miktex-dvipdfmx: major issue: So far, no MiKTeX administrator has checked for updates.
 ! xelatex: major issue: So far, no MiKTeX administrator has checked for updates.
