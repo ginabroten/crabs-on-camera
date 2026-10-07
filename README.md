@@ -35,7 +35,7 @@ Each stage of the pipeline corresponds to a step in the Methods section of the a
 | Model application and inference | `use-a-crab-detector/script/1-get-ready-to-use-a-crab-detector.ipynb`, `2-use-a-detector.ipynb` |
 | Post processing pipeline | `use-a-crab-detector/script/4-post-processing-pipeline.ipynb` |
 
-Grad CAM analysis and the statistical comparison of MaxN against crab pot catch (thesis section 2.4) are described in the article and thesis but are not part of this code repository.
+To train with the same dataset as utilized in the thesis and article, it is freely available via Zenodo at 10.5281/zenodo.23210912
 
 ## Quick start
 
