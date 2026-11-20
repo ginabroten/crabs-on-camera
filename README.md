@@ -6,6 +6,7 @@
 
 Code and pipeline for detecting brown crabs (*Cancer pagurus*) in underwater video, developed from the methods described in the masters thesis, Brøten (2026).
 
+
 **Detect and count brown crabs in BRUV footage using a pretrained YOLOv8 model, from raw video to filtered MaxN data.**
 
 The repository is split into two workflows:
@@ -19,7 +20,7 @@ The repository is split into two workflows:
 
 **Thesis:** Brøten, Gina. 2026. *Crabs on camera: Improving the monitoring of the brown crab (Cancer pagurus) with machine learning and Baited Remote Underwater Video (BRUV)*. Master's thesis, University of Bergen. <https://hdl.handle.net/11250/5537346>
 
-**Article:** [in the works!]
+**Article:** [in prep!]
 
 ## Following along with the article
 
@@ -35,7 +36,7 @@ Each stage of the pipeline corresponds to a step in the Methods section of the a
 | Model application and inference | `use-a-crab-detector/script/1-get-ready-to-use-a-crab-detector.ipynb`, `2-use-a-detector.ipynb` |
 | Post processing pipeline | `use-a-crab-detector/script/4-post-processing-pipeline.ipynb` |
 
-To train with the same dataset as utilized in the thesis and article, it is freely available via Zenodo at 10.5281/zenodo.23210912
+To train with the same dataset as utilized in the thesis and article, it is freely available via https://doi.org/10.5281/zenodo.23210912
 
 ## Quick start
 
@@ -54,3 +55,9 @@ To train your own detector instead, see `create-a-crab-detector/requirements.txt
 ## Citation
 
 If you use this pipeline or the pretrained detector, please cite the thesis above (article citation to follow).
+
+## Help & feedback
+
+For any feedback or questions about the methods feel free to reach out via. email **brotengina@gmail.com**
+
+
